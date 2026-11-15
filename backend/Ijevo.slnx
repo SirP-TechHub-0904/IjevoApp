@@ -1,0 +1,19 @@
+<Solution>
+  <Folder Name="/src/" />
+  <Folder Name="/src/Core/">
+    <Project Path="src/Core/Ijevo.Application/Ijevo.Application.csproj" />
+    <Project Path="src/Core/Ijevo.Domain/Ijevo.Domain.csproj" />
+  </Folder>
+  <Folder Name="/src/Infrastructure/">
+    <Project Path="src/Infrastructure/Ijevo.Infrastructure.Data/Ijevo.Infrastructure.Data.csproj" />
+    <Project Path="src/Infrastructure/Ijevo.Infrastructure.Flutterwave/Ijevo.Infrastructure.Flutterwave.csproj" />
+    <Project Path="src/Infrastructure/Ijevo.Infrastructure.Plaid/Ijevo.Infrastructure.Plaid.csproj" />
+    <Project Path="src/Infrastructure/Ijevo.Infrastructure.Stripe/Ijevo.Infrastructure.Stripe.csproj" />
+  </Folder>
+  <Folder Name="/src/Presentation/">
+    <Project Path="src/Presentation/Ijevo.Api/Ijevo.Api.csproj" />
+  </Folder>
+  <Folder Name="/src/Shared/">
+    <Project Path="src/Shared/Ijevo.Shared.Security/Ijevo.Shared.Security.csproj" />
+  </Folder>
+</Solution>

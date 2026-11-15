@@ -1,0 +1,6 @@
+@Ijevo.Api_HostAddress = http://localhost:5261
+
+GET {{Ijevo.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

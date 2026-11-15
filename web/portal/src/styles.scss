@@ -1,0 +1,30 @@
+/* Ijevo Global Design Tokens */
+:root {
+  /* Brand Core */
+  --ijevo-primary: #00D084;
+  --ijevo-navy: #0B192C;
+  --ijevo-gold: #FFB703;
+
+  /* Surfaces & Backgrounds */
+  --ijevo-bg-light: #F8FAFC;
+  --ijevo-bg-dark: #0B192C;
+  --ijevo-surface-dark: #14243A;
+  --ijevo-surface-light: #FFFFFF;
+
+  /* Typography */
+  --ijevo-text-primary: #0B192C;
+  --ijevo-text-inverse: #FFFFFF;
+  --ijevo-text-muted: #64748B;
+
+  /* Functional Status */
+  --ijevo-success: #00D084;
+  --ijevo-error: #EF4444;
+  --ijevo-warning: #FFB703;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--ijevo-bg-light);
+  color: var(--ijevo-text-primary);
+}
