@@ -51,22 +51,38 @@
       <!-- Right Column: Minimalist TapTap-Style Remittance Calculator -->
       <div class="hero-calc-wrapper">
         <div class="calculator-card-minimal">
-          <!-- Top Country Split Bar -->
+          <!-- Top Country Dropdowns Bar -->
           <div class="calc-top-bar">
-            <div class="calc-top-col send-col">
-              <span class="country-icon"><i class="fa-solid fa-location-dot"></i></span>
-              <span class="country-name">United Kingdom (GBP)</span>
+            <!-- Send Currency Dropdown (USD, EUR, GBP) -->
+            <div class="calc-dropdown-box">
+              <span class="dropdown-flag-icon"><i class="fa-solid fa-location-dot"></i></span>
+              <div class="dropdown-control">
+                <select [ngModel]="sendCurrency()" (ngModelChange)="setSendCurrency($event)" class="calc-top-select" aria-label="Send Currency">
+                  @for (curr of sendCurrencies; track curr.code) {
+                  <option [value]="curr.code">
+                    {{ curr.name }}
+                  </option>
+                  }
+                </select>
+                <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
+              </div>
             </div>
+
             <div class="calc-top-divider"></div>
-            <div class="calc-top-col receive-col">
-              <span class="country-icon"><i class="fa-solid fa-globe"></i></span>
-              <select [ngModel]="receiveCurrency()" (ngModelChange)="setReceiveCurrency($event)" class="country-select">
-                @for (curr of payoutCurrencies; track curr.code) {
-                <option [value]="curr.code">
-                  {{ curr.name }} ({{ curr.code }})
-                </option>
-                }
-              </select>
+
+            <!-- Receive Currency Dropdown -->
+            <div class="calc-dropdown-box">
+              <span class="dropdown-flag-icon"><i class="fa-solid fa-globe"></i></span>
+              <div class="dropdown-control">
+                <select [ngModel]="receiveCurrency()" (ngModelChange)="setReceiveCurrency($event)" class="calc-top-select" aria-label="Receive Currency">
+                  @for (curr of payoutCurrencies; track curr.code) {
+                  <option [value]="curr.code">
+                    {{ curr.name }}
+                  </option>
+                  }
+                </select>
+                <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
+              </div>
             </div>
           </div>
 
@@ -74,7 +90,7 @@
           <div class="calc-body">
             <!-- You Send Field -->
             <div class="calc-input-group">
-              <label class="calc-field-label">You send (GBP)</label>
+              <label class="calc-field-label">You send ({{ selectedSendCurrency().code }})</label>
               <div class="calc-field-box">
                 <input
                   type="number"
@@ -104,11 +120,11 @@
             <div class="calc-meta-block">
               <div class="meta-row">
                 <span class="meta-label">Today's rate:</span>
-                <span class="meta-value">GBP 1 = {{ currentRate().toLocaleString() }} {{ selectedCurrency().code }}</span>
+                <span class="meta-value">{{ selectedSendCurrency().code }} 1 = {{ currentRate().toLocaleString() }} {{ selectedCurrency().code }}</span>
               </div>
               <div class="meta-row">
                 <span class="meta-label">Transfer fee:</span>
-                <span class="meta-value">from £0.00*</span>
+                <span class="meta-value">from {{ selectedSendCurrency().symbol }}0.00*</span>
               </div>
             </div>
 

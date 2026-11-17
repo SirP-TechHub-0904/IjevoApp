@@ -26,24 +26,40 @@ export class HomeComponent {
   protected readonly sendCurrency = signal<string>('GBP');
   protected readonly receiveCurrency = signal<string>('NGN');
 
-  // Supported Payout Corridors
-  protected readonly payoutCurrencies: PayoutCurrency[] = [
-    { code: 'NGN', name: 'Nigerian Naira', ratePerGbp: 1846.00, symbol: '₦' },
-    { code: 'KES', name: 'Kenyan Shilling', ratePerGbp: 168.50, symbol: 'KSh' },
-    { code: 'GHS', name: 'Ghanaian Cedi', ratePerGbp: 19.80, symbol: 'GH₵' },
-    { code: 'ARS', name: 'Argentine Peso', ratePerGbp: 2042.99, symbol: '$' },
-    { code: 'PHP', name: 'Philippine Peso', ratePerGbp: 74.20, symbol: '₱' },
-    { code: 'INR', name: 'Indian Rupee', ratePerGbp: 108.40, symbol: '₹' }
+  // Supported Send Currencies (USD, EUR, GBP)
+  protected readonly sendCurrencies = [
+    { code: 'GBP', name: 'United Kingdom (GBP)', short: 'UK (GBP)', symbol: '£', rateMultiplier: 1.0 },
+    { code: 'USD', name: 'United States (USD)', short: 'USA (USD)', symbol: '$', rateMultiplier: 0.785 },
+    { code: 'EUR', name: 'Eurozone (EUR)', short: 'Euro (EUR)', symbol: '€', rateMultiplier: 0.855 }
   ];
 
-  // Selected Currency Details
+  // Supported Payout Corridors
+  protected readonly payoutCurrencies: PayoutCurrency[] = [
+    { code: 'NGN', name: 'Nigeria (NGN)', ratePerGbp: 1846.00, symbol: '₦' },
+    { code: 'KES', name: 'Kenya (KES)', ratePerGbp: 168.50, symbol: 'KSh' },
+    { code: 'GHS', name: 'Ghana (GHS)', ratePerGbp: 19.80, symbol: 'GH₵' },
+    { code: 'ZAR', name: 'South Africa (ZAR)', ratePerGbp: 23.20, symbol: 'R' },
+    { code: 'RWF', name: 'Rwanda (RWF)', ratePerGbp: 1740.00, symbol: 'FRw' },
+    { code: 'PHP', name: 'Philippines (PHP)', ratePerGbp: 74.20, symbol: '₱' },
+    { code: 'INR', name: 'India (INR)', ratePerGbp: 108.40, symbol: '₹' }
+  ];
+
+  // Selected Send Currency Details
+  protected readonly selectedSendCurrency = computed(() => {
+    return this.sendCurrencies.find(c => c.code === this.sendCurrency()) || this.sendCurrencies[0];
+  });
+
+  // Selected Receive Currency Details
   protected readonly selectedCurrency = computed(() => {
     const found = this.payoutCurrencies.find(c => c.code === this.receiveCurrency());
     return found || this.payoutCurrencies[0];
   });
 
   // Computed Exchange Rate
-  protected readonly currentRate = computed(() => this.selectedCurrency().ratePerGbp);
+  protected readonly currentRate = computed(() => {
+    const mult = this.selectedSendCurrency().rateMultiplier;
+    return Math.round(this.selectedCurrency().ratePerGbp * mult * 100) / 100;
+  });
 
   // Computed Payout Total
   protected readonly calculatedPayout = computed(() => {
@@ -128,6 +144,10 @@ export class HomeComponent {
         'Speed is everything when managing family projects and emergencies back home in Accra. Ijevo delivers within seconds straight to MTN Mobile Money. Clean interface, no hidden fees, and responsive customer care. 10/10.'
     }
   ];
+
+  protected setSendCurrency(code: string): void {
+    this.sendCurrency.set(code);
+  }
 
   protected setReceiveCurrency(code: string): void {
     this.receiveCurrency.set(code);
