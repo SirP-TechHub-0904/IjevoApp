@@ -1,0 +1,332 @@
+<main>
+  <!-- Hero Section with Live Calculator -->
+  <section id="calculator" class="hero-section">
+    <div class="container hero-container">
+      <!-- Left Column: Headline & Value Prop -->
+      <div class="hero-content">
+        <div class="badge badge-emerald">
+          <i class="fa-solid fa-bolt"></i> Fast, Simple Transfers to Africa & Beyond
+        </div>
+        <h1 class="hero-title">
+          The Fastest Way to Send Money Back Home.
+        </h1>
+        <p class="hero-description">
+          Send money to your family and loved ones back home in seconds. 
+          Enjoy great exchange rates, zero hidden fees, and complete peace of mind with bank-grade safety.
+        </p>
+
+        <div class="hero-highlights">
+          <div class="highlight-item">
+            <i class="fa-solid fa-circle-check"></i>
+            <span>£0 Transfer Fee</span>
+          </div>
+          <div class="highlight-item">
+            <i class="fa-solid fa-circle-check"></i>
+            <span>Under 60s Delivery</span>
+          </div>
+          <div class="highlight-item">
+            <i class="fa-solid fa-circle-check"></i>
+            <span>FCA & HMRC Supervised</span>
+          </div>
+        </div>
+
+        <div class="app-badges">
+          <a href="#" class="store-badge">
+            <i class="fa-brands fa-apple"></i>
+            <div>
+              <span class="store-sub">Download on the</span>
+              <span class="store-name">App Store</span>
+            </div>
+          </a>
+          <a href="#" class="store-badge">
+            <i class="fa-brands fa-google-play"></i>
+            <div>
+              <span class="store-sub">GET IT ON</span>
+              <span class="store-name">Google Play</span>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Right Column: Interactive Remittance Calculator -->
+      <div class="hero-calc-wrapper">
+        <div class="calculator-card">
+          <div class="calc-header">
+            <h3>Send Money Now</h3>
+            <span class="live-dot"><span class="pulsing"></span> Live Rates</span>
+          </div>
+
+          <!-- You Send Box -->
+          <div class="calc-box">
+            <div class="calc-box-label">
+              <span>You send</span>
+              <span class="currency-label">British Pound</span>
+            </div>
+            <div class="calc-box-input">
+              <input type="number" [ngModel]="sendAmount()" (ngModelChange)="updateSendAmount($event)" min="1"
+                step="10" />
+              <div class="currency-pill">
+                <span class="currency-symbol">£</span>
+                <span class="code">GBP</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Rate & Fee Breakdown -->
+          <div class="calc-divider">
+            <div class="calc-info-row">
+              <div class="info-dot"></div>
+              <span>Fee: <strong>£0.00</strong> (100% Free)</span>
+            </div>
+            <div class="calc-info-row">
+              <div class="info-dot highlight"></div>
+              <span>Guaranteed Rate: <strong>1 GBP = {{ currentRate().toLocaleString() }} {{ selectedCurrency().code }}</strong></span>
+            </div>
+          </div>
+
+          <!-- Recipient Gets Box -->
+          <div class="calc-box">
+            <div class="calc-box-label">
+              <span>Recipient receives</span>
+              <span class="currency-label">{{ selectedCurrency().name }}</span>
+            </div>
+            <div class="calc-box-input">
+              <input type="text" [value]="calculatedPayout()" readonly class="readonly-input" />
+
+              <!-- Destination Currency Dropdown -->
+              <div class="currency-select-wrapper">
+                <select [ngModel]="receiveCurrency()" (ngModelChange)="setReceiveCurrency($event)">
+                  @for (curr of payoutCurrencies; track curr.code) {
+                  <option [value]="curr.code">
+                    {{ curr.code }} ({{ curr.symbol }})
+                  </option>
+                  }
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Delivery Estimate -->
+          <div class="delivery-badge">
+            <i class="fa-solid fa-bolt"></i>
+            <span>Estimated delivery: <strong>Within 60 seconds</strong></span>
+          </div>
+
+          <!-- Calculator CTA Button -->
+          <a routerLink="/send-money/nigeria" class="btn btn-primary btn-block calc-btn">
+            Continue with this Rate <i class="fa-solid fa-arrow-right"></i>
+          </a>
+
+          <p class="calc-disclaimer">
+            Transfer fees and exchange rates are guaranteed at time of checkout.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trust Rails Marquee -->
+  <section class="trust-rails-section">
+    <div class="container text-center">
+      <p class="marquee-title">
+        Directly integrated with tier-1 clearing houses & mobile operators
+      </p>
+      <div class="rails-grid">
+        <div class="rail-item">
+          <i class="fa-solid fa-building-columns"></i>
+          <span>UK Faster Payments</span>
+        </div>
+        <div class="rail-item">
+          <i class="fa-brands fa-cc-mastercard"></i>
+          <span>Mastercard</span>
+        </div>
+        <div class="rail-item">
+          <i class="fa-brands fa-cc-visa"></i>
+          <span>Visa Direct</span>
+        </div>
+        <div class="rail-item">
+          <i class="fa-solid fa-money-bill-transfer"></i>
+          <span>Access Bank</span>
+        </div>
+        <div class="rail-item">
+          <i class="fa-solid fa-mobile-screen-button"></i>
+          <span>M-Pesa</span>
+        </div>
+        <div class="rail-item">
+          <i class="fa-solid fa-signal"></i>
+          <span>MTN MoMo</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Grid Section -->
+  <section id="features" class="section-spacing features-section">
+    <div class="container">
+      <div class="section-header text-center">
+        <div class="badge badge-emerald">Why Choose Ijevo</div>
+        <h2>Built for Speed, Transparency & Family Trust</h2>
+        <p class="section-sub">
+          Everything we build is designed to make sending money as easy and stress-free as sending a message.
+        </p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon-wrapper">
+            <img src="assets/template/img/home-2/icons/1.svg" alt="Instant Speed" class="feature-icon" />
+          </div>
+          <h3>Arrives in Seconds</h3>
+          <p>
+            No waiting 3 to 5 business days. Your transfer is disbursed over local real-time interbank rails in under a minute.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-wrapper">
+            <img src="assets/template/img/home-2/icons/2.svg" alt="Zero Hidden Fees" class="feature-icon" />
+          </div>
+          <h3>Great Rates, Zero Hidden Fees</h3>
+          <p>
+            Enjoy £0 transfer fees on qualifying corridors with true wholesale exchange rates disclosed up front.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-wrapper">
+            <img src="assets/template/img/home-2/icons/3.svg" alt="Bank Grade Security" class="feature-icon" />
+          </div>
+          <h3>Bank-Grade Protection</h3>
+          <p>
+            Your money and personal details are always protected with the highest level of bank security and strict privacy controls.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-wrapper">
+            <img src="assets/template/img/home-1/icons/1.svg" alt="Instant Bank Linking" class="feature-icon" />
+          </div>
+          <h3>Simple, Instant Payments</h3>
+          <p>
+            Pay easily and securely using your debit card or pay directly from your UK bank app with zero extra fees.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-wrapper">
+            <img src="assets/template/img/home-1/icons/2.svg" alt="Live Tracking" class="feature-icon" />
+          </div>
+          <h3>Live Transfer Updates</h3>
+          <p>
+            Follow your money on its journey. You and your recipient receive instant notifications the moment funds land safely.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-wrapper">
+            <img src="assets/template/img/home-1/icons/3.svg" alt="24/7 Support" class="feature-icon" />
+          </div>
+          <h3>Friendly 24/7 Support</h3>
+          <p>
+            Have questions about a transfer? Our friendly support team is available 24/7 via live in-app chat, WhatsApp, and email.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works Timeline -->
+  <section id="how-it-works" class="section-spacing how-it-works-section">
+    <div class="container">
+      <div class="section-header text-center">
+        <div class="badge badge-navy">Simple 3-Step Process</div>
+        <h2>Send Money in 3 Minutes or Less</h2>
+        <p class="section-sub">
+          No paperwork, no standing in remittance queues. Complete everything right from your smartphone.
+        </p>
+      </div>
+
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-number">01</div>
+          <h3>Create Your Free Account</h3>
+          <p>Sign up in under 60 seconds. Verify your phone number and confirm your identity securely with biometric verification.</p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-number">02</div>
+          <h3>Enter Amount & Recipient</h3>
+          <p>Select destination country (Nigeria, Ghana, Kenya, etc.) and enter the recipient's bank account or mobile money number.</p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-number">03</div>
+          <h3>Pay Instantly & Deliver</h3>
+          <p>Authorize with your bank or card. Funds are credited instantly and both you and your recipient receive confirmation receipts.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mobile App CTA Showcase (Plax Style) -->
+  <section class="section-spacing app-showcase-section">
+    <div class="container">
+      <div class="app-showcase-card">
+        <div class="showcase-content">
+          <div class="badge badge-emerald">Mobile-First Financial Freedom</div>
+          <h2>Carry Global Remittances in Your Pocket</h2>
+          <p>
+            Download the official Ijevo mobile app for iOS and Android. Save frequent recipients, lock in exchange rates, and send money with a single tap.
+          </p>
+          <div class="app-badges">
+            <a href="#" class="store-badge light">
+              <i class="fa-brands fa-apple"></i>
+              <div>
+                <span class="store-sub">Download on</span>
+                <span class="store-name">App Store</span>
+              </div>
+            </a>
+            <a href="#" class="store-badge light">
+              <i class="fa-brands fa-google-play"></i>
+              <div>
+                <span class="store-sub">Get it on</span>
+                <span class="store-name">Google Play</span>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <div class="showcase-visual">
+          <img src="assets/template/img/home-2/1.png" alt="Ijevo Mobile App Experience" class="phone-mockup-img" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section id="faq" class="section-spacing faq-section">
+    <div class="container max-w-800">
+      <div class="section-header text-center">
+        <div class="badge badge-emerald">Common Questions</div>
+        <h2>Frequently Asked Questions</h2>
+        <p class="section-sub">Everything you need to know about transferring money with Ijevo.</p>
+      </div>
+
+      <div class="faq-list">
+        @for (faq of faqs; track $index) {
+          <div class="faq-item" [class.active]="activeFaqIndex() === $index">
+            <button class="faq-question" (click)="toggleFaq($index)">
+              <span>{{ faq.question }}</span>
+              <i class="fa-solid" [ngClass]="activeFaqIndex() === $index ? 'fa-minus' : 'fa-plus'"></i>
+            </button>
+            @if (activeFaqIndex() === $index) {
+              <div class="faq-answer">
+                <p>{{ faq.answer }}</p>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+</main>
