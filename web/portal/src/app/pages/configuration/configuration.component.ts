@@ -91,7 +91,7 @@ import { FormsModule } from '@angular/forms';
             <div style="display: flex; justify-content: space-between; align-items: center;">
               <div>
                 <strong style="font-size: 0.85rem; color: var(--text-main); display: block;">Enforce Mandatory 2FA</strong>
-                <span style="font-size: 0.725rem; color: var(--text-muted);">Require TOTP authenticator for all staff</span>
+                <span style="font-size: 0.725rem; color: var(--text-muted);">Require two-factor verification code on login</span>
               </div>
               <input type="checkbox" [(ngModel)]="enforce2FA" style="width: 20px; height: 20px; accent-color: var(--primary);">
             </div>
@@ -99,14 +99,14 @@ import { FormsModule } from '@angular/forms';
             <div style="display: flex; justify-content: space-between; align-items: center;">
               <div>
                 <strong style="font-size: 0.85rem; color: #EF4444; display: block;">Portal Maintenance Mode</strong>
-                <span style="font-size: 0.725rem; color: var(--text-muted);">Pause non-admin access during scheduled upgrades</span>
+                <span style="font-size: 0.725rem; color: var(--text-muted);">Pause non-admin access during scheduled updates</span>
               </div>
               <input type="checkbox" [(ngModel)]="maintenanceMode" style="width: 20px; height: 20px; accent-color: #EF4444;">
             </div>
 
             <div style="padding-top: 10px; border-top: 1px dashed var(--border-color);">
-              <span style="font-size: 0.75rem; color: var(--text-muted);">Core API Health Check Endpoint:</span>
-              <code style="display: block; font-size: 0.75rem; color: var(--primary); margin-top: 4px;">https://api.ijevo.com/health/liveness</code>
+              <span style="font-size: 0.75rem; color: var(--text-muted);">System Status:</span>
+              <span style="display: block; font-size: 0.75rem; color: var(--primary); font-weight: 600; margin-top: 4px;">All services healthy and online</span>
             </div>
           </div>
         </div>

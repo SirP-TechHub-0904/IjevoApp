@@ -97,10 +97,10 @@ import { CommonModule } from '@angular/common';
 })
 export class ExceptionsComponent {
   readonly exceptions = [
-    { id: '#EXC-8812', sender: 'Kehinde Balogun', recipient: 'Tunde Balogun', details: 'Access Bank •••• 9912', corridor: 'GBP ➔ NGN', amount: '£450.00', reason: 'Account Name Mismatch (BVN mismatch)', retries: 2 },
+    { id: '#EXC-8812', sender: 'Kehinde Balogun', recipient: 'Tunde Balogun', details: 'Access Bank •••• 9912', corridor: 'GBP ➔ NGN', amount: '£450.00', reason: 'Name mismatch with bank records', retries: 2 },
     { id: '#EXC-8811', sender: 'Kwabena Darko', recipient: 'Kojo Darko', details: 'MTN Mobile Money •••• 5510', corridor: 'GBP ➔ GHS', amount: '£200.00', reason: 'Recipient Wallet Limit Exceeded', retries: 1 },
-    { id: '#EXC-8810', sender: 'Mercy Kimani', recipient: 'Geoffrey Kimani', details: 'M-Pesa Kenya •••• 7731', corridor: 'USD ➔ KES', amount: '$350.00', reason: 'Telco API Timeout (HTTP 504)', retries: 3 },
-    { id: '#EXC-8809', sender: 'Emeka Nwosu', recipient: 'Ifeanyi Nwosu', details: 'Zenith Bank •••• 0041', corridor: 'EUR ➔ NGN', amount: '€600.00', reason: 'Invalid NUBAN Account Number', retries: 1 },
-    { id: '#EXC-8808', sender: 'Sipho Zulu', recipient: 'Nonhle Zulu', details: 'Nedbank •••• 2291', corridor: 'GBP ➔ ZAR', amount: '£300.00', reason: 'Branch Code Deprecated', retries: 2 }
+    { id: '#EXC-8810', sender: 'Mercy Kimani', recipient: 'Geoffrey Kimani', details: 'M-Pesa Kenya •••• 7731', corridor: 'USD ➔ KES', amount: '$350.00', reason: 'Partner network timeout', retries: 3 },
+    { id: '#EXC-8809', sender: 'Emeka Nwosu', recipient: 'Ifeanyi Nwosu', details: 'Zenith Bank •••• 0041', corridor: 'EUR ➔ NGN', amount: '€600.00', reason: 'Invalid bank account number', retries: 1 },
+    { id: '#EXC-8808', sender: 'Sipho Zulu', recipient: 'Nonhle Zulu', details: 'Nedbank •••• 2291', corridor: 'GBP ➔ ZAR', amount: '£300.00', reason: 'Incorrect bank branch code', retries: 2 }
   ];
 }

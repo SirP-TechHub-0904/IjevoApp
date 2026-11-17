@@ -29,7 +29,7 @@ import { CommonModule } from '@angular/common';
         <div class="card-header table-card-header">
           <div class="table-header-left">
             <h3 class="card-title">System Activity Trail</h3>
-            <span class="badge badge-success badge-pill">Tamper-Proof SHA-256</span>
+            <span class="badge badge-success badge-pill">Protected</span>
           </div>
           <div class="table-header-right">
             <div class="search-input-wrap">
@@ -89,9 +89,9 @@ import { CommonModule } from '@angular/common';
 export class AuditLogsComponent {
   readonly logs = [
     { id: 1, event: 'Corridor Rate Adjusted', actor: 'Alex Morgan', role: 'Super Admin', ip: '185.120.44.12', location: 'London, UK', description: 'Updated GBP/NGN FX markup margin from 0.70% to 0.65%', time: '12 mins ago', severity: 'Info' },
-    { id: 2, event: 'Treasury Sweep Executed', actor: 'System Hedging Bot', role: 'Automated Bot', ip: '10.0.4.18 (VPC)', location: 'AWS eu-west-2', description: 'Rebalanced £250,000 from ClearBank to Zenith Vault (NGN)', time: '45 mins ago', severity: 'Info' },
-    { id: 3, event: 'AML SAR Report Drafted', actor: 'Sarah Jenkins', role: 'MLRO Compliance', ip: '194.88.10.5', location: 'London, UK', description: 'Filed review flag for transaction #TRX-9936 (PEP association)', time: '2 hours ago', severity: 'Warning' },
+    { id: 2, event: 'Treasury Sweep Executed', actor: 'System Hedging Bot', role: 'Automated Bot', ip: '10.0.4.18', location: 'System Engine', description: 'Rebalanced £250,000 from ClearBank to Zenith Vault (NGN)', time: '45 mins ago', severity: 'Info' },
+    { id: 3, event: 'AML Review Drafted', actor: 'Sarah Jenkins', role: 'Compliance Officer', ip: '194.88.10.5', location: 'London, UK', description: 'Filed review flag for transaction #TRX-9936', time: '2 hours ago', severity: 'Warning' },
     { id: 4, event: 'API Key Generated', actor: 'Alex Morgan', role: 'Super Admin', ip: '185.120.44.12', location: 'London, UK', description: 'Generated new live secret key for Mobile App iOS suite', time: '6 hours ago', severity: 'Warning' },
-    { id: 5, event: '2FA Policy Enforced', actor: 'System Core', role: 'Security Policy', ip: '127.0.0.1', location: 'Internal', description: 'Mandatory TOTP authenticator enabled for all operator accounts', time: '1 day ago', severity: 'Info' }
+    { id: 5, event: '2FA Policy Enforced', actor: 'System Core', role: 'Security Policy', ip: '127.0.0.1', location: 'Internal', description: 'Two-factor verification enabled for all operator accounts', time: '1 day ago', severity: 'Info' }
   ];
 }

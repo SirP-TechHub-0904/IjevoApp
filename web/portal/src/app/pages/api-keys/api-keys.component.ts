@@ -28,7 +28,7 @@ import { CommonModule } from '@angular/common';
       <div class="card">
         <div class="card-header">
           <h3 class="card-title">Active API Credentials</h3>
-          <span class="badge badge-success badge-pill">v2.4 REST & gRPC</span>
+          <span class="badge badge-success badge-pill">Active</span>
         </div>
         <div class="table-responsive">
           <table class="xintra-table">
