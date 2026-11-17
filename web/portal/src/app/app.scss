@@ -386,6 +386,10 @@
       position: relative;
       width: 320px;
 
+      &.desktop-search {
+        display: block;
+      }
+
       .search-icon {
         position: absolute;
         left: 14px;
@@ -425,6 +429,10 @@
         border-radius: var(--radius-xs);
         color: var(--text-muted);
       }
+    }
+
+    .mobile-search-btn {
+      display: none;
     }
 
     .fx-ticker-strip {
@@ -869,6 +877,55 @@
 }
 
 /* ==========================================================================
+   Mobile Search Overlay Bar
+   ========================================================================== */
+.mobile-search-bar-wrap {
+  position: sticky;
+  top: var(--header-height);
+  z-index: 89;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-color);
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: var(--shadow-sm);
+  animation: fadeInDown 0.15s ease-out;
+
+  .search-icon {
+    color: var(--text-light);
+    font-size: 0.85rem;
+  }
+
+  .mobile-search-input {
+    flex: 1;
+    padding: 8px 12px;
+    background: var(--bg-subtle);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    color: var(--text-main);
+
+    &:focus {
+      background: var(--bg-surface);
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(0, 208, 132, 0.15);
+    }
+  }
+
+  .mobile-search-close-btn {
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 1rem;
+    padding: 6px;
+
+    &:hover {
+      color: var(--text-main);
+    }
+  }
+}
+
+/* ==========================================================================
    Responsive Breakpoints
    ========================================================================== */
 @media (max-width: 991px) {
@@ -898,6 +955,8 @@
     padding: 0 16px;
 
     .header-left-col {
+      gap: 10px;
+
       .icon-toggle-btn.mobile-only {
         display: flex;
       }
@@ -905,20 +964,76 @@
       .icon-toggle-btn.desktop-only {
         display: none;
       }
-
-      .header-search-bar {
-        width: 200px;
-      }
     }
 
     .header-right-col {
-      .user-profile-btn .profile-info {
-        display: none;
+      gap: 8px;
+
+      .header-action-item {
+        .user-profile-btn {
+          .profile-info,
+          .profile-caret {
+            display: none !important;
+          }
+        }
       }
     }
   }
 
   .app-content {
     padding: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .app-header {
+    padding: 0 12px;
+
+    .header-left-col {
+      gap: 8px;
+
+      .desktop-search {
+        display: none !important;
+      }
+
+      .mobile-search-btn {
+        display: flex !important;
+      }
+    }
+
+    .header-right-col {
+      gap: 6px;
+
+      .header-action-item {
+        .region-btn {
+          padding: 6px 8px;
+
+          .region-text,
+          .caret-icon {
+            display: none !important;
+          }
+        }
+
+        .theme-toggle-btn,
+        .notification-btn {
+          width: 34px;
+          height: 34px;
+          font-size: 0.9rem;
+        }
+
+        .user-profile-btn {
+          padding: 3px;
+
+          .avatar-wrap .profile-avatar {
+            width: 32px;
+            height: 32px;
+          }
+        }
+      }
+    }
+  }
+
+  .app-content {
+    padding: 12px;
   }
 }

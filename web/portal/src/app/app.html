@@ -236,12 +236,17 @@
           <i class="fa-solid fa-bars-staggered"></i>
         </button>
 
-        <!-- Quick Global Search Input -->
-        <div class="header-search-bar">
+        <!-- Desktop Global Search Input -->
+        <div class="header-search-bar desktop-search">
           <i class="fa-solid fa-magnifying-glass search-icon"></i>
           <input type="text" placeholder="Search transactions, accounts, corridors..." class="search-input">
           <kbd class="shortcut-badge">Ctrl + K</kbd>
         </div>
+
+        <!-- Mobile Search Trigger Button -->
+        <button class="icon-toggle-btn mobile-search-btn" (click)="toggleMobileSearch($event)" title="Search">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
 
         <!-- FX Live Ticker Strip -->
         <div class="fx-ticker-strip">
@@ -353,6 +358,17 @@
 
       </div>
     </header>
+
+    <!-- Mobile Search Overlay Bar -->
+    @if (isMobileSearchOpen()) {
+      <div class="mobile-search-bar-wrap" (click)="$event.stopPropagation()">
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        <input type="text" placeholder="Search transactions, accounts, corridors..." class="mobile-search-input" autofocus>
+        <button class="mobile-search-close-btn" (click)="toggleMobileSearch()" title="Close search">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+    }
 
     <!-- Main Content View -->
     <main class="app-content">

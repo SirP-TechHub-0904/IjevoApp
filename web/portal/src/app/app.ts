@@ -14,6 +14,7 @@ export class App {
   readonly isNotificationOpen = signal<boolean>(false);
   readonly isProfileOpen = signal<boolean>(false);
   readonly isMobileMenuOpen = signal<boolean>(false);
+  readonly isMobileSearchOpen = signal<boolean>(false);
 
   // Active navigation section
   readonly openSubmenus = signal<Record<string, boolean>>({
@@ -78,6 +79,11 @@ export class App {
     this.isMobileMenuOpen.update(val => !val);
   }
 
+  toggleMobileSearch(event?: Event) {
+    if (event) event.stopPropagation();
+    this.isMobileSearchOpen.update(val => !val);
+  }
+
   toggleTheme() {
     this.isDarkMode.update(val => !val);
   }
@@ -105,6 +111,7 @@ export class App {
   closeDropdowns() {
     this.isNotificationOpen.set(false);
     this.isProfileOpen.set(false);
+    this.isMobileSearchOpen.set(false);
   }
 
   @HostListener('window:keydown', ['$event'])
