@@ -6,7 +6,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "admin": {
+    "portal": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -61,10 +61,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "admin:build:production"
+              "buildTarget": "portal:build:production"
             },
             "development": {
-              "buildTarget": "admin:build:development"
+              "buildTarget": "portal:build:development"
             }
           },
           "defaultConfiguration": "development"
