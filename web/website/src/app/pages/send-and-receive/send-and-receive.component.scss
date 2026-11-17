@@ -1,0 +1,272 @@
+/* ==========================================================================
+   MINIMALIST TAPTAP-STYLE CALCULATOR CARD
+   ========================================================================== */
+.calculator-card-minimal {
+  background: #FFFFFF;
+  border-radius: 16px;
+  border: 1px solid #E2E8F0;
+  box-shadow: 0 16px 40px rgba(11, 25, 44, 0.08);
+  overflow: visible;
+  max-width: 460px;
+  margin: 0 auto;
+  position: relative;
+
+  /* Top Obvious Dropdowns Bar */
+  .calc-top-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    background: #F8FAFC;
+    border-bottom: 1px solid #E2E8F0;
+    position: relative;
+    z-index: 20;
+
+    .calc-dropdown-box {
+      flex: 1;
+      min-width: 0;
+      background: #FFFFFF;
+      border: 1.5px solid rgba(11, 25, 44, 0.12);
+      border-radius: 10px;
+      padding: 9px 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 2px 6px rgba(11, 25, 44, 0.06);
+      transition: all 0.2s ease;
+      position: relative;
+      cursor: pointer;
+      user-select: none;
+
+      &:hover,
+      &.active {
+        border-color: var(--ijevo-primary);
+        box-shadow: 0 4px 14px rgba(0, 208, 132, 0.22);
+      }
+
+      .dropdown-flag-icon {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: #F1F5F9;
+        color: var(--ijevo-navy);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.75rem;
+        flex-shrink: 0;
+      }
+
+      .dropdown-control {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .selected-label {
+          font-family: var(--font-heading);
+          font-size: 0.85rem;
+          font-weight: 700;
+          color: #0B192C;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .dropdown-arrow {
+          font-size: 0.7rem;
+          color: #64748B;
+          margin-left: 6px;
+          flex-shrink: 0;
+          transition: transform 0.2s ease;
+
+          &.rotated {
+            transform: rotate(180deg);
+            color: var(--ijevo-primary);
+          }
+        }
+      }
+
+      /* Custom Sharp Dropdown Menu Popup */
+      .custom-dropdown-menu {
+        position: absolute;
+        top: calc(100% + 6px);
+        left: 0;
+        right: 0;
+        min-width: 170px;
+        background: #FFFFFF;
+        border: 1.5px solid rgba(11, 25, 44, 0.12);
+        border-radius: 12px;
+        box-shadow: 0 12px 28px rgba(11, 25, 44, 0.16);
+        padding: 6px;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+        max-height: 240px;
+        overflow-y: auto;
+
+        .dropdown-item {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 8px 10px;
+          border-radius: 8px;
+          font-size: 0.85rem;
+          color: #1E293B;
+          transition: all 0.15s ease;
+
+          .item-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            overflow: hidden;
+
+            .item-symbol {
+              font-weight: 800;
+              color: var(--ijevo-primary);
+              font-size: 0.9rem;
+              width: 16px;
+            }
+
+            .item-name {
+              font-weight: 600;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+            }
+          }
+
+          .check-icon {
+            color: var(--ijevo-primary);
+            font-size: 0.8rem;
+            margin-left: 6px;
+          }
+
+          &:hover {
+            background: #F1F5F9;
+            color: #0B192C;
+          }
+
+          &.selected {
+            background: var(--ijevo-primary-light);
+            color: var(--ijevo-navy);
+            font-weight: 700;
+          }
+        }
+      }
+    }
+  }
+
+  /* Body */
+  .calc-body {
+    padding: 24px 28px 26px;
+
+    .calc-input-group {
+      margin-bottom: 18px;
+
+      .calc-field-label {
+        display: block;
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: #475569;
+        margin-bottom: 6px;
+      }
+
+      .calc-field-box {
+        background: #F8FAFC;
+        border: 1.5px solid rgba(11, 25, 44, 0.09);
+        border-radius: 14px;
+        padding: 6px 16px;
+        box-shadow: 0 2px 8px rgba(11, 25, 44, 0.04);
+        transition: all 0.25s ease;
+
+        &:hover {
+          border-color: rgba(11, 25, 44, 0.18);
+          background: #FFFFFF;
+        }
+
+        &:focus-within {
+          border-color: var(--ijevo-primary);
+          background: #FFFFFF;
+          box-shadow: 0 4px 14px rgba(0, 208, 132, 0.18);
+        }
+
+        .calc-amount-input {
+          width: 100%;
+          border: none;
+          background: transparent;
+          font-family: var(--font-heading);
+          font-size: 1.85rem;
+          font-weight: 800;
+          color: #0B192C;
+          outline: none;
+          padding: 6px 0;
+
+          &.readonly {
+            color: #0B192C;
+          }
+        }
+      }
+    }
+
+    /* Meta Rate & Fee Rows */
+    .calc-meta-block {
+      margin: 18px 0 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+
+      .meta-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.875rem;
+
+        .meta-label {
+          color: #64748B;
+          font-weight: 500;
+        }
+
+        .meta-value {
+          color: #0B192C;
+          font-weight: 700;
+        }
+      }
+    }
+
+    /* CTA Button */
+    .calc-btn-rate {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      background: var(--ijevo-primary);
+      color: var(--ijevo-navy);
+      font-family: var(--font-heading);
+      font-size: 0.95rem;
+      font-weight: 800;
+      letter-spacing: 0.03em;
+      padding: 15px 20px;
+      border-radius: 9999px;
+      text-decoration: none;
+      box-shadow: 0 4px 14px rgba(0, 208, 132, 0.35);
+      transition: all 0.25s ease;
+
+      &:hover {
+        background: var(--ijevo-primary-hover);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 208, 132, 0.45);
+      }
+    }
+
+    .calc-sub-note {
+      margin-top: 14px;
+      margin-bottom: 0;
+      font-size: 0.775rem;
+      color: #94A3B8;
+      text-align: center;
+    }
+  }
+}
