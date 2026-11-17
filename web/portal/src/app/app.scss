@@ -82,7 +82,7 @@
         }
       }
 
-      &.mil-active > a {
+      &.mil-active>a {
         color: var(--ijevo-navy);
         font-weight: 700;
 
@@ -240,7 +240,7 @@
         }
       }
 
-      &.mil-active > a {
+      &.mil-active>a {
         color: var(--ijevo-primary);
 
         &:before {
@@ -292,6 +292,7 @@
       transform: scale(1.02);
     }
   }
+
 
   &.footer-logo .brand-logo-img {
     height: 44px;
@@ -559,9 +560,20 @@
 }
 
 @keyframes pulse {
-  0% { transform: scale(0.95); opacity: 0.7; }
-  50% { transform: scale(1.2); opacity: 1; }
-  100% { transform: scale(0.95); opacity: 0.7; }
+  0% {
+    transform: scale(0.95);
+    opacity: 0.7;
+  }
+
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(0.95);
+    opacity: 0.7;
+  }
 }
 
 /* Trust Rails Marquee */
@@ -819,6 +831,7 @@
 
     .faq-answer {
       padding: 0 24px 20px;
+
       p {
         font-size: 0.95rem;
         line-height: 1.6;
@@ -910,6 +923,7 @@
 
     .regulatory-disclosure {
       margin-bottom: 24px;
+
       p {
         font-size: 0.8rem;
         color: #64748B;

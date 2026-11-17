@@ -5,7 +5,6 @@ import { FormsModule } from '@angular/forms';
 interface PayoutCurrency {
   code: string;
   name: string;
-  flag: string;
   ratePerGbp: number;
   symbol: string;
 }
@@ -31,12 +30,12 @@ export class App {
 
   // Supported Payout Corridors
   protected readonly payoutCurrencies: PayoutCurrency[] = [
-    { code: 'NGN', name: 'Nigeria (Naira)', flag: '🇳🇬', ratePerGbp: 1846.00, symbol: '₦' },
-    { code: 'KES', name: 'Kenya (Shilling)', flag: '🇰🇪', ratePerGbp: 168.50, symbol: 'KSh' },
-    { code: 'GHS', name: 'Ghana (Cedi)', flag: '🇬🇭', ratePerGbp: 19.80, symbol: 'GH₵' },
-    { code: 'ARS', name: 'Argentina (Peso)', flag: '🇦🇷', ratePerGbp: 2042.99, symbol: '$' },
-    { code: 'PHP', name: 'Philippines (Peso)', flag: '🇵🇭', ratePerGbp: 74.20, symbol: '₱' },
-    { code: 'INR', name: 'India (Rupee)', flag: '🇮🇳', ratePerGbp: 108.40, symbol: '₹' }
+    { code: 'NGN', name: 'Nigerian Naira', ratePerGbp: 1846.00, symbol: '₦' },
+    { code: 'KES', name: 'Kenyan Shilling', ratePerGbp: 168.50, symbol: 'KSh' },
+    { code: 'GHS', name: 'Ghanaian Cedi', ratePerGbp: 19.80, symbol: 'GH₵' },
+    { code: 'ARS', name: 'Argentine Peso', ratePerGbp: 2042.99, symbol: '$' },
+    { code: 'PHP', name: 'Philippine Peso', ratePerGbp: 74.20, symbol: '₱' },
+    { code: 'INR', name: 'Indian Rupee', ratePerGbp: 108.40, symbol: '₹' }
   ];
 
   // Selected Currency Details

@@ -26,7 +26,8 @@
     <div class="mil-menu-buttons">
       <a href="http://localhost:4200" target="_blank" class="btn btn-ghost btn-sm mil-desktop-only">Admin Portal</a>
       <a href="#calculator" class="btn btn-primary btn-sm mil-desktop-only">Send Money</a>
-      <div class="mil-menu-btn" [class.mil-active]="isMobileMenuOpen()" (click)="toggleMobileMenu()" aria-label="Toggle navigation">
+      <div class="mil-menu-btn" [class.mil-active]="isMobileMenuOpen()" (click)="toggleMobileMenu()"
+        aria-label="Toggle navigation">
         <span></span>
       </div>
     </div>
@@ -55,7 +56,8 @@
     <!-- CTA buttons inside mobile dropdown menu as requested -->
     <div class="mil-mobile-actions">
       <a href="#calculator" class="btn btn-primary btn-block" (click)="toggleMobileMenu()">Send Money</a>
-      <a href="http://localhost:4200" target="_blank" class="btn btn-ghost btn-block" (click)="toggleMobileMenu()">Admin Portal</a>
+      <a href="http://localhost:4200" target="_blank" class="btn btn-ghost btn-block" (click)="toggleMobileMenu()">Admin
+        Portal</a>
     </div>
   </div>
 </header>
@@ -73,7 +75,7 @@
           The Fastest Way to Send Money Back Home.
         </h1>
         <p class="hero-description">
-          Send money to your family and loved ones back home in seconds. 
+          Send money to your family and loved ones back home in seconds.
           Enjoy great exchange rates, zero hidden fees, and complete peace of mind with bank-grade safety.
         </p>
 
@@ -125,14 +127,10 @@
               <span class="currency-label">British Pound</span>
             </div>
             <div class="calc-box-input">
-              <input 
-                type="number" 
-                [ngModel]="sendAmount()" 
-                (ngModelChange)="updateSendAmount($event)" 
-                min="1" 
+              <input type="number" [ngModel]="sendAmount()" (ngModelChange)="updateSendAmount($event)" min="1"
                 step="10" />
               <div class="currency-pill">
-                <span class="flag">🇬🇧</span>
+                <span class="currency-symbol">£</span>
                 <span class="code">GBP</span>
               </div>
             </div>
@@ -146,7 +144,8 @@
             </div>
             <div class="calc-info-row">
               <div class="info-dot highlight"></div>
-              <span>Guaranteed Rate: <strong>1 GBP = {{ currentRate().toLocaleString() }} {{ selectedCurrency().code }}</strong></span>
+              <span>Guaranteed Rate: <strong>1 GBP = {{ currentRate().toLocaleString() }} {{ selectedCurrency().code
+                  }}</strong></span>
             </div>
           </div>
 
@@ -157,21 +156,15 @@
               <span class="currency-label">{{ selectedCurrency().name }}</span>
             </div>
             <div class="calc-box-input">
-              <input 
-                type="text" 
-                [value]="calculatedPayout()" 
-                readonly 
-                class="readonly-input" />
-              
+              <input type="text" [value]="calculatedPayout()" readonly class="readonly-input" />
+
               <!-- Destination Currency Dropdown -->
               <div class="currency-select-wrapper">
-                <select 
-                  [ngModel]="receiveCurrency()" 
-                  (ngModelChange)="setReceiveCurrency($event)">
+                <select [ngModel]="receiveCurrency()" (ngModelChange)="setReceiveCurrency($event)">
                   @for (curr of payoutCurrencies; track curr.code) {
-                    <option [value]="curr.code">
-                      {{ curr.flag }} {{ curr.code }}
-                    </option>
+                  <option [value]="curr.code">
+                    {{ curr.code }} ({{ curr.symbol }})
+                  </option>
                   }
                 </select>
               </div>
@@ -250,7 +243,8 @@
           </div>
           <h3>Under 60-Second Settlement</h3>
           <p>
-            No waiting 3 to 5 business days. Your transfer is disbursed over local real-time interbank rails (NIP, M-Pesa) in seconds.
+            No waiting 3 to 5 business days. Your transfer is disbursed over local real-time interbank rails (NIP,
+            M-Pesa) in seconds.
           </p>
         </div>
 
@@ -270,7 +264,8 @@
           </div>
           <h3>Bank-Grade Protection</h3>
           <p>
-            Your money and personal details are always protected with the highest level of bank security and strict privacy controls.
+            Your money and personal details are always protected with the highest level of bank security and strict
+            privacy controls.
           </p>
         </div>
 
@@ -290,7 +285,8 @@
           </div>
           <h3>Live Transfer Updates</h3>
           <p>
-            Follow your money on its journey. You and your recipient receive instant notifications the moment funds land safely.
+            Follow your money on its journey. You and your recipient receive instant notifications the moment funds land
+            safely.
           </p>
         </div>
 
@@ -300,7 +296,8 @@
           </div>
           <h3>Dedicated Human Support</h3>
           <p>
-            Have questions about a transfer? Our support team is available 24/7 via live in-app chat, WhatsApp, and email.
+            Have questions about a transfer? Our support team is available 24/7 via live in-app chat, WhatsApp, and
+            email.
           </p>
         </div>
       </div>
@@ -322,19 +319,22 @@
         <div class="step-card">
           <div class="step-number">01</div>
           <h3>Create Your Free Account</h3>
-          <p>Sign up in 60 seconds with your email and basic ID verification. No monthly fees or subscription charges.</p>
+          <p>Sign up in 60 seconds with your email and basic ID verification. No monthly fees or subscription charges.
+          </p>
         </div>
 
         <div class="step-card">
           <div class="step-number">02</div>
           <h3>Enter Amount & Recipient</h3>
-          <p>Select destination country (Nigeria, Ghana, Kenya, etc.) and enter the recipient's bank account or mobile money number.</p>
+          <p>Select destination country (Nigeria, Ghana, Kenya, etc.) and enter the recipient's bank account or mobile
+            money number.</p>
         </div>
 
         <div class="step-card">
           <div class="step-number">03</div>
           <h3>Pay Instantly & Deliver</h3>
-          <p>Authorize with your bank or card. Funds are credited instantly and both you and your recipient receive confirmation receipts.</p>
+          <p>Authorize with your bank or card. Funds are credited instantly and both you and your recipient receive
+            confirmation receipts.</p>
         </div>
       </div>
     </div>
@@ -348,7 +348,8 @@
           <div class="badge badge-emerald">Mobile-First Financial Freedom</div>
           <h2>Carry Global Remittances in Your Pocket</h2>
           <p>
-            Download the official Ijevo mobile app for iOS and Android. Save frequent recipients, lock in exchange rates, and send money with a single tap.
+            Download the official Ijevo mobile app for iOS and Android. Save frequent recipients, lock in exchange
+            rates, and send money with a single tap.
           </p>
           <div class="app-badges">
             <a href="#" class="store-badge light">
@@ -386,17 +387,17 @@
 
       <div class="faq-list">
         @for (faq of faqs; track $index) {
-          <div class="faq-item" [class.active]="activeFaqIndex() === $index">
-            <button class="faq-question" (click)="toggleFaq($index)">
-              <span>{{ faq.question }}</span>
-              <i class="fa-solid" [ngClass]="activeFaqIndex() === $index ? 'fa-minus' : 'fa-plus'"></i>
-            </button>
-            @if (activeFaqIndex() === $index) {
-              <div class="faq-answer">
-                <p>{{ faq.answer }}</p>
-              </div>
-            }
+        <div class="faq-item" [class.active]="activeFaqIndex() === $index">
+          <button class="faq-question" (click)="toggleFaq($index)">
+            <span>{{ faq.question }}</span>
+            <i class="fa-solid" [ngClass]="activeFaqIndex() === $index ? 'fa-minus' : 'fa-plus'"></i>
+          </button>
+          @if (activeFaqIndex() === $index) {
+          <div class="faq-answer">
+            <p>{{ faq.answer }}</p>
           </div>
+          }
+        </div>
         }
       </div>
     </div>
@@ -412,7 +413,8 @@
           <img src="assets/ijevo-logo-light.png" alt="ijevo" class="brand-logo-img footer-logo-img" />
         </a>
         <p class="footer-desc">
-          Ijevo is the modern cross-border financial highway bridging the global diaspora with families and businesses back home. Fast, safe, and transparent.
+          Ijevo is the modern cross-border financial highway bridging the global diaspora with families and businesses
+          back home. Fast, safe, and transparent.
         </p>
         <div class="social-links">
           <a href="#" aria-label="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
@@ -450,8 +452,10 @@
     <div class="footer-bottom">
       <div class="regulatory-disclosure">
         <p>
-          <strong>Regulatory Notice:</strong> Ijevo is a trading name of Ijevo Ltd, a registered company in England & Wales. 
-          Payment transmission and electronic funds services are provided in compliance with the Payment Services Regulations 
+          <strong>Regulatory Notice:</strong> Ijevo is a trading name of Ijevo Ltd, a registered company in England &
+          Wales.
+          Payment transmission and electronic funds services are provided in compliance with the Payment Services
+          Regulations
           and supervised by HM Revenue & Customs (HMRC) for Anti-Money Laundering (AML) compliance.
         </p>
       </div>
