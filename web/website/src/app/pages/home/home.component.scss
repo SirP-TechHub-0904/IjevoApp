@@ -211,15 +211,22 @@
       }
 
       .calc-field-box {
-        background: #F1F5F9;
-        border-bottom: 2px solid #0B192C;
-        border-radius: 4px 4px 0 0;
-        padding: 4px 14px;
-        transition: border-color 0.2s ease, background 0.2s ease;
+        background: #F8FAFC;
+        border: 1.5px solid rgba(11, 25, 44, 0.09);
+        border-radius: 14px;
+        padding: 6px 16px;
+        box-shadow: 0 2px 8px rgba(11, 25, 44, 0.04);
+        transition: all 0.25s ease;
+
+        &:hover {
+          border-color: rgba(11, 25, 44, 0.18);
+          background: #FFFFFF;
+        }
 
         &:focus-within {
-          border-bottom-color: var(--ijevo-primary);
-          background: #EBF8F2;
+          border-color: var(--ijevo-primary);
+          background: #FFFFFF;
+          box-shadow: 0 4px 14px rgba(0, 208, 132, 0.18);
         }
 
         .calc-amount-input {
