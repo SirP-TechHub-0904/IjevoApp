@@ -1,0 +1,520 @@
+<div class="analytics-page">
+  <!-- Page Header & Breadcrumbs -->
+  <div class="page-header">
+    <div class="header-left">
+      <h1 class="page-title">Analytics Dashboard</h1>
+      <nav class="breadcrumb-nav" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><i class="fa-solid fa-house"></i> Home</li>
+          <li class="breadcrumb-item">Dashboards</li>
+          <li class="breadcrumb-item active" aria-current="page">Analytics</li>
+        </ol>
+      </nav>
+    </div>
+
+    <div class="header-actions">
+      <button class="btn btn-outline">
+        <i class="fa-regular fa-calendar-days"></i>
+        <span>{{ dateRange() }}</span>
+        <i class="fa-solid fa-chevron-down caret-icon"></i>
+      </button>
+
+      <button class="btn btn-primary">
+        <i class="fa-solid fa-cloud-arrow-down"></i>
+        <span>Export Report</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- KPI Cards Grid (Row 1) -->
+  <div class="kpi-grid">
+    @for (kpi of kpis; track kpi.title) {
+      <div class="card kpi-card">
+        <div class="kpi-header">
+          <span class="kpi-title">{{ kpi.title }}</span>
+          <div class="kpi-icon-badge" [ngClass]="'icon-' + kpi.color">
+            <i [class]="kpi.icon"></i>
+          </div>
+        </div>
+
+        <div class="kpi-body">
+          <div class="kpi-value-group">
+            <h2 class="kpi-value">{{ kpi.value }}</h2>
+            <div class="kpi-trend" [class.positive]="kpi.isPositive" [class.negative]="!kpi.isPositive">
+              <i class="fa-solid" [class.fa-arrow-up-right]="kpi.isPositive" [class.fa-arrow-down-right]="!kpi.isPositive"></i>
+              <span>{{ kpi.change }}</span>
+            </div>
+          </div>
+
+          <div class="kpi-sparkline-wrap">
+            <svg class="kpi-sparkline" viewBox="0 0 200 40" preserveAspectRatio="none">
+              <path [attr.d]="kpi.sparkline" fill="none" [attr.stroke]="kpi.color === 'emerald' ? '#00D084' : kpi.color === 'blue' ? '#3B82F6' : kpi.color === 'purple' ? '#8B5CF6' : '#F59E0B'" stroke-width="2.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="kpi-footer">
+          <span class="compare-label">{{ kpi.compareText }}</span>
+          <span class="target-label">{{ kpi.targetText }}</span>
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- Charts & Corridor Distribution (Row 2) -->
+  <div class="analytics-row-2">
+    <!-- Transfer Volume & Revenue Performance (8 cols) -->
+    <div class="card chart-card">
+      <div class="card-header">
+        <div>
+          <h3 class="card-title">Transfer Volume & Clearing Analytics</h3>
+          <p class="card-subtitle">Real-time daily transaction velocity across all payment rails</p>
+        </div>
+        
+        <div class="timeframe-switch">
+          @for (tf of timeframes; track tf) {
+            <button 
+              class="tf-btn" 
+              [class.active]="selectedTimeframe() === tf"
+              (click)="setTimeframe(tf)">
+              {{ tf }}
+            </button>
+          }
+        </div>
+      </div>
+
+      <div class="card-body">
+        <!-- SVG Area Chart -->
+        <div class="chart-container">
+          <svg class="analytics-chart" viewBox="0 0 800 240" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="volGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#00D084" stop-opacity="0.35"/>
+                <stop offset="100%" stop-color="#00D084" stop-opacity="0.0"/>
+              </linearGradient>
+              <linearGradient id="revGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#3B82F6" stop-opacity="0.25"/>
+                <stop offset="100%" stop-color="#3B82F6" stop-opacity="0.0"/>
+              </linearGradient>
+            </defs>
+
+            <!-- Grid Lines -->
+            <line x1="40" y1="30" x2="780" y2="30" stroke="#E2E8F0" stroke-dasharray="4 4" stroke-width="1"/>
+            <line x1="40" y1="80" x2="780" y2="80" stroke="#E2E8F0" stroke-dasharray="4 4" stroke-width="1"/>
+            <line x1="40" y1="130" x2="780" y2="130" stroke="#E2E8F0" stroke-dasharray="4 4" stroke-width="1"/>
+            <line x1="40" y1="180" x2="780" y2="180" stroke="#E2E8F0" stroke-dasharray="4 4" stroke-width="1"/>
+
+            <!-- Axis Labels Y -->
+            <text x="32" y="34" fill="#94A3B8" font-size="11" text-anchor="end">£200k</text>
+            <text x="32" y="84" fill="#94A3B8" font-size="11" text-anchor="end">£150k</text>
+            <text x="32" y="134" fill="#94A3B8" font-size="11" text-anchor="end">£100k</text>
+            <text x="32" y="184" fill="#94A3B8" font-size="11" text-anchor="end">£50k</text>
+
+            <!-- Volume Area & Line (Emerald) -->
+            <path d="M40,160 Q120,130 200,90 T360,110 T520,60 T680,45 T780,25 L780,210 L40,210 Z" fill="url(#volGrad)"/>
+            <path d="M40,160 Q120,130 200,90 T360,110 T520,60 T680,45 T780,25" fill="none" stroke="#00D084" stroke-width="3" stroke-linecap="round"/>
+
+            <!-- Revenue Line (Blue) -->
+            <path d="M40,185 Q120,170 200,150 T360,158 T520,120 T680,110 T780,95 L780,210 L40,210 Z" fill="url(#revGrad)"/>
+            <path d="M40,185 Q120,170 200,150 T360,158 T520,120 T680,110 T780,95" fill="none" stroke="#3B82F6" stroke-width="2.5" stroke-linecap="round"/>
+
+            <!-- Data Point Circles -->
+            <circle cx="200" cy="90" r="4.5" fill="#FFFFFF" stroke="#00D084" stroke-width="2.5"/>
+            <circle cx="360" cy="110" r="4.5" fill="#FFFFFF" stroke="#00D084" stroke-width="2.5"/>
+            <circle cx="520" cy="60" r="4.5" fill="#FFFFFF" stroke="#00D084" stroke-width="2.5"/>
+            <circle cx="680" cy="45" r="4.5" fill="#FFFFFF" stroke="#00D084" stroke-width="2.5"/>
+            <circle cx="780" cy="25" r="5" fill="#00D084" stroke="#FFFFFF" stroke-width="2"/>
+
+            <!-- Axis Labels X -->
+            <text x="50" y="225" fill="#94A3B8" font-size="11">Nov 01</text>
+            <text x="180" y="225" fill="#94A3B8" font-size="11">Nov 04</text>
+            <text x="320" y="225" fill="#94A3B8" font-size="11">Nov 08</text>
+            <text x="470" y="225" fill="#94A3B8" font-size="11">Nov 11</text>
+            <text x="620" y="225" fill="#94A3B8" font-size="11">Nov 14</text>
+            <text x="750" y="225" fill="#94A3B8" font-size="11">Today</text>
+          </svg>
+        </div>
+
+        <!-- Metric Highlights Bar -->
+        <div class="chart-summary-bar">
+          <div class="summary-item">
+            <span class="label"><i class="fa-solid fa-circle" style="color: #00D084;"></i> Total Volume</span>
+            <span class="val">£4,892,450.00</span>
+          </div>
+          <div class="summary-item">
+            <span class="label"><i class="fa-solid fa-circle" style="color: #3B82F6;"></i> Net Remittance Fees</span>
+            <span class="val">£48,924.50</span>
+          </div>
+          <div class="summary-item">
+            <span class="label"><i class="fa-solid fa-arrow-trend-up text-primary"></i> Gross Margin</span>
+            <span class="val">1.02%</span>
+          </div>
+          <div class="summary-item">
+            <span class="label"><i class="fa-solid fa-wallet text-muted"></i> Avg Remittance</span>
+            <span class="val">£171.72</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Payout Corridor Distribution (4 cols) -->
+    <div class="card corridor-card">
+      <div class="card-header">
+        <h3 class="card-title">Top Payout Corridors</h3>
+        <span class="badge badge-info badge-pill">5 Active</span>
+      </div>
+
+      <div class="card-body">
+        <!-- Visual Corridor Donut / Ring -->
+        <div class="donut-wrap">
+          <svg class="donut-svg" viewBox="0 0 160 160">
+            <circle cx="80" cy="80" r="60" fill="transparent" stroke="#F1F5F9" stroke-width="16"/>
+            <!-- NGN 48% (circumference ~ 377, 48% is ~181) -->
+            <circle cx="80" cy="80" r="60" fill="transparent" stroke="#00D084" stroke-width="16"
+                    stroke-dasharray="181 377" stroke-dashoffset="0" stroke-linecap="round"/>
+            <!-- GHS 24% (~90.5) -->
+            <circle cx="80" cy="80" r="60" fill="transparent" stroke="#3B82F6" stroke-width="16"
+                    stroke-dasharray="90 377" stroke-dashoffset="-185" stroke-linecap="round"/>
+            <!-- KES 16% (~60.3) -->
+            <circle cx="80" cy="80" r="60" fill="transparent" stroke="#8B5CF6" stroke-width="16"
+                    stroke-dasharray="60 377" stroke-dashoffset="-279" stroke-linecap="round"/>
+            <!-- ZAR 8% (~30) -->
+            <circle cx="80" cy="80" r="60" fill="transparent" stroke="#F59E0B" stroke-width="16"
+                    stroke-dasharray="30 377" stroke-dashoffset="-343" stroke-linecap="round"/>
+          </svg>
+          <div class="donut-center-info">
+            <span class="center-sub">Top Share</span>
+            <span class="center-val">48%</span>
+            <span class="center-tag">Nigeria</span>
+          </div>
+        </div>
+
+        <!-- Corridor List -->
+        <div class="corridor-list">
+          @for (c of corridors; track c.name) {
+            <div class="corridor-item">
+              <div class="corridor-flag">{{ c.flag }}</div>
+              <div class="corridor-details">
+                <div class="corridor-top">
+                  <span class="corridor-name">{{ c.name }} ({{ c.currency }})</span>
+                  <span class="corridor-amount">{{ c.volume }}</span>
+                </div>
+                <div class="progress-bar-bg">
+                  <div class="progress-bar-fill" [style.width.%]="c.percent" [style.background-color]="c.color"></div>
+                </div>
+                <div class="corridor-sub">
+                  <span>{{ c.percent }}% of total</span>
+                  <span>{{ c.count }}</span>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Operational & FX Rails Row (Row 3) -->
+  <div class="analytics-row-3">
+    <!-- Clearing Rails Health (4 cols) -->
+    <div class="card rails-card">
+      <div class="card-header">
+        <h3 class="card-title">Clearing Rails & Gateway Health</h3>
+        <span class="badge badge-success badge-pill"><i class="fa-solid fa-circle" style="font-size: 8px;"></i> All Systems Normal</span>
+      </div>
+
+      <div class="card-body">
+        <div class="rails-list">
+          @for (rail of rails; track rail.name) {
+            <div class="rail-item">
+              <div class="rail-icon">
+                <i class="fa-solid fa-server"></i>
+              </div>
+              <div class="rail-info">
+                <div class="rail-title-row">
+                  <span class="rail-name">{{ rail.name }}</span>
+                  <span class="badge" [ngClass]="rail.badgeClass">{{ rail.status }}</span>
+                </div>
+                <div class="rail-meta">
+                  <span>{{ rail.network }}</span>
+                  <span class="dot-sep">&bull;</span>
+                  <span><i class="fa-solid fa-clock-rotate-left"></i> {{ rail.latency }}</span>
+                  <span class="dot-sep">&bull;</span>
+                  <span class="uptime-text">{{ rail.uptime }} uptime</span>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Live FX Margins & Spreads (4 cols) -->
+    <div class="card fx-card">
+      <div class="card-header">
+        <h3 class="card-title">Live FX Spreads & Margins</h3>
+        <span class="badge badge-warning badge-pill"><i class="fa-solid fa-arrows-rotate"></i> Realtime</span>
+      </div>
+
+      <div class="card-body">
+        <div class="fx-list">
+          @for (fx of fxRates; track fx.pair) {
+            <div class="fx-item">
+              <div class="fx-pair-row">
+                <span class="fx-pair">{{ fx.pair }}</span>
+                <span class="fx-spread-badge">{{ fx.spread }} Margin</span>
+              </div>
+              <div class="fx-rates-row">
+                <div class="fx-rate-col">
+                  <span class="rate-label">Interbank Mid</span>
+                  <span class="rate-val">{{ fx.interbank }}</span>
+                </div>
+                <div class="fx-rate-col text-right">
+                  <span class="rate-label">Ijevo Payout</span>
+                  <span class="rate-val highlight">{{ fx.offered }}</span>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+
+        <div class="fx-footer-note">
+          <i class="fa-solid fa-shield-halved"></i>
+          <span>Automated hedging actively locks mid-market rates at liquidity providers.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Settlement Velocity & SLA Monitor (4 cols) -->
+    <div class="card velocity-card">
+      <div class="card-header">
+        <h3 class="card-title">Settlement Velocity & SLA</h3>
+        <span class="badge badge-info badge-pill">99.8% on SLA</span>
+      </div>
+
+      <div class="card-body">
+        <div class="velocity-metrics">
+          <div class="velocity-stat">
+            <span class="v-val">42s</span>
+            <span class="v-label">Median Transfer Time</span>
+          </div>
+          <div class="velocity-stat">
+            <span class="v-val">98.4%</span>
+            <span class="v-label">Under 60 Seconds</span>
+          </div>
+        </div>
+
+        <!-- Speed distribution bars -->
+        <div class="speed-breakdown">
+          <div class="speed-row">
+            <div class="speed-header">
+              <span>Instant (< 30s)</span>
+              <span>78.0%</span>
+            </div>
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill" style="width: 78%; background-color: #00D084;"></div>
+            </div>
+          </div>
+
+          <div class="speed-row">
+            <div class="speed-header">
+              <span>Fast (30s - 60s)</span>
+              <span>20.4%</span>
+            </div>
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill" style="width: 20.4%; background-color: #3B82F6;"></div>
+            </div>
+          </div>
+
+          <div class="speed-row">
+            <div class="speed-header">
+              <span>Standard (1m - 5m)</span>
+              <span>1.2%</span>
+            </div>
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill" style="width: 1.2%; background-color: #F59E0B;"></div>
+            </div>
+          </div>
+
+          <div class="speed-row">
+            <div class="speed-header">
+              <span>Compliance Review (> 5m)</span>
+              <span>0.4%</span>
+            </div>
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill" style="width: 0.4%; background-color: #EF4444;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Live Transactions Table (Row 4) -->
+  <div class="card transactions-card">
+    <div class="card-header table-card-header">
+      <div class="table-header-left">
+        <h3 class="card-title">Real-Time Remittance Feed</h3>
+        <span class="badge badge-pill badge-info">{{ filteredTransactions().length }} Records</span>
+      </div>
+
+      <div class="table-header-right">
+        <!-- Search bar -->
+        <div class="search-input-wrap">
+          <i class="fa-solid fa-magnifying-glass search-icon"></i>
+          <input 
+            type="text" 
+            placeholder="Search txn ID, sender, recipient..." 
+            [ngModel]="searchQuery()"
+            (ngModelChange)="searchQuery.set($event)"
+            class="table-search-input">
+        </div>
+
+        <!-- Status filter buttons -->
+        <div class="status-filters">
+          @for (st of ['All', 'Completed', 'Processing', 'In Review']; track st) {
+            <button 
+              class="filter-pill-btn" 
+              [class.active]="statusFilter() === st"
+              (click)="setStatus(st)">
+              {{ st }}
+            </button>
+          }
+        </div>
+
+        <button class="btn btn-outline-sm">
+          <i class="fa-solid fa-download"></i> CSV
+        </button>
+      </div>
+    </div>
+
+    <div class="table-responsive">
+      <table class="xintra-table">
+        <thead>
+          <tr>
+            <th>TRANSACTION ID</th>
+            <th>SENDER</th>
+            <th>RECIPIENT</th>
+            <th>CORRIDOR</th>
+            <th>AMOUNT SENT</th>
+            <th>PAYOUT AMOUNT</th>
+            <th>SETTLEMENT RAIL</th>
+            <th>STATUS</th>
+            <th>TIME</th>
+            <th class="text-right">ACTION</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (t of filteredTransactions(); track t.id) {
+            <tr>
+              <!-- Transaction ID -->
+              <td>
+                <span class="txn-id">{{ t.id }}</span>
+              </td>
+
+              <!-- Sender -->
+              <td>
+                <div class="user-cell">
+                  <img [src]="t.sender.avatar" alt="Sender avatar" class="user-avatar">
+                  <div class="user-text">
+                    <span class="user-name">{{ t.sender.name }}</span>
+                    <span class="user-sub">{{ t.sender.email }}</span>
+                  </div>
+                </div>
+              </td>
+
+              <!-- Recipient -->
+              <td>
+                <div class="recipient-cell">
+                  <span class="country-badge">{{ t.recipient.countryCode }}</span>
+                  <div class="recipient-text">
+                    <span class="recipient-name">{{ t.recipient.name }}</span>
+                    <span class="recipient-sub">{{ t.recipient.method }}</span>
+                  </div>
+                </div>
+              </td>
+
+              <!-- Corridor -->
+              <td>
+                <span class="corridor-badge">{{ t.corridor }}</span>
+              </td>
+
+              <!-- Sent Amount -->
+              <td>
+                <span class="amount-sent">{{ t.sendAmount }}</span>
+              </td>
+
+              <!-- Payout Amount -->
+              <td>
+                <span class="amount-payout">{{ t.payoutAmount }}</span>
+              </td>
+
+              <!-- Rail -->
+              <td>
+                <span class="rail-tag"><i class="fa-solid fa-network-wired"></i> {{ t.rail }}</span>
+              </td>
+
+              <!-- Status -->
+              <td>
+                <span class="badge badge-pill" 
+                  [class.badge-success]="t.status === 'Completed'"
+                  [class.badge-warning]="t.status === 'Processing'"
+                  [class.badge-danger]="t.status === 'In Review'">
+                  <i class="fa-solid" 
+                    [class.fa-check]="t.status === 'Completed'"
+                    [class.fa-spinner]="t.status === 'Processing'"
+                    [class.fa-triangle-exclamation]="t.status === 'In Review'"></i>
+                  {{ t.status }}
+                </span>
+              </td>
+
+              <!-- Time -->
+              <td>
+                <span class="time-col">{{ t.time }}</span>
+              </td>
+
+              <!-- Action -->
+              <td class="text-right">
+                <div class="action-btn-group">
+                  <button class="action-icon-btn" title="View Transaction Details">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                  </button>
+                  <button class="action-icon-btn" title="Download Receipt">
+                    <i class="fa-solid fa-receipt"></i>
+                  </button>
+                  <button class="action-icon-btn" title="Options">
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="10" class="empty-state">
+                <i class="fa-solid fa-inbox empty-icon"></i>
+                <p>No transactions found matching your criteria</p>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Table Pagination Footer -->
+    <div class="table-footer">
+      <div class="footer-summary">
+        Showing <strong>1 to {{ filteredTransactions().length }}</strong> of <strong>28,490</strong> transactions
+      </div>
+
+      <div class="pagination-controls">
+        <button class="page-nav-btn disabled" disabled><i class="fa-solid fa-chevron-left"></i> Previous</button>
+        <button class="page-num-btn active">1</button>
+        <button class="page-num-btn">2</button>
+        <button class="page-num-btn">3</button>
+        <span class="page-ellipsis">...</span>
+        <button class="page-num-btn">285</button>
+        <button class="page-nav-btn">Next <i class="fa-solid fa-chevron-right"></i></button>
+      </div>
+    </div>
+  </div>
+</div>

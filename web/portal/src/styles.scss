@@ -1,30 +1,217 @@
-/* Ijevo Portal Global Design Tokens */
+/* ==========================================================================
+   Xintra Angular Admin Theme & Ijevo Design System
+   ========================================================================== */
+
 :root {
-  /* Brand Core */
-  --ijevo-primary: #00D084;
-  --ijevo-navy: #0B192C;
-  --ijevo-gold: #FFB703;
-
-  /* Surfaces & Backgrounds */
-  --ijevo-bg-light: #F8FAFC;
-  --ijevo-bg-dark: #0B192C;
-  --ijevo-surface-dark: #14243A;
-  --ijevo-surface-light: #FFFFFF;
-
-  /* Typography */
-  --ijevo-text-primary: #0B192C;
-  --ijevo-text-inverse: #FFFFFF;
-  --ijevo-text-muted: #64748B;
-
-  /* Functional Status */
-  --ijevo-success: #00D084;
-  --ijevo-error: #EF4444;
-  --ijevo-warning: #FFB703;
+  /* Color Palette - Light Mode */
+  --primary: #00D084;
+  --primary-hover: #00b874;
+  --primary-subtle: rgba(0, 208, 132, 0.12);
+  --primary-border: rgba(0, 208, 132, 0.25);
+  
+  --secondary: #0B192C;
+  --secondary-hover: #14243A;
+  
+  --accent: #3B82F6;
+  --accent-subtle: rgba(59, 130, 246, 0.12);
+  
+  --warning: #F59E0B;
+  --warning-subtle: rgba(245, 158, 11, 0.12);
+  
+  --danger: #EF4444;
+  --danger-subtle: rgba(239, 68, 68, 0.12);
+  
+  --info: #06B6D4;
+  --info-subtle: rgba(6, 182, 212, 0.12);
+  
+  /* Neutral / Surface Tokens */
+  --bg-app: #F8FAFC;
+  --bg-surface: #FFFFFF;
+  --bg-subtle: #F1F5F9;
+  --bg-hover: #F8FAFC;
+  
+  --border-color: #E2E8F0;
+  --border-light: #F1F5F9;
+  
+  --text-main: #0F172A;
+  --text-muted: #64748B;
+  --text-light: #94A3B8;
+  
+  /* Sidebar Tokens (Xintra Dark Slate Sidebar) */
+  --sidebar-bg: #0B192C;
+  --sidebar-surface: #132238;
+  --sidebar-border: #1E293B;
+  --sidebar-text: #94A3B8;
+  --sidebar-text-active: #FFFFFF;
+  --sidebar-item-hover: rgba(255, 255, 255, 0.05);
+  --sidebar-item-active: rgba(0, 208, 132, 0.15);
+  --sidebar-width: 260px;
+  --sidebar-collapsed-width: 80px;
+  
+  /* Header Tokens */
+  --header-height: 70px;
+  --header-bg: #FFFFFF;
+  --header-border: #E2E8F0;
+  
+  /* Shadows & Radius */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
+  
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.06), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
+  --shadow-dropdown: 0 10px 25px -5px rgba(15, 23, 42, 0.15), 0 8px 10px -6px rgba(15, 23, 42, 0.1);
 }
 
-body {
+/* Dark Mode Variables */
+body.dark-mode {
+  --bg-app: #08101C;
+  --bg-surface: #0E1A2D;
+  --bg-subtle: #15243C;
+  --bg-hover: #1A2B45;
+  
+  --border-color: #1E2E48;
+  --border-light: #16243A;
+  
+  --text-main: #F8FAFC;
+  --text-muted: #94A3B8;
+  --text-light: #64748B;
+  
+  --header-bg: #0E1A2D;
+  --header-border: #1E2E48;
+  
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+}
+
+/* Global Reset */
+*, *::before, *::after {
+  box-sizing: border-box;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  background-color: var(--ijevo-bg-light);
-  color: var(--ijevo-text-primary);
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: var(--bg-app);
+  color: var(--text-main);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button, input, select, textarea {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  border: none;
+  outline: none;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.3);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.5);
+}
+
+/* Typography Helpers */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: -0.01em;
+}
+
+/* Common Layout Components */
+.card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease-in-out;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.card-header {
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin: 0;
+}
+
+.card-body {
+  padding: 22px;
+}
+
+/* Status Badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+}
+
+.badge-success {
+  background: var(--primary-subtle);
+  color: #00A86B;
+}
+
+.badge-warning {
+  background: var(--warning-subtle);
+  color: #D97706;
+}
+
+.badge-danger {
+  background: var(--danger-subtle);
+  color: #DC2626;
+}
+
+.badge-info {
+  background: var(--accent-subtle);
+  color: #2563EB;
+}
+
+.badge-pill {
+  border-radius: var(--radius-full);
 }
