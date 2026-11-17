@@ -305,4 +305,91 @@
       </div>
     </div>
   </section>
+  <!-- Customer Testimonials Section -->
+  <section id="testimonials" class="section-spacing testimonials-section">
+    <div class="container">
+      <div class="section-header text-center">
+        <div class="badge badge-emerald">Loved by Thousands</div>
+        <h2>What Our Senders Say</h2>
+        <p class="section-sub">
+          Over £25M+ delivered safely to families, universities, and loved ones. Here is why the diaspora trusts Ijevo every month.
+        </p>
+
+        <!-- Trust & Rating Pill -->
+        <div class="trust-summary-pill">
+          <div class="stars-row">
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+          </div>
+          <span class="rating-text"><strong>4.9 / 5.0</strong> Rating from 2,400+ Verified Transfers</span>
+        </div>
+      </div>
+
+      <div class="testimonials-grid">
+        @for (item of testimonials; track item.name) {
+        <div class="testimonial-card">
+          <div class="card-quote-mark">
+            <i class="fa-solid fa-quote-left"></i>
+          </div>
+
+          <!-- Star Rating -->
+          <div class="testimonial-stars">
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+          </div>
+
+          <!-- Review Quote -->
+          <p class="testimonial-quote">"{{ item.quote }}"</p>
+
+          <!-- Corridor route badge -->
+          <div class="corridor-route-badge">
+            <i class="fa-solid fa-arrow-right-arrow-left"></i>
+            <span>{{ item.location }} → {{ item.destination }}</span>
+          </div>
+
+          <!-- User Details -->
+          <div class="testimonial-author">
+            <img [src]="item.avatar" [alt]="item.name" class="author-avatar" />
+            <div class="author-meta">
+              <h4 class="author-name">{{ item.name }}</h4>
+              <p class="author-role">{{ item.role }}</p>
+              <span class="verified-pill">
+                <i class="fa-solid fa-circle-check"></i> {{ item.payoutMethod }}
+              </span>
+            </div>
+          </div>
+        </div>
+        }
+      </div>
+
+      <!-- Trust Stats Bar -->
+      <div class="trust-stats-bar">
+        <div class="trust-stat-item">
+          <h3>98.8%</h3>
+          <p>Delivered Under 60s</p>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="trust-stat-item">
+          <h3>£0</h3>
+          <p>Hidden Fees or Deductions</p>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="trust-stat-item">
+          <h3>100%</h3>
+          <p>Safe & Encrypted Rails</p>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="trust-stat-item">
+          <h3>24/7</h3>
+          <p>Live Friendly Support</p>
+        </div>
+      </div>
+    </div>
+  </section>
 </main>

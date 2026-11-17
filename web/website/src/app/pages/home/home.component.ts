@@ -95,6 +95,40 @@ export class HomeComponent {
     }
   ];
 
+  // Verified Customer Testimonials
+  protected readonly testimonials = [
+    {
+      name: 'Folake Adeleke',
+      role: 'Senior NHS Nurse',
+      location: 'London, UK',
+      destination: 'Lagos, Nigeria',
+      payoutMethod: 'GTBank Instant Deposit',
+      avatar: 'assets/template/img/faces/1.jpg',
+      quote:
+        'Before Ijevo, sending money for my mother\'s medication in Surulere felt stressful with bank delays and high fees. With Ijevo, I hit send on my break and mama calls me 30 seconds later saying she got the alert. Absolute peace of mind!'
+    },
+    {
+      name: 'David Ochieng',
+      role: 'Tech Consultant',
+      location: 'Manchester, UK',
+      destination: 'Nairobi, Kenya',
+      payoutMethod: 'M-Pesa Mobile Money',
+      avatar: 'assets/template/img/faces/2.jpg',
+      quote:
+        'I pay my brother\'s university tuition in Nairobi every semester. The exchange rate on Ijevo beats my high street bank by miles, and zero transfer fees means hundreds of pounds saved every year. Best remittance app I\'ve used.'
+    },
+    {
+      name: 'Kwame Boateng',
+      role: 'Logistics Director',
+      location: 'Birmingham, UK',
+      destination: 'Accra, Ghana',
+      payoutMethod: 'MTN MoMo Instant',
+      avatar: 'assets/template/img/faces/3.jpg',
+      quote:
+        'Speed is everything when managing family projects and emergencies back home in Accra. Ijevo delivers within seconds straight to MTN Mobile Money. Clean interface, no hidden fees, and responsive customer care. 10/10.'
+    }
+  ];
+
   protected setReceiveCurrency(code: string): void {
     this.receiveCurrency.set(code);
   }

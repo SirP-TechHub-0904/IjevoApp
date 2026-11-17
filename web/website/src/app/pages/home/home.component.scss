@@ -496,3 +496,187 @@
   }
 }
 
+/* ==========================================================================
+   CUSTOMER TESTIMONIALS SECTION
+   ========================================================================== */
+.testimonials-section {
+  background: #F8FAFC;
+  border-top: 1px solid var(--ijevo-border-light);
+
+  .trust-summary-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: #FFFFFF;
+    border: 1px solid var(--ijevo-border-light);
+    padding: 8px 22px;
+    border-radius: 9999px;
+    margin-top: 14px;
+    box-shadow: 0 2px 8px rgba(11, 25, 44, 0.05);
+
+    .stars-row {
+      color: #FFB703;
+      display: flex;
+      gap: 3px;
+      font-size: 0.95rem;
+    }
+
+    .rating-text {
+      font-size: 0.9rem;
+      color: var(--ijevo-navy);
+    }
+  }
+
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 28px;
+    margin-top: 48px;
+
+    .testimonial-card {
+      background: #FFFFFF;
+      border: 1.5px solid var(--ijevo-border-light);
+      border-radius: 20px;
+      padding: 32px 28px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 18px rgba(11, 25, 44, 0.04);
+
+      &:hover {
+        transform: translateY(-4px);
+        border-color: var(--ijevo-primary);
+        box-shadow: 0 16px 36px rgba(0, 208, 132, 0.12);
+      }
+
+      .card-quote-mark {
+        position: absolute;
+        top: 24px;
+        right: 28px;
+        color: rgba(0, 208, 132, 0.15);
+        font-size: 2.2rem;
+        pointer-events: none;
+      }
+
+      .testimonial-stars {
+        color: #FFB703;
+        display: flex;
+        gap: 4px;
+        font-size: 0.95rem;
+        margin-bottom: 16px;
+      }
+
+      .testimonial-quote {
+        font-size: 0.975rem;
+        line-height: 1.7;
+        color: #334155;
+        margin-bottom: 18px;
+        flex-grow: 1;
+        font-style: italic;
+      }
+
+      .corridor-route-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--ijevo-primary);
+        background: var(--ijevo-primary-light);
+        padding: 5px 12px;
+        border-radius: 6px;
+        margin-bottom: 18px;
+        width: fit-content;
+      }
+
+      .testimonial-author {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        border-top: 1px solid #F1F5F9;
+        padding-top: 18px;
+
+        .author-avatar {
+          width: 52px;
+          height: 52px;
+          border-radius: 50%;
+          object-fit: cover;
+          border: 2px solid var(--ijevo-primary);
+          box-shadow: 0 2px 8px rgba(0, 208, 132, 0.2);
+          flex-shrink: 0;
+        }
+
+        .author-meta {
+          .author-name {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--ijevo-navy);
+            margin: 0 0 2px;
+          }
+
+          .author-role {
+            font-size: 0.825rem;
+            color: #64748B;
+            margin: 0 0 4px;
+          }
+
+          .verified-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #059669;
+
+            i {
+              color: var(--ijevo-primary);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .trust-stats-bar {
+    margin-top: 56px;
+    background: var(--ijevo-navy);
+    border-radius: 20px;
+    padding: 32px 36px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 24px;
+    color: white;
+
+    .trust-stat-item {
+      text-align: center;
+
+      h3 {
+        font-size: 2.2rem;
+        font-weight: 800;
+        color: var(--ijevo-primary);
+        margin: 0 0 4px;
+      }
+
+      p {
+        font-size: 0.9rem;
+        color: #CBD5E1;
+        margin: 0;
+      }
+    }
+
+    .stat-divider {
+      width: 1px;
+      height: 48px;
+      background: rgba(255, 255, 255, 0.12);
+
+      @media (max-width: 768px) {
+        display: none;
+      }
+    }
+  }
+}
+
