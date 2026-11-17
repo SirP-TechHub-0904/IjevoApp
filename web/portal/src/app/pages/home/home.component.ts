@@ -55,19 +55,43 @@ export class HomeComponent {
   protected readonly faqs = [
     {
       question: 'How fast will my recipient receive the money?',
-      answer: 'Over 98% of transfers sent through Ijevo arrive in under 60 seconds. Funds are sent straight to your recipient’s bank account or mobile wallet without delay.'
+      answer: 'Over 98% of transfers sent through Ijevo arrive in under 60 seconds. Funds are sent straight to your recipient\'s bank account or mobile wallet without delay.'
     },
     {
       question: 'What payment methods can I use to pay for my transfer?',
-      answer: 'In the UK and Europe, you can pay instantly via Open Banking (Instant Bank Transfer with Monzo, Barclays, Lloyds, etc.), Debit/Credit Cards (Mastercard, Visa), or Apple Pay / Google Pay.'
+      answer: 'In the UK and Europe, you can pay instantly via Open Banking (direct instant transfer with Monzo, Barclays, Lloyds, etc.), Debit Cards (Visa and Mastercard), as well as Apple Pay and Google Pay.'
     },
     {
-      question: 'Are there any hidden fees or charges?',
-      answer: 'Zero hidden fees. We disclose the exact live exchange rate and guaranteed payout amount before you tap send. There are no surprise deduction fees for your recipient.'
+      question: 'Are there any hidden fees or deduction charges?',
+      answer: 'Zero hidden fees. We disclose the exact live exchange rate and guaranteed payout amount before you confirm your transfer. Your recipient receives 100% of the funds with no deductions on their end.'
     },
     {
-      question: 'Is Ijevo regulated and secure?',
-      answer: 'Yes, absolutely. We use bank-grade protection and encryption to keep your money and personal details 100% safe. All transfers comply with strict security and safeguarding standards.'
+      question: 'Does my recipient need to have an Ijevo account or app?',
+      answer: 'No. Your recipient does not need to download the Ijevo app or register an account. Funds are credited directly into their regular local bank account or mobile money wallet.'
+    },
+    {
+      question: 'How much money can I send per transfer?',
+      answer: 'You can send from as little as £1 up to £5,000 per transfer once your identity is confirmed. If you need to make higher transfers or pay for business invoices, our support team can increase your limits swiftly.'
+    },
+    {
+      question: 'What documents do I need to get started?',
+      answer: 'You can create your account in under a minute with your mobile phone number. To keep your money safe and increase your transfer limits, we may ask for a quick photo of a valid government ID (such as a passport or driver\'s license).'
+    },
+    {
+      question: 'Which countries can I send money to?',
+      answer: 'We currently support instant transfers to Nigeria, Ghana, Kenya, Argentina, Philippines, and India, with additional African and international destinations launching regularly.'
+    },
+    {
+      question: 'Can I track my transfer in real time?',
+      answer: 'Yes. You can follow your transfer live right in the app. Both you and your recipient will also receive instant SMS and email confirmations the second the money lands safely.'
+    },
+    {
+      question: 'What happens if I enter the wrong account number or name?',
+      answer: 'If the details entered do not match an active account at the destination bank, the transfer is automatically rejected and your money is immediately refunded to your original payment method. Our 24/7 care team is also available to help adjust any details.'
+    },
+    {
+      question: 'How do I contact customer support if I need help?',
+      answer: 'Our friendly care team is available 24/7 through live in-app chat, WhatsApp, and email at support@ijevo.com. We average under two minutes response time so you never have to wait.'
     }
   ];
 
