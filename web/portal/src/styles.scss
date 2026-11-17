@@ -1,30 +1,186 @@
-/* Ijevo Global Design Tokens */
+/* ==========================================================================
+   IJEVO FINTECH BRAND STYLES & DESIGN TOKENS
+   Inspired by Plax FinTech Template, Customized for Ijevo
+   ========================================================================== */
+
 :root {
-  /* Brand Core */
+  /* Core Brand Colors */
   --ijevo-primary: #00D084;
+  --ijevo-primary-hover: #00B673;
+  --ijevo-primary-light: #E6FBF3;
   --ijevo-navy: #0B192C;
+  --ijevo-navy-light: #152A45;
   --ijevo-gold: #FFB703;
 
   /* Surfaces & Backgrounds */
   --ijevo-bg-light: #F8FAFC;
+  --ijevo-bg-hero: #F0FDF8;
   --ijevo-bg-dark: #0B192C;
+  --ijevo-surface-card: #FFFFFF;
   --ijevo-surface-dark: #14243A;
-  --ijevo-surface-light: #FFFFFF;
 
-  /* Typography */
-  --ijevo-text-primary: #0B192C;
+  /* Typography Colors */
+  --ijevo-text-title: #0B192C;
+  --ijevo-text-body: #475569;
+  --ijevo-text-muted: #94A3B8;
   --ijevo-text-inverse: #FFFFFF;
-  --ijevo-text-muted: #64748B;
 
-  /* Functional Status */
-  --ijevo-success: #00D084;
-  --ijevo-error: #EF4444;
-  --ijevo-warning: #FFB703;
+  /* Borders & Shadows */
+  --ijevo-border-light: #E2E8F0;
+  --ijevo-border-dark: #1E3A5F;
+  --ijevo-shadow-sm: 0 2px 8px rgba(11, 25, 44, 0.05);
+  --ijevo-shadow-md: 0 10px 30px rgba(11, 25, 44, 0.08);
+  --ijevo-shadow-lg: 0 20px 50px rgba(0, 208, 132, 0.12);
+
+  /* Fonts */
+  --font-heading: 'Poppins', sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* Reset & Base Styles */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-family: var(--font-body);
+  color: var(--ijevo-text-body);
   background-color: var(--ijevo-bg-light);
-  color: var(--ijevo-text-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Typography Utilities */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  color: var(--ijevo-text-title);
+  line-height: 1.25;
+  font-weight: 700;
+}
+
+h1 { font-size: clamp(2.5rem, 5vw, 4rem); letter-spacing: -0.02em; }
+h2 { font-size: clamp(2rem, 3.5vw, 2.75rem); letter-spacing: -0.015em; }
+h3 { font-size: clamp(1.25rem, 2vw, 1.75rem); }
+p { font-size: 1.05rem; color: var(--ijevo-text-body); }
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+/* Layout Container */
+.container {
+  width: 100%;
+  max-width: 1240px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+.section-spacing {
+  padding-top: 100px;
+  padding-bottom: 100px;
+}
+
+@media (max-width: 768px) {
+  .section-spacing {
+    padding-top: 60px;
+    padding-bottom: 60px;
+  }
+}
+
+/* UI Badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.badge-emerald {
+  background-color: var(--ijevo-primary-light);
+  color: var(--ijevo-primary);
+  border: 1px solid rgba(0, 208, 132, 0.3);
+}
+
+.badge-navy {
+  background-color: rgba(11, 25, 44, 0.08);
+  color: var(--ijevo-navy);
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 14px 28px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background-color: var(--ijevo-primary);
+  color: var(--ijevo-navy);
+  box-shadow: 0 4px 14px rgba(0, 208, 132, 0.35);
+
+  &:hover {
+    background-color: var(--ijevo-primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 208, 132, 0.45);
+  }
+}
+
+.btn-navy {
+  background-color: var(--ijevo-navy);
+  color: #FFFFFF;
+
+  &:hover {
+    background-color: var(--ijevo-navy-light);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(11, 25, 44, 0.25);
+  }
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--ijevo-navy);
+  border: 1.5px solid var(--ijevo-border-light);
+
+  &:hover {
+    background: rgba(11, 25, 44, 0.04);
+    border-color: var(--ijevo-navy);
+  }
+}
+
+.btn-ghost-light {
+  background: transparent;
+  color: #FFFFFF;
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: #FFFFFF;
+  }
 }
