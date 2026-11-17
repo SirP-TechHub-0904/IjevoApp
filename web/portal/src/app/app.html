@@ -47,15 +47,15 @@
             </div>
           </a>
           <div class="submenu" [class.show]="openSubmenus()['dashboards']">
-            <a routerLink="/dashboards/analytics" routerLinkActive="active-sub" class="submenu-link active-sub">
+            <a routerLink="/dashboards/analytics" routerLinkActive="active-sub" class="submenu-link">
               <i class="fa-regular fa-circle dot-icon"></i>
               <span>Analytics</span>
             </a>
-            <a class="submenu-link">
+            <a routerLink="/dashboards/overview" routerLinkActive="active-sub" class="submenu-link">
               <i class="fa-regular fa-circle dot-icon"></i>
               <span>Remittance Overview</span>
             </a>
-            <a class="submenu-link">
+            <a routerLink="/dashboards/liquidity" routerLinkActive="active-sub" class="submenu-link">
               <i class="fa-regular fa-circle dot-icon"></i>
               <span>Liquidity Pools</span>
             </a>
@@ -76,15 +76,15 @@
             </div>
           </a>
           <div class="submenu" [class.show]="openSubmenus()['remittance']">
-            <a class="submenu-link">
+            <a routerLink="/remittance/transactions" routerLinkActive="active-sub" class="submenu-link">
               <i class="fa-regular fa-circle dot-icon"></i>
               <span>All Transfers</span>
             </a>
-            <a class="submenu-link">
+            <a routerLink="/remittance/batches" routerLinkActive="active-sub" class="submenu-link">
               <i class="fa-regular fa-circle dot-icon"></i>
               <span>Settlement Batches</span>
             </a>
-            <a class="submenu-link">
+            <a routerLink="/remittance/exceptions" routerLinkActive="active-sub" class="submenu-link">
               <i class="fa-regular fa-circle dot-icon"></i>
               <span>Payout Exceptions</span>
             </a>
@@ -92,7 +92,7 @@
         </div>
 
         <div class="nav-item">
-          <a class="nav-link">
+          <a routerLink="/remittance/corridors" routerLinkActive="active" class="nav-link">
             <div class="link-left">
               <i class="fa-solid fa-arrows-split-up-and-left nav-icon"></i>
               <span class="nav-label">Corridors & Rates</span>
@@ -102,7 +102,7 @@
         </div>
 
         <div class="nav-item">
-          <a class="nav-link">
+          <a routerLink="/remittance/rails" routerLinkActive="active" class="nav-link">
             <div class="link-left">
               <i class="fa-solid fa-network-wired nav-icon"></i>
               <span class="nav-label">Clearing Rails</span>
@@ -122,23 +122,15 @@
             <i class="fa-solid fa-chevron-right submenu-arrow"></i>
           </a>
           <div class="submenu" [class.show]="openSubmenus()['compliance']">
-            <a class="submenu-link">
+            <a routerLink="/compliance/kyc" routerLinkActive="active-sub" class="submenu-link">
               <i class="fa-regular fa-circle dot-icon"></i>
-              <span>Tier 1 Auto-KYC</span>
-            </a>
-            <a class="submenu-link">
-              <i class="fa-regular fa-circle dot-icon"></i>
-              <span>Tier 2 Proof of Address</span>
-            </a>
-            <a class="submenu-link">
-              <i class="fa-regular fa-circle dot-icon"></i>
-              <span>Tier 3 Source of Funds</span>
+              <span>All KYC Tiers</span>
             </a>
           </div>
         </div>
 
         <div class="nav-item">
-          <a class="nav-link">
+          <a routerLink="/compliance/aml" routerLinkActive="active" class="nav-link">
             <div class="link-left">
               <i class="fa-solid fa-user-shield nav-icon"></i>
               <span class="nav-label">AML & PEP Screening</span>
@@ -150,7 +142,7 @@
         <!-- Category: CUSTOMERS & PARTNERS -->
         <div class="menu-category">CUSTOMERS</div>
         <div class="nav-item">
-          <a class="nav-link">
+          <a routerLink="/customers/senders" routerLinkActive="active" class="nav-link">
             <div class="link-left">
               <i class="fa-solid fa-users nav-icon"></i>
               <span class="nav-label">Senders</span>
@@ -159,7 +151,7 @@
         </div>
 
         <div class="nav-item">
-          <a class="nav-link">
+          <a routerLink="/customers/beneficiaries" routerLinkActive="active" class="nav-link">
             <div class="link-left">
               <i class="fa-solid fa-address-book nav-icon"></i>
               <span class="nav-label">Beneficiaries</span>
@@ -168,7 +160,7 @@
         </div>
 
         <div class="nav-item">
-          <a class="nav-link">
+          <a routerLink="/customers/referrals" routerLinkActive="active" class="nav-link">
             <div class="link-left">
               <i class="fa-solid fa-handshake nav-icon"></i>
               <span class="nav-label">Refer & Earn Program</span>
@@ -179,7 +171,7 @@
         <!-- Category: SETTINGS & SYSTEM -->
         <div class="menu-category">SETTINGS</div>
         <div class="nav-item">
-          <a class="nav-link">
+          <a routerLink="/settings/api-keys" routerLinkActive="active" class="nav-link">
             <div class="link-left">
               <i class="fa-solid fa-key nav-icon"></i>
               <span class="nav-label">API Keys & Webhooks</span>
@@ -188,7 +180,7 @@
         </div>
 
         <div class="nav-item">
-          <a class="nav-link">
+          <a routerLink="/settings/audit-logs" routerLinkActive="active" class="nav-link">
             <div class="link-left">
               <i class="fa-solid fa-clock-rotate-left nav-icon"></i>
               <span class="nav-label">Audit Logs</span>
@@ -197,7 +189,7 @@
         </div>
 
         <div class="nav-item">
-          <a class="nav-link">
+          <a routerLink="/settings/configuration" routerLinkActive="active" class="nav-link">
             <div class="link-left">
               <i class="fa-solid fa-sliders nav-icon"></i>
               <span class="nav-label">Portal Configuration</span>
