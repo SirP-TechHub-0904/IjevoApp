@@ -17,10 +17,10 @@ describe('App', () => {
     expect(app).toBeTruthy();
   });
 
-  it('should render brand name in sidebar', async () => {
+  it('should render brand logo in sidebar', async () => {
     const fixture = TestBed.createComponent(App);
     await fixture.whenStable();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.brand-name')?.textContent).toContain('IJEVO');
+    expect(compiled.querySelector('.brand-logo-img')?.getAttribute('alt')).toContain('ijevo');
   });
 });

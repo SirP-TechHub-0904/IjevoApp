@@ -38,26 +38,18 @@
     .brand-link {
       display: flex;
       align-items: center;
-      gap: 12px;
       text-decoration: none;
+      min-width: 0;
 
-      .brand-logo-icon {
+      .brand-logo-full {
         display: flex;
         align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-      }
+        gap: 10px;
 
-      .brand-text {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-
-        .brand-name {
-          font-size: 1.25rem;
-          font-weight: 800;
-          color: #FFFFFF;
-          letter-spacing: -0.02em;
+        .brand-logo-img {
+          height: 28px;
+          max-width: 140px;
+          object-fit: contain;
         }
 
         .portal-badge {
@@ -68,6 +60,17 @@
           color: #00D084;
           border-radius: var(--radius-xs);
           letter-spacing: 0.05em;
+        }
+      }
+
+      .brand-logo-collapsed {
+        display: none;
+
+        .brand-emblem-img {
+          width: 36px;
+          height: 36px;
+          border-radius: 50%;
+          object-fit: contain;
         }
       }
     }
@@ -290,13 +293,19 @@
   .app-sidebar {
     width: var(--sidebar-collapsed-width);
 
-    .brand-text,
+    .brand-logo-full,
     .nav-label,
     .link-right,
     .menu-category,
     .submenu,
     .sidebar-footer-box {
       display: none !important;
+    }
+
+    .brand-logo-collapsed {
+      display: flex !important;
+      align-items: center;
+      justify-content: center;
     }
 
     .sidebar-header {
