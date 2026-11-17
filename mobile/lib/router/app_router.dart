@@ -19,6 +19,7 @@ import '../screens/home/send_money/bank_picker_screen.dart';
 import '../screens/home/send_money/choose_country_screen.dart';
 import '../screens/home/send_money/choose_recipient_screen.dart';
 import '../screens/home/send_money/confirm_transfer_screen.dart';
+import '../screens/home/send_money/link_card_screen.dart';
 import '../screens/home/send_money/payment_method_screen.dart';
 import '../screens/home/send_money/transfer_success_screen.dart';
 import '../screens/home/wallets/add_money_screen.dart';
@@ -119,6 +120,11 @@ final appRouter = GoRouter(
       path: '/send/payment-method',
       parentNavigatorKey: _rootNavigatorKey,
       builder: (context, state) => const PaymentMethodScreen(),
+    ),
+    GoRoute(
+      path: '/send/link-card',
+      parentNavigatorKey: _rootNavigatorKey,
+      builder: (context, state) => const LinkCardScreen(),
     ),
     GoRoute(
       path: '/send/bank-picker',

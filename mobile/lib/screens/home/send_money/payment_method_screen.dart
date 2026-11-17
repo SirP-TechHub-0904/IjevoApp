@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
+import '../../../providers/card_provider.dart';
 import '../../../providers/transfer_provider.dart';
 import '../../../providers/wallet_provider.dart';
 import '../../../theme/app_colors.dart';
 import '../../../theme/app_text_styles.dart';
 import '../../../widgets/back_circle_button.dart';
+import '../../../widgets/flag_avatar.dart';
 
 class PaymentMethodScreen extends ConsumerWidget {
   const PaymentMethodScreen({super.key});
@@ -13,34 +17,8 @@ class PaymentMethodScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final transfer = ref.watch(transferProvider);
     final wallets = ref.watch(walletProvider);
-    final gbpWallet = wallets.gbpWallet;
-
-    final methods = [
-      {
-        'title': 'Instant Bank Transfer',
-        'subtitle': 'Connect your UK bank app (Recommended • Free)',
-        'icon': Icons.account_balance,
-        'badge': 'FASTEST',
-      },
-      {
-        'title': 'Ijevo GBP Wallet',
-        'subtitle': 'Available balance: £${gbpWallet?.balance.toStringAsFixed(2) ?? '0.00'}',
-        'icon': Icons.account_balance_wallet,
-        'badge': 'INSTANT',
-      },
-      {
-        'title': 'Debit Card (•••• 9021)',
-        'subtitle': 'Visa • Exp 09/28',
-        'icon': Icons.credit_card,
-        'badge': null,
-      },
-      {
-        'title': 'Apple Pay',
-        'subtitle': 'Fast checkout with Touch / Face ID',
-        'icon': Icons.apple,
-        'badge': null,
-      },
-    ];
+    final cardState = ref.watch(cardProvider);
+    final currencyFormat = NumberFormat('#,##0.00');
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -54,10 +32,18 @@ class PaymentMethodScreen extends ConsumerWidget {
       body: ListView(
         padding: const EdgeInsets.all(20),
         children: [
-          ...methods.map((m) {
-            final isSelected = transfer.paymentMethod == m['title'];
+          // Section: Multi-Currency Wallets
+          Text('PAY WITH WALLET (${wallets.wallets.length})', style: AppTextStyles.label),
+          const SizedBox(height: 10),
+
+          ...wallets.wallets.map((w) {
+            final walletTitle = '${w.currencyCode} Wallet';
+            final isSelected = transfer.paymentMethod == walletTitle ||
+                (transfer.paymentMethod.contains(w.currencyCode) && transfer.paymentMethod.contains('Wallet'));
+            final formattedBal = '${w.currencySymbol}${currencyFormat.format(w.balance)}';
+
             return Container(
-              margin: const EdgeInsets.only(bottom: 12),
+              margin: const EdgeInsets.only(bottom: 10),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(16),
@@ -67,7 +53,88 @@ class PaymentMethodScreen extends ConsumerWidget {
                 ),
               ),
               child: ListTile(
-                contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                leading: FlagAvatar(countryCode: w.countryCode, size: 36),
+                title: Row(
+                  children: [
+                    Text(
+                      w.currencyName,
+                      style: AppTextStyles.bodyMedium.copyWith(fontWeight: FontWeight.w600),
+                    ),
+                    const SizedBox(width: 8),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                      decoration: BoxDecoration(
+                        color: AppColors.primaryLight,
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: Text(
+                        'INSTANT',
+                        style: AppTextStyles.bodySmall.copyWith(
+                          color: AppColors.primary,
+                          fontSize: 9,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                subtitle: Text(
+                  'Available: $formattedBal',
+                  style: AppTextStyles.bodySmall.copyWith(
+                    color: w.balance > 0 ? AppColors.primaryDark : AppColors.textSecondary,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                trailing: isSelected
+                    ? const Icon(Icons.check_circle, color: AppColors.primary)
+                    : const Icon(Icons.circle_outlined, color: AppColors.border),
+                onTap: () {
+                  ref.read(transferProvider.notifier).selectPaymentMethod(walletTitle);
+                  Navigator.of(context).pop();
+                },
+              ),
+            );
+          }),
+
+          const SizedBox(height: 20),
+
+          // Section: Linked Debit Cards
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('LINKED DEBIT CARDS', style: AppTextStyles.label),
+              InkWell(
+                onTap: () => context.push('/send/link-card'),
+                child: Text(
+                  '+ Link Card',
+                  style: AppTextStyles.bodySmall.copyWith(
+                    color: AppColors.primary,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+
+          ...cardState.cards.map((card) {
+            final cardTitle = '${card.brand} (•••• ${card.last4})';
+            final isSelected = transfer.paymentMethod == cardTitle ||
+                transfer.paymentMethod.contains(card.last4);
+
+            return Container(
+              margin: const EdgeInsets.only(bottom: 10),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                  color: isSelected ? AppColors.primary : AppColors.border,
+                  width: isSelected ? 2 : 1,
+                ),
+              ),
+              child: ListTile(
+                contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
                 leading: Container(
                   width: 44,
                   height: 44,
@@ -76,68 +143,111 @@ class PaymentMethodScreen extends ConsumerWidget {
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
-                    m['icon'] as IconData,
+                    Icons.credit_card,
                     color: isSelected ? AppColors.primary : AppColors.textPrimary,
                   ),
                 ),
-                title: Row(
-                  children: [
-                    Text(
-                      m['title'] as String,
-                      style: AppTextStyles.bodyLarge.copyWith(fontWeight: FontWeight.w600),
-                    ),
-                    if (m['badge'] != null) ...[
-                      const SizedBox(width: 8),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                        decoration: BoxDecoration(
-                          color: AppColors.primaryLight,
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                        child: Text(
-                          m['badge'] as String,
-                          style: AppTextStyles.bodySmall.copyWith(
-                            color: AppColors.primary,
-                            fontSize: 10,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ],
+                title: Text(
+                  cardTitle,
+                  style: AppTextStyles.bodyMedium.copyWith(fontWeight: FontWeight.w600),
                 ),
                 subtitle: Text(
-                  m['subtitle'] as String,
+                  'Expires ${card.expiryDate} • Verified debit',
                   style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary),
                 ),
                 trailing: isSelected
                     ? const Icon(Icons.check_circle, color: AppColors.primary)
                     : const Icon(Icons.circle_outlined, color: AppColors.border),
                 onTap: () {
-                  ref.read(transferProvider.notifier).selectPaymentMethod(m['title'] as String);
+                  ref.read(transferProvider.notifier).selectPaymentMethod(cardTitle);
                   Navigator.of(context).pop();
                 },
               ),
             );
           }),
 
-          const SizedBox(height: 8),
-
-          // Add New Card Button
+          // Link New Card Button
           OutlinedButton.icon(
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Card entry modal opened')),
-              );
-            },
+            onPressed: () => context.push('/send/link-card'),
             icon: const Icon(Icons.add, color: AppColors.primary),
-            label: const Text('Add a new debit card', style: TextStyle(color: AppColors.textPrimary)),
+            label: const Text('Link a new debit card', style: TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.w600)),
             style: OutlinedButton.styleFrom(
-              minimumSize: const Size.fromHeight(52),
-              side: const BorderSide(color: AppColors.border),
+              minimumSize: const Size.fromHeight(50),
+              side: const BorderSide(color: AppColors.border, width: 1.5),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              backgroundColor: Colors.white,
             ),
           ),
+
+          const SizedBox(height: 24),
+
+          // Section: Instant Bank Transfer & Other
+          Text('INSTANT BANK TRANSFER', style: AppTextStyles.label),
+          const SizedBox(height: 10),
+
+          Container(
+            margin: const EdgeInsets.only(bottom: 10),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(
+                color: transfer.paymentMethod.contains('Instant') ? AppColors.primary : AppColors.border,
+                width: transfer.paymentMethod.contains('Instant') ? 2 : 1,
+              ),
+            ),
+            child: ListTile(
+              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+              leading: Container(
+                width: 44,
+                height: 44,
+                decoration: BoxDecoration(
+                  color: transfer.paymentMethod.contains('Instant') ? AppColors.primaryLight : AppColors.surfaceSecondary,
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.account_balance,
+                  color: transfer.paymentMethod.contains('Instant') ? AppColors.primary : AppColors.textPrimary,
+                ),
+              ),
+              title: Row(
+                children: [
+                  Text(
+                    'Instant Bank Transfer',
+                    style: AppTextStyles.bodyMedium.copyWith(fontWeight: FontWeight.w600),
+                  ),
+                  const SizedBox(width: 8),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                    decoration: BoxDecoration(
+                      color: AppColors.primaryLight,
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: Text(
+                      'RECOMMENDED',
+                      style: AppTextStyles.bodySmall.copyWith(
+                        color: AppColors.primary,
+                        fontSize: 9,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              subtitle: Text(
+                'Open Banking • Lloyds, Barclays, NatWest, Monzo, etc.',
+                style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary),
+              ),
+              trailing: transfer.paymentMethod.contains('Instant')
+                  ? const Icon(Icons.check_circle, color: AppColors.primary)
+                  : const Icon(Icons.circle_outlined, color: AppColors.border),
+              onTap: () {
+                ref.read(transferProvider.notifier).selectPaymentMethod('Instant bank transfer');
+                Navigator.of(context).pop();
+              },
+            ),
+          ),
+
+          const SizedBox(height: 16),
         ],
       ),
     );

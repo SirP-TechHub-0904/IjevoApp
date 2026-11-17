@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import '../../providers/card_provider.dart';
 import '../../theme/app_colors.dart';
 import '../../theme/app_text_styles.dart';
 import '../../widgets/back_circle_button.dart';
 
-class PaymentMethodsManageScreen extends StatelessWidget {
+class PaymentMethodsManageScreen extends ConsumerWidget {
   const PaymentMethodsManageScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final cardState = ref.watch(cardProvider);
+
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
@@ -30,24 +35,23 @@ class PaymentMethodsManageScreen extends StatelessWidget {
           ),
 
           const SizedBox(height: 24),
-          Text('SAVED DEBIT CARDS', style: AppTextStyles.label),
+          Text('SAVED DEBIT CARDS (${cardState.cards.length})', style: AppTextStyles.label),
           const SizedBox(height: 8),
-          _buildCard(
-            icon: Icons.credit_card,
-            title: 'Visa Debit Card',
-            subtitle: '•••• •••• •••• 9021 • Exp 09/28',
-            badge: 'Default',
-          ),
+
+          ...cardState.cards.map((card) {
+            return _buildCard(
+              icon: Icons.credit_card,
+              title: '${card.brand} Debit Card',
+              subtitle: '•••• •••• •••• ${card.last4} • Exp ${card.expiryDate}',
+              badge: card.isDefault ? 'Default' : 'Verified',
+            );
+          }),
 
           const SizedBox(height: 20),
           OutlinedButton.icon(
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Card connection flow opened')),
-              );
-            },
+            onPressed: () => context.push('/send/link-card'),
             icon: const Icon(Icons.add, color: AppColors.primary),
-            label: const Text('Add Payment Method', style: TextStyle(color: AppColors.textPrimary)),
+            label: const Text('Link a New Debit Card', style: TextStyle(color: AppColors.textPrimary)),
             style: OutlinedButton.styleFrom(
               minimumSize: const Size.fromHeight(52),
               side: const BorderSide(color: AppColors.border),
@@ -66,6 +70,7 @@ class PaymentMethodsManageScreen extends StatelessWidget {
     required String badge,
   }) {
     return Container(
+      margin: const EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -90,7 +95,7 @@ class PaymentMethodsManageScreen extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Text(title, style: AppTextStyles.bodyLarge.copyWith(fontWeight: FontWeight.w600)),
+                    Text(title, style: AppTextStyles.bodyMedium.copyWith(fontWeight: FontWeight.w600)),
                     const SizedBox(width: 8),
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
