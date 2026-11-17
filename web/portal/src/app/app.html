@@ -8,7 +8,7 @@
   <div class="container mil-top-panel-inner">
     <!-- Brand Logo -->
     <a routerLink="/" (click)="closeMobileMenu()" class="mil-logo">
-      <img src="assets/ijevo-logo-dark.png" alt="ijevo" class="brand-logo-img" />
+      <img src="assets/ijevo-logo-light.png" alt="ijevo" class="brand-logo-img" />
     </a>
 
     <!-- Desktop Navigation Menu (About Us, Send and Receive Money, Contact Us) -->
@@ -31,7 +31,8 @@
       <a routerLink="/" fragment="download" class="btn btn-primary btn-sm mil-desktop-only">
         <i class="fa-solid fa-arrow-down-to-bracket"></i> Download Our App
       </a>
-      <div class="mil-menu-btn" [class.mil-active]="isMobileMenuOpen()" (click)="toggleMobileMenu()" aria-label="Toggle navigation">
+      <div class="mil-menu-btn" [class.mil-active]="isMobileMenuOpen()" (click)="toggleMobileMenu()"
+        aria-label="Toggle navigation">
         <span></span>
       </div>
     </div>
@@ -73,7 +74,8 @@
           <img src="assets/ijevo-logo-light.png" alt="ijevo" class="brand-logo-img footer-logo-img" />
         </a>
         <p class="footer-desc">
-          Ijevo is the modern cross-border financial highway bridging the global diaspora with families and businesses back home. Fast, safe, and transparent.
+          Ijevo is the modern cross-border financial highway bridging the global diaspora with families and businesses
+          back home. Fast, safe, and transparent.
         </p>
         <div class="social-links">
           <a href="#" aria-label="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
