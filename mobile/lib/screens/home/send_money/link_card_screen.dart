@@ -106,7 +106,7 @@ class _LinkCardScreenState extends ConsumerState<LinkCardScreen>
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Card validated successfully! Ready to debit. ✓'),
+          content: Text('Card validated successfully! Ready to debit.'),
           backgroundColor: AppColors.primary,
         ),
       );
@@ -127,8 +127,9 @@ class _LinkCardScreenState extends ConsumerState<LinkCardScreen>
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (ctx) {
+        final bottomPadding = MediaQuery.of(ctx).viewPadding.bottom;
         return Container(
-          padding: const EdgeInsets.all(24),
+          padding: EdgeInsets.fromLTRB(24, 24, 24, 28 + bottomPadding),
           decoration: const BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.only(
@@ -137,8 +138,9 @@ class _LinkCardScreenState extends ConsumerState<LinkCardScreen>
             ),
           ),
           child: SafeArea(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
               children: [
                 Container(
                   width: 40,
@@ -225,7 +227,8 @@ class _LinkCardScreenState extends ConsumerState<LinkCardScreen>
               ],
             ),
           ),
-        );
+        ),
+      );
       },
     );
   }
@@ -245,9 +248,10 @@ class _LinkCardScreenState extends ConsumerState<LinkCardScreen>
         ),
         title: Text('Link Debit Card', style: AppTextStyles.h3),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
-        child: Form(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(20, 20, 20, 32),
+          child: Form(
           key: _formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -512,6 +516,7 @@ class _LinkCardScreenState extends ConsumerState<LinkCardScreen>
             ],
           ),
         ),
+      ),
       ),
     );
   }

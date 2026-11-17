@@ -32,8 +32,8 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
       'a': 'Share your unique invite code with friends. When they register and complete their first transfer of £50 or more, you automatically receive £20 in your GBP wallet.'
     },
     {
-      'q': 'Is Ijevo regulated in the UK?',
-      'a': 'Yes. Ijevo is authorized and regulated by the Financial Conduct Authority (FCA) as an Electronic Money Institution.'
+      'q': 'Is my money safe with Ijevo?',
+      'a': 'Yes. All customer funds are safeguarded in dedicated Tier-1 bank accounts and fully protected.'
     },
   ];
 
@@ -54,9 +54,10 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
         ),
         title: Text('Help & Support', style: AppTextStyles.h3),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
-        child: Column(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(20, 20, 20, 60),
+          child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TextField(
@@ -79,23 +80,31 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(color: AppColors.border),
                 ),
-                child: ExpansionTile(
-                  title: Text(
-                    faq['q']!,
-                    style: AppTextStyles.bodyMedium.copyWith(fontWeight: FontWeight.w600),
-                  ),
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-                      child: Text(
-                        faq['a']!,
-                        style: AppTextStyles.bodySmall.copyWith(
-                          color: AppColors.textSecondary,
-                          height: 1.5,
+                child: Theme(
+                  data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+                  child: ExpansionTile(
+                    shape: const Border(),
+                    collapsedShape: const Border(),
+                    iconColor: AppColors.primary,
+                    collapsedIconColor: AppColors.textSecondary,
+                    tilePadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                    title: Text(
+                      faq['q']!,
+                      style: AppTextStyles.bodyMedium.copyWith(fontWeight: FontWeight.w600),
+                    ),
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                        child: Text(
+                          faq['a']!,
+                          style: AppTextStyles.bodySmall.copyWith(
+                            color: AppColors.textSecondary,
+                            height: 1.5,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               );
             }),
@@ -139,9 +148,11 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
                 ],
               ),
             ),
+            const SizedBox(height: 48),
           ],
         ),
       ),
-    );
+    ),
+  );
   }
 }

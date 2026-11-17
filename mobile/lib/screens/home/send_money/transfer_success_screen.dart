@@ -4,7 +4,9 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import '../../../models/transaction_model.dart';
 import '../../../providers/activity_provider.dart';
+import '../../../providers/notification_provider.dart';
 import '../../../providers/transfer_provider.dart';
+import '../../../services/receipt_image_service.dart';
 import '../../../theme/app_colors.dart';
 import '../../../theme/app_text_styles.dart';
 import '../../../widgets/ijevo_button.dart';
@@ -43,10 +45,24 @@ class _TransferSuccessScreenState extends ConsumerState<TransferSuccessScreen> {
       paymentMethod: transfer.paymentMethod,
     );
 
-    // Save transaction to activity state
+    // Save transaction to activity state & trigger notification
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(activityProvider.notifier).addTransaction(_createdTx);
+      ref.read(notificationProvider.notifier).addNotification(
+        title: 'Transfer Delivered! 🚀',
+        message: '${_createdTx.sendCurrency}${_createdTx.sendAmount.toStringAsFixed(2)} was sent to ${_createdTx.recipientName} (${_createdTx.recipientInstitution}).',
+        type: 'transfer',
+        route: '/activity',
+      );
     });
+  }
+
+  void _showShareSheet(BuildContext context) {
+    ReceiptImageService.shareReceipt(context, _createdTx);
+  }
+
+  void _downloadReceipt(BuildContext context) async {
+    await ReceiptImageService.shareReceipt(context, _createdTx);
   }
 
   @override
@@ -59,14 +75,39 @@ class _TransferSuccessScreenState extends ConsumerState<TransferSuccessScreen> {
       canPop: false,
       onPopInvokedWithResult: (didPop, _) {
         if (!didPop) {
+          ref.read(transferProvider.notifier).reset();
           context.go('/home');
         }
       },
       child: Scaffold(
         backgroundColor: Colors.white,
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0,
+          leading: IconButton(
+            icon: const Icon(Icons.close, color: AppColors.textPrimary),
+            onPressed: () {
+              ref.read(transferProvider.notifier).reset();
+              context.go('/home');
+            },
+          ),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.share_outlined, color: AppColors.primary),
+              tooltip: 'Share Receipt',
+              onPressed: () => _showShareSheet(context),
+            ),
+            IconButton(
+              icon: const Icon(Icons.download_rounded, color: AppColors.textPrimary),
+              tooltip: 'Download Receipt',
+              onPressed: () => _downloadReceipt(context),
+            ),
+            const SizedBox(width: 8),
+          ],
+        ),
         body: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
             child: Column(
               children: [
                 const Spacer(),
@@ -75,7 +116,7 @@ class _TransferSuccessScreenState extends ConsumerState<TransferSuccessScreen> {
                 Container(
                   width: 90,
                   height: 90,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     color: AppColors.primaryLight,
                     shape: BoxShape.circle,
                   ),
@@ -96,7 +137,7 @@ class _TransferSuccessScreenState extends ConsumerState<TransferSuccessScreen> {
                   ),
                 ),
 
-                const SizedBox(height: 24),
+                const SizedBox(height: 20),
                 Text('Transfer Sent!', style: AppTextStyles.h1),
                 const SizedBox(height: 8),
                 Text(
@@ -109,7 +150,7 @@ class _TransferSuccessScreenState extends ConsumerState<TransferSuccessScreen> {
                   style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
                 ),
 
-                const SizedBox(height: 32),
+                const SizedBox(height: 28),
 
                 // Status Timeline Card
                 Container(
@@ -133,8 +174,8 @@ class _TransferSuccessScreenState extends ConsumerState<TransferSuccessScreen> {
                         isLast: false,
                       ),
                       _buildTimelineItem(
-                        title: 'Arriving in recipient bank account',
-                        time: 'Within 5 minutes ⚡',
+                        title: 'Sent',
+                        time: DateFormat('h:mm a').format(_createdTx.createdAt),
                         isDone: true,
                         isLast: true,
                       ),
@@ -144,22 +185,25 @@ class _TransferSuccessScreenState extends ConsumerState<TransferSuccessScreen> {
 
                 const Spacer(),
 
-                // Action Buttons
+                // Primary Button: Share
                 IjevoButton(
-                  text: 'Back to Home',
+                  text: 'Share',
+                  icon: const Icon(Icons.share, color: Colors.white, size: 20),
+                  onPressed: () => _showShareSheet(context),
+                ),
+
+                const SizedBox(height: 12),
+
+                // Close Button
+                IjevoButton(
+                  text: 'Close',
+                  isOutlined: true,
                   onPressed: () {
                     ref.read(transferProvider.notifier).reset();
                     context.go('/home');
                   },
                 ),
-                const SizedBox(height: 12),
-                IjevoButton(
-                  text: 'View Transfer Receipt',
-                  isOutlined: true,
-                  onPressed: () {
-                    context.push('/activity');
-                  },
-                ),
+                const SizedBox(height: 8),
               ],
             ),
           ),
@@ -210,7 +254,6 @@ class _TransferSuccessScreenState extends ConsumerState<TransferSuccessScreen> {
                 time,
                 style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary),
               ),
-              if (!isLast) const SizedBox(height: 14),
             ],
           ),
         ),

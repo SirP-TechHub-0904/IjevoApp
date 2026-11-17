@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../providers/auth_provider.dart';
 import '../../theme/app_colors.dart';
 import '../../theme/app_text_styles.dart';
+import '../../widgets/user_avatar.dart';
 
 class AccountScreen extends ConsumerWidget {
   const AccountScreen({super.key});
@@ -31,18 +32,11 @@ class AccountScreen extends ConsumerWidget {
             ),
             child: Row(
               children: [
-                Container(
-                  width: 56,
-                  height: 56,
-                  decoration: const BoxDecoration(
-                    color: AppColors.navy,
-                    shape: BoxShape.circle,
-                  ),
-                  alignment: Alignment.center,
-                  child: Text(
-                    user.initials,
-                    style: AppTextStyles.h2.copyWith(color: Colors.white),
-                  ),
+                UserAvatar(
+                  user: user,
+                  size: 60,
+                  showEditBadge: true,
+                  onTap: () => context.push('/account/personal'),
                 ),
                 const SizedBox(width: 16),
                 Expanded(
@@ -123,7 +117,7 @@ class AccountScreen extends ConsumerWidget {
             context: context,
             icon: Icons.description_outlined,
             title: 'Legal & Regulatory',
-            subtitle: 'FCA terms, privacy policy & cookies',
+            subtitle: 'User agreement, privacy policy & terms',
             route: '/account/legal',
           ),
 
@@ -131,8 +125,39 @@ class AccountScreen extends ConsumerWidget {
 
           // Log Out Button
           OutlinedButton.icon(
-            onPressed: () {
-              context.go('/login');
+            onPressed: () async {
+              final confirm = await showDialog<bool>(
+                context: context,
+                builder: (ctx) => AlertDialog(
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                  title: Text('Log Out', style: AppTextStyles.h3),
+                  content: Text(
+                    'Are you sure you want to log out of Ijevo?',
+                    style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(ctx, false),
+                      child: Text('Cancel', style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary)),
+                    ),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      ),
+                      onPressed: () => Navigator.pop(ctx, true),
+                      child: const Text('Log Out', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                    ),
+                  ],
+                ),
+              );
+
+              if (confirm == true) {
+                await ref.read(authProvider.notifier).logout();
+                if (context.mounted) {
+                  context.go('/login');
+                }
+              }
             },
             icon: const Icon(Icons.logout, color: AppColors.error),
             label: const Text('Log Out', style: TextStyle(color: AppColors.error, fontWeight: FontWeight.bold)),

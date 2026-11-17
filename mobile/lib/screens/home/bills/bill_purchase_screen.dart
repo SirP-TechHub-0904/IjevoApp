@@ -100,7 +100,7 @@ class _BillPurchaseScreenState extends ConsumerState<BillPurchaseScreen> {
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Payment of ₦${NumberFormat('#,##0').format(amount)} to $_selectedProvider successful! ⚡'),
+          content: Text('Payment of ₦${NumberFormat('#,##0').format(amount)} to $_selectedProvider successful!'),
           backgroundColor: AppColors.primary,
         ),
       );
@@ -122,9 +122,10 @@ class _BillPurchaseScreenState extends ConsumerState<BillPurchaseScreen> {
         ),
         title: Text(_title, style: AppTextStyles.h3),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
-        child: Column(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(20, 20, 20, 32),
+          child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('Select Provider', style: AppTextStyles.label),
@@ -200,6 +201,7 @@ class _BillPurchaseScreenState extends ConsumerState<BillPurchaseScreen> {
             ),
           ],
         ),
+      ),
       ),
     );
   }

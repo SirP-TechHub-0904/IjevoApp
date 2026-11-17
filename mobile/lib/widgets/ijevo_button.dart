@@ -51,7 +51,7 @@ class IjevoButton extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(28),
         ),
-        disabledBackgroundColor: AppColors.primary.withOpacity(0.5),
+        disabledBackgroundColor: AppColors.primary.withValues(alpha: 0.5),
       ),
       child: _buildChild(),
     );
@@ -69,16 +69,24 @@ class IjevoButton extends StatelessWidget {
       );
     }
 
+    final effectiveTextColor = textColor ?? (isOutlined ? AppColors.textPrimary : Colors.white);
+
     if (icon != null) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
-          icon!,
+          IconTheme(
+            data: IconThemeData(color: effectiveTextColor, size: 18),
+            child: icon!,
+          ),
           const SizedBox(width: 8),
-          Text(
-            text,
-            style: AppTextStyles.button.copyWith(color: textColor ?? Colors.white),
+          Flexible(
+            child: Text(
+              text,
+              style: AppTextStyles.button.copyWith(color: effectiveTextColor),
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
         ],
       );
@@ -86,9 +94,7 @@ class IjevoButton extends StatelessWidget {
 
     return Text(
       text,
-      style: AppTextStyles.button.copyWith(
-        color: textColor ?? (isOutlined ? AppColors.textPrimary : Colors.white),
-      ),
+      style: AppTextStyles.button.copyWith(color: effectiveTextColor),
     );
   }
 }

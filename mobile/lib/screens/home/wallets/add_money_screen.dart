@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../providers/notification_provider.dart';
 import '../../../providers/wallet_provider.dart';
 import '../../../theme/app_colors.dart';
 import '../../../theme/app_text_styles.dart';
@@ -29,7 +30,7 @@ class _AddMoneyScreenState extends ConsumerState<AddMoneyScreen> {
     super.dispose();
   }
 
-  void _onAddMoney() async {
+  void _onAddMoney(String walletCurrencySymbol, String walletName) async {
     final amount = double.tryParse(_amountController.text) ?? 0.0;
     if (amount <= 0) return;
 
@@ -37,12 +38,18 @@ class _AddMoneyScreenState extends ConsumerState<AddMoneyScreen> {
     await Future.delayed(const Duration(milliseconds: 600));
 
     ref.read(walletProvider.notifier).addFunds(widget.walletId, amount);
+    ref.read(notificationProvider.notifier).addNotification(
+      title: 'Wallet Funded! 💳',
+      message: '$walletCurrencySymbol${amount.toStringAsFixed(2)} was successfully added to your $walletName.',
+      type: 'transfer',
+      route: '/home',
+    );
 
     setState(() => _isLoading = false);
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Added £${amount.toStringAsFixed(2)} to your wallet! 🎉'),
+          content: Text('Added $walletCurrencySymbol${amount.toStringAsFixed(2)} to $walletName!'),
           backgroundColor: AppColors.primary,
         ),
       );
@@ -52,6 +59,12 @@ class _AddMoneyScreenState extends ConsumerState<AddMoneyScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final walletState = ref.watch(walletProvider);
+    final wallet = walletState.wallets.firstWhere(
+      (w) => w.id == widget.walletId,
+      orElse: () => walletState.wallets.first,
+    );
+
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
@@ -59,11 +72,12 @@ class _AddMoneyScreenState extends ConsumerState<AddMoneyScreen> {
           padding: EdgeInsets.all(8.0),
           child: BackCircleButton(),
         ),
-        title: Text('Add Money', style: AppTextStyles.h3),
+        title: Text('Top Up ${wallet.currencyCode} Wallet', style: AppTextStyles.h3),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
-        child: Column(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(20, 20, 20, 32),
+          child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
@@ -76,11 +90,11 @@ class _AddMoneyScreenState extends ConsumerState<AddMoneyScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Enter amount to add', style: AppTextStyles.label),
+                  Text('Enter amount to add to ${wallet.currencyName}', style: AppTextStyles.label),
                   const SizedBox(height: 12),
                   Row(
                     children: [
-                      Text('£', style: AppTextStyles.currencyValue),
+                      Text(wallet.currencySymbol, style: AppTextStyles.currencyValue),
                       const SizedBox(width: 8),
                       Expanded(
                         child: TextField(
@@ -119,12 +133,13 @@ class _AddMoneyScreenState extends ConsumerState<AddMoneyScreen> {
 
             const SizedBox(height: 32),
             IjevoButton(
-              text: 'Add Money Now',
+              text: 'Top Up ${wallet.currencyCode} Now',
               isLoading: _isLoading,
-              onPressed: _onAddMoney,
+              onPressed: () => _onAddMoney(wallet.currencySymbol, wallet.currencyName),
             ),
           ],
         ),
+      ),
       ),
     );
   }

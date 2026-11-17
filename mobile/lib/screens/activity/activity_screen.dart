@@ -41,11 +41,7 @@ class _ActivityScreenState extends ConsumerState<ActivityScreen> {
         actions: [
           IconButton(
             icon: const Icon(Icons.download_outlined, color: AppColors.textPrimary),
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Downloading monthly statement...')),
-              );
-            },
+            onPressed: () => context.push('/activity/statement'),
           ),
         ],
       ),

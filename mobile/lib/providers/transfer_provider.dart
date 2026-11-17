@@ -9,7 +9,10 @@ class TransferState {
   final RecipientModel? selectedRecipient;
   final String? promoCode;
   final double discount;
-  final String paymentMethod; // e.g. "Instant bank transfer", "GBP Wallet"
+  final String paymentMethod; // e.g. "Lloyds Bank PLC (•••• 5591)", "Visa Debit Card (•••• 9021)", "GBP Wallet"
+  final String? paymentMethodSubtitle;
+  final String? paymentMethodBadge;
+  final String paymentMethodType; // 'bank', 'card', 'wallet', 'instant'
 
   const TransferState({
     required this.sendAmount,
@@ -18,7 +21,10 @@ class TransferState {
     this.selectedRecipient,
     this.promoCode,
     this.discount = 0.0,
-    this.paymentMethod = 'Instant bank transfer',
+    this.paymentMethod = 'GBP Wallet',
+    this.paymentMethodSubtitle = 'Available balance: £345.50 • Instant debit',
+    this.paymentMethodBadge = 'Active Wallet',
+    this.paymentMethodType = 'wallet',
   });
 
   double get rate => selectedCountry.rateToGbp;
@@ -33,6 +39,9 @@ class TransferState {
     String? promoCode,
     double? discount,
     String? paymentMethod,
+    String? paymentMethodSubtitle,
+    String? paymentMethodBadge,
+    String? paymentMethodType,
   }) {
     return TransferState(
       sendAmount: sendAmount ?? this.sendAmount,
@@ -42,6 +51,9 @@ class TransferState {
       promoCode: promoCode ?? this.promoCode,
       discount: discount ?? this.discount,
       paymentMethod: paymentMethod ?? this.paymentMethod,
+      paymentMethodSubtitle: paymentMethodSubtitle ?? this.paymentMethodSubtitle,
+      paymentMethodBadge: paymentMethodBadge ?? this.paymentMethodBadge,
+      paymentMethodType: paymentMethodType ?? this.paymentMethodType,
     );
   }
 }
@@ -82,8 +94,18 @@ class TransferNotifier extends StateNotifier<TransferState> {
     }
   }
 
-  void selectPaymentMethod(String method) {
-    state = state.copyWith(paymentMethod: method);
+  void selectPaymentMethod(
+    String method, {
+    String? subtitle,
+    String? badge,
+    String? type,
+  }) {
+    state = state.copyWith(
+      paymentMethod: method,
+      paymentMethodSubtitle: subtitle,
+      paymentMethodBadge: badge,
+      paymentMethodType: type ?? 'bank',
+    );
   }
 
   void reset() {

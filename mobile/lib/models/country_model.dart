@@ -13,7 +13,7 @@ class CountryModel {
     required this.currencyCode,
     required this.currencySymbol,
     required this.rateToGbp,
-    required this.flagEmoji,
+    this.flagEmoji = '',
     this.isPopular = false,
   });
 
@@ -24,7 +24,6 @@ class CountryModel {
       currencyCode: 'NGN',
       currencySymbol: '₦',
       rateToGbp: 1840.00,
-      flagEmoji: '🇳🇬',
       isPopular: true,
     ),
     CountryModel(
@@ -33,7 +32,6 @@ class CountryModel {
       currencyCode: 'GHS',
       currencySymbol: 'GH₵',
       rateToGbp: 19.80,
-      flagEmoji: '🇬🇭',
       isPopular: true,
     ),
     CountryModel(
@@ -42,7 +40,6 @@ class CountryModel {
       currencyCode: 'KES',
       currencySymbol: 'KSh',
       rateToGbp: 168.50,
-      flagEmoji: '🇰🇪',
       isPopular: true,
     ),
     CountryModel(
@@ -51,7 +48,6 @@ class CountryModel {
       currencyCode: 'UGX',
       currencySymbol: 'USh',
       rateToGbp: 4680.00,
-      flagEmoji: '🇺🇬',
       isPopular: true,
     ),
     CountryModel(
@@ -60,7 +56,6 @@ class CountryModel {
       currencyCode: 'ZAR',
       currencySymbol: 'R',
       rateToGbp: 22.90,
-      flagEmoji: '🇿🇦',
     ),
     CountryModel(
       code: 'CM',
@@ -68,7 +63,6 @@ class CountryModel {
       currencyCode: 'XAF',
       currencySymbol: 'FCFA',
       rateToGbp: 785.00,
-      flagEmoji: '🇨🇲',
     ),
     CountryModel(
       code: 'CI',
@@ -76,7 +70,6 @@ class CountryModel {
       currencyCode: 'XOF',
       currencySymbol: 'CFA',
       rateToGbp: 785.00,
-      flagEmoji: '🇨🇮',
     ),
     CountryModel(
       code: 'SN',
@@ -84,7 +77,6 @@ class CountryModel {
       currencyCode: 'XOF',
       currencySymbol: 'CFA',
       rateToGbp: 785.00,
-      flagEmoji: '🇸🇳',
     ),
     CountryModel(
       code: 'BD',
@@ -92,7 +84,6 @@ class CountryModel {
       currencyCode: 'BDT',
       currencySymbol: '৳',
       rateToGbp: 153.20,
-      flagEmoji: '🇧🇩',
     ),
     CountryModel(
       code: 'PK',
@@ -100,7 +91,6 @@ class CountryModel {
       currencyCode: 'PKR',
       currencySymbol: '₨',
       rateToGbp: 355.00,
-      flagEmoji: '🇵🇰',
     ),
     CountryModel(
       code: 'IN',
@@ -108,7 +98,6 @@ class CountryModel {
       currencyCode: 'INR',
       currencySymbol: '₹',
       rateToGbp: 107.50,
-      flagEmoji: '🇮🇳',
     ),
   ];
 }

@@ -14,72 +14,78 @@ class ReferralsScreen extends ConsumerWidget {
   void _showQrModal(BuildContext context, String code) {
     showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (ctx) => Container(
-        padding: const EdgeInsets.all(24),
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(24),
-            topRight: Radius.circular(24),
+      builder: (ctx) {
+        final bottomPadding = MediaQuery.of(ctx).viewPadding.bottom;
+        return Container(
+          padding: EdgeInsets.fromLTRB(24, 16, 24, 28 + bottomPadding),
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(24),
+              topRight: Radius.circular(24),
+            ),
           ),
-        ),
-        child: SafeArea(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                width: 40,
-                height: 4,
-                decoration: BoxDecoration(
-                  color: AppColors.border,
-                  borderRadius: BorderRadius.circular(2),
-                ),
-              ),
-              const SizedBox(height: 20),
-              Text('Scan Referral QR Code', style: AppTextStyles.h2),
-              const SizedBox(height: 8),
-              Text(
-                'Let your friend scan this QR code to sign up with your code $code',
-                textAlign: TextAlign.center,
-                style: AppTextStyles.bodySmall,
-              ),
-              const SizedBox(height: 24),
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: AppColors.border),
-                  boxShadow: [
-                    BoxShadow(color: Colors.black.withOpacity(0.04), blurRadius: 10),
-                  ],
-                ),
-                child: QrImageView(
-                  data: 'https://ijevo.com/join?ref=$code',
-                  version: QrVersions.auto,
-                  size: 200.0,
-                  eyeStyle: const QrEyeStyle(
-                    eyeShape: QrEyeShape.square,
-                    color: AppColors.navy,
-                  ),
-                  dataModuleStyle: const QrDataModuleStyle(
-                    dataModuleShape: QrDataModuleShape.square,
-                    color: AppColors.navy,
+          child: SafeArea(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  width: 40,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: AppColors.border,
+                    borderRadius: BorderRadius.circular(2),
                   ),
                 ),
-              ),
-              const SizedBox(height: 24),
-              IjevoButton(
-                text: 'Done',
-                onPressed: () => Navigator.pop(ctx),
-              ),
-            ],
+                const SizedBox(height: 16),
+                Text('Scan Referral QR Code', style: AppTextStyles.h2),
+                const SizedBox(height: 6),
+                Text(
+                  'Let your friend scan this QR code to sign up with your code $code',
+                  textAlign: TextAlign.center,
+                  style: AppTextStyles.bodySmall,
+                ),
+                const SizedBox(height: 18),
+                Container(
+                  padding: const EdgeInsets.all(14),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: AppColors.border),
+                    boxShadow: [
+                      BoxShadow(color: Colors.black.withOpacity(0.04), blurRadius: 10),
+                    ],
+                  ),
+                  child: QrImageView(
+                    data: 'https://ijevo.com/join?ref=$code',
+                    version: QrVersions.auto,
+                    size: 160.0,
+                    eyeStyle: const QrEyeStyle(
+                      eyeShape: QrEyeShape.square,
+                      color: AppColors.navy,
+                    ),
+                    dataModuleStyle: const QrDataModuleStyle(
+                      dataModuleShape: QrDataModuleShape.square,
+                      color: AppColors.navy,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                IjevoButton(
+                  text: 'Done',
+                  onPressed: () => Navigator.pop(ctx),
+                ),
+              ],
+            ),
           ),
         ),
-      ),
-    );
-  }
+      );
+    },
+  );
+}
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -92,10 +98,11 @@ class ReferralsScreen extends ConsumerWidget {
         title: Text('Refer & Earn', style: AppTextStyles.h2),
         centerTitle: false,
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(20, 20, 20, 32),
+          child: Column(
+            children: [
             // Hero Card
             Container(
               padding: const EdgeInsets.all(24),
@@ -122,7 +129,7 @@ class ReferralsScreen extends ConsumerWidget {
                       color: Colors.white.withOpacity(0.12),
                       shape: BoxShape.circle,
                     ),
-                    child: const Text('🎁', style: TextStyle(fontSize: 32)),
+                    child: const Icon(Icons.card_giftcard_rounded, color: Colors.white, size: 36),
                   ),
                   const SizedBox(height: 16),
                   Text(
@@ -162,7 +169,7 @@ class ReferralsScreen extends ConsumerWidget {
                             Clipboard.setData(ClipboardData(text: code));
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
-                                content: Text('Referral code copied to clipboard! 📋'),
+                                content: Text('Referral code copied to clipboard!'),
                                 backgroundColor: AppColors.primary,
                               ),
                             );
@@ -265,6 +272,7 @@ class ReferralsScreen extends ConsumerWidget {
             ),
           ],
         ),
+      ),
       ),
     );
   }

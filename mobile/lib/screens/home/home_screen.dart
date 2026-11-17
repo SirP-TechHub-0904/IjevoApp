@@ -5,12 +5,17 @@ import 'package:intl/intl.dart';
 import '../../models/bill_model.dart';
 import '../../providers/activity_provider.dart';
 import '../../providers/auth_provider.dart';
+import '../../providers/notification_provider.dart';
 import '../../providers/transfer_provider.dart';
 import '../../providers/wallet_provider.dart';
+import '../../services/biometric_service.dart';
+import '../../services/onesignal_service.dart';
+import '../../services/storage_service.dart';
 import '../../theme/app_colors.dart';
 import '../../theme/app_text_styles.dart';
 import '../../widgets/flag_avatar.dart';
 import '../../widgets/ijevo_button.dart';
+import '../../widgets/user_avatar.dart';
 import '../activity/receipt_modal.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
@@ -28,6 +33,163 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   void initState() {
     super.initState();
     _updateReceiveText();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkAndPromptPostSignup();
+    });
+  }
+
+  Future<void> _checkAndPromptPostSignup() async {
+    if (StorageService.hasPromptedPostSignup) return;
+
+    // Mark as prompted so prompts only fire once per account signup
+    await StorageService.setHasPromptedPostSignup(true);
+
+    // Prompt 1: Notifications popup after 2 seconds on Dashboard
+    await Future.delayed(const Duration(seconds: 2));
+    if (!mounted) return;
+    await _showNotificationDialog();
+
+    // Prompt 2: Biometrics popup after next 2 seconds
+    await Future.delayed(const Duration(seconds: 2));
+    if (!mounted) return;
+    await _showBiometricDialog();
+  }
+
+  Future<void> _showNotificationDialog() async {
+    await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+        contentPadding: const EdgeInsets.fromLTRB(24, 28, 24, 20),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 64,
+              height: 64,
+              decoration: const BoxDecoration(
+                color: AppColors.primaryLight,
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(Icons.notifications_active_outlined, color: AppColors.primary, size: 32),
+            ),
+            const SizedBox(height: 20),
+            Text('Enable Notifications', style: AppTextStyles.h2, textAlign: TextAlign.center),
+            const SizedBox(height: 8),
+            Text(
+              'Get instant delivery alerts when your recipient receives money, plus live exchange rate updates.',
+              style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 24),
+            IjevoButton(
+              text: 'Enable Notifications',
+              onPressed: () async {
+                ref.read(authProvider.notifier).togglePush(true);
+                await OneSignalService().requestPermission();
+                if (ctx.mounted) {
+                  Navigator.pop(ctx);
+                }
+                if (mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      backgroundColor: AppColors.primary,
+                      content: Text('Push notifications enabled!'),
+                    ),
+                  );
+                }
+              },
+            ),
+            const SizedBox(height: 8),
+            TextButton(
+              onPressed: () {
+                ref.read(authProvider.notifier).togglePush(false);
+                Navigator.pop(ctx);
+              },
+              child: Text(
+                'Maybe Later',
+                style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary, fontWeight: FontWeight.w600),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _showBiometricDialog() async {
+    await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+        contentPadding: const EdgeInsets.fromLTRB(24, 28, 24, 20),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 64,
+              height: 64,
+              decoration: const BoxDecoration(
+                color: AppColors.primaryLight,
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(Icons.fingerprint, color: AppColors.primary, size: 36),
+            ),
+            const SizedBox(height: 20),
+            Text('Enable Biometric Unlock', style: AppTextStyles.h2, textAlign: TextAlign.center),
+            const SizedBox(height: 8),
+            Text(
+              'Log in securely with Face ID or Fingerprint whenever you return to Ijevo.',
+              style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 24),
+            IjevoButton(
+              text: 'Enable Biometrics',
+              onPressed: () async {
+                final success = await BiometricService.authenticate(
+                  reason: 'Scan your fingerprint or Face ID to approve biometric unlock',
+                );
+                if (ctx.mounted) {
+                  Navigator.pop(ctx);
+                }
+                if (mounted) {
+                  if (success) {
+                    ref.read(authProvider.notifier).toggleBiometrics(true);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        backgroundColor: AppColors.primary,
+                        content: Text('Fingerprint verified! Biometric unlock enabled.'),
+                      ),
+                    );
+                  } else {
+                    ref.read(authProvider.notifier).toggleBiometrics(false);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Biometric verification cancelled or not recognized.'),
+                      ),
+                    );
+                  }
+                }
+              },
+            ),
+            const SizedBox(height: 8),
+            TextButton(
+              onPressed: () {
+                ref.read(authProvider.notifier).toggleBiometrics(false);
+                Navigator.pop(ctx);
+              },
+              child: Text(
+                'Skip for Now',
+                style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary, fontWeight: FontWeight.w600),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   void _updateReceiveText() {
@@ -49,6 +211,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final transfer = ref.watch(transferProvider);
     final wallets = ref.watch(walletProvider);
     final activity = ref.watch(activityProvider);
+    final notifState = ref.watch(notificationProvider);
     final currencyFormat = NumberFormat('#,##0.00');
 
     return Scaffold(
@@ -64,69 +227,125 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    // Avatar IU
-                    InkWell(
+                    // Avatar
+                    UserAvatar(
+                      user: user,
+                      size: 44,
                       onTap: () => context.go('/account'),
-                      borderRadius: BorderRadius.circular(22),
-                      child: Container(
-                        width: 44,
-                        height: 44,
-                        decoration: const BoxDecoration(
-                          color: AppColors.navy,
-                          shape: BoxShape.circle,
-                        ),
-                        alignment: Alignment.center,
-                        child: Text(
-                          user.initials,
-                          style: AppTextStyles.bodyMedium.copyWith(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
+                    ),
+
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        // Referral Bonus Chip
+                        InkWell(
+                          onTap: () => context.go('/referrals'),
+                          borderRadius: BorderRadius.circular(20),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                            decoration: BoxDecoration(
+                              color: AppColors.primaryLight,
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(color: AppColors.primary.withOpacity(0.5)),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Icon(Icons.card_giftcard, size: 16, color: AppColors.primaryDark),
+                                const SizedBox(width: 4),
+                                Text(
+                                  '£20',
+                                  style: AppTextStyles.bodySmall.copyWith(
+                                    color: AppColors.primaryDark,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    ),
 
-                    // Referral Bonus Chip
-                    InkWell(
-                      onTap: () => context.go('/referrals'),
-                      borderRadius: BorderRadius.circular(20),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-                        decoration: BoxDecoration(
-                          color: AppColors.primaryLight,
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(color: AppColors.primary.withOpacity(0.5)),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Text('🎁', style: TextStyle(fontSize: 16)),
-                            const SizedBox(width: 6),
-                            Text(
-                              '£20 Bonus',
-                              style: AppTextStyles.bodySmall.copyWith(
-                                color: AppColors.primaryDark,
-                                fontWeight: FontWeight.bold,
-                              ),
+                        const SizedBox(width: 8),
+
+                        // Cards Icon
+                        InkWell(
+                          onTap: () => context.push('/cards'),
+                          borderRadius: BorderRadius.circular(22),
+                          child: Container(
+                            width: 42,
+                            height: 42,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              shape: BoxShape.circle,
+                              border: Border.all(color: AppColors.border),
                             ),
-                          ],
+                            child: const Icon(Icons.credit_card_outlined, color: AppColors.textPrimary, size: 20),
+                          ),
                         ),
-                      ),
-                    ),
 
-                    // Cards Icon
-                    InkWell(
-                      onTap: () => context.push('/cards'),
-                      borderRadius: BorderRadius.circular(22),
-                      child: Container(
-                        width: 44,
-                        height: 44,
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                          shape: BoxShape.circle,
+                        const SizedBox(width: 8),
+
+                        // Notification Bell with Unread Badge
+                        InkWell(
+                          onTap: () => context.push('/notifications'),
+                          borderRadius: BorderRadius.circular(22),
+                          child: Container(
+                            width: 42,
+                            height: 42,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              shape: BoxShape.circle,
+                              border: Border.all(color: AppColors.border),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.03),
+                                  blurRadius: 4,
+                                  offset: const Offset(0, 2),
+                                ),
+                              ],
+                            ),
+                            child: Stack(
+                              clipBehavior: Clip.none,
+                              children: [
+                                const Center(
+                                  child: Icon(
+                                    Icons.notifications_outlined,
+                                    color: AppColors.textPrimary,
+                                    size: 22,
+                                  ),
+                                ),
+                                if (notifState.unreadCount > 0)
+                                  Positioned(
+                                    right: 4,
+                                    top: 4,
+                                    child: Container(
+                                      padding: const EdgeInsets.all(4),
+                                      decoration: const BoxDecoration(
+                                        color: Color(0xFFEF4444),
+                                        shape: BoxShape.circle,
+                                      ),
+                                      constraints: const BoxConstraints(
+                                        minWidth: 16,
+                                        minHeight: 16,
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          notifState.unreadCount > 9 ? '9+' : '${notifState.unreadCount}',
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 9,
+                                            fontWeight: FontWeight.bold,
+                                            height: 1,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                              ],
+                            ),
+                          ),
                         ),
-                        child: const Icon(Icons.credit_card_outlined, color: AppColors.textPrimary, size: 22),
-                      ),
+                      ],
                     ),
                   ],
                 ),
@@ -395,7 +614,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
               // Horizontal Wallets List
               SizedBox(
-                height: 120,
+                height: 132,
                 child: ListView.separated(
                   scrollDirection: Axis.horizontal,
                   padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -403,38 +622,96 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   separatorBuilder: (_, __) => const SizedBox(width: 12),
                   itemBuilder: (context, index) {
                     final w = wallets.wallets[index];
-                    return Container(
-                      width: 180,
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(18),
-                        border: Border.all(color: AppColors.border),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              FlagAvatar(countryCode: w.countryCode, size: 24),
-                              Text(w.currencyCode, style: AppTextStyles.label.copyWith(fontWeight: FontWeight.bold)),
-                            ],
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                '${w.currencySymbol}${currencyFormat.format(w.balance)}',
-                                style: AppTextStyles.h3.copyWith(fontSize: 16),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              Text(w.currencyName, style: AppTextStyles.bodySmall),
-                            ],
-                          ),
-                        ],
+                    return InkWell(
+                      onTap: () => context.push('/wallets/add-money', extra: w.id),
+                      borderRadius: BorderRadius.circular(18),
+                      child: Container(
+                        width: 195,
+                        padding: const EdgeInsets.all(14),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(18),
+                          border: Border.all(color: AppColors.border),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.02),
+                              blurRadius: 6,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    FlagAvatar(countryCode: w.countryCode, size: 22),
+                                    const SizedBox(width: 6),
+                                    Text(
+                                      w.currencyCode,
+                                      style: AppTextStyles.label.copyWith(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                InkWell(
+                                  onTap: () => context.push('/wallets/add-money', extra: w.id),
+                                  borderRadius: BorderRadius.circular(20),
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                    decoration: BoxDecoration(
+                                      color: AppColors.primaryLight,
+                                      borderRadius: BorderRadius.circular(20),
+                                      border: Border.all(
+                                        color: AppColors.primary.withValues(alpha: 0.35),
+                                        width: 1,
+                                      ),
+                                    ),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        const Icon(Icons.add, size: 12, color: AppColors.primaryDark),
+                                        const SizedBox(width: 2),
+                                        Text(
+                                          'Top up',
+                                          style: AppTextStyles.bodySmall.copyWith(
+                                            color: AppColors.primaryDark,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 11,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '${w.currencySymbol}${currencyFormat.format(w.balance)}',
+                                  style: AppTextStyles.h3.copyWith(fontSize: 16),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                const SizedBox(height: 2),
+                                Text(
+                                  w.currencyName,
+                                  style: AppTextStyles.bodySmall.copyWith(fontSize: 12),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     );
                   },

@@ -5,6 +5,7 @@ import '../../../providers/wallet_provider.dart';
 import '../../../theme/app_colors.dart';
 import '../../../theme/app_text_styles.dart';
 import '../../../widgets/back_circle_button.dart';
+import '../../../widgets/flag_avatar.dart';
 import '../../../widgets/ijevo_button.dart';
 
 class ConvertCurrencyScreen extends ConsumerStatefulWidget {
@@ -54,7 +55,7 @@ class _ConvertCurrencyScreenState extends ConsumerState<ConvertCurrencyScreen> {
     if (success && mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Successfully converted £${_amount.toStringAsFixed(2)} to NGN! 🎉'),
+          content: Text('Successfully converted £${_amount.toStringAsFixed(2)} to NGN!'),
           backgroundColor: AppColors.primary,
         ),
       );
@@ -79,9 +80,10 @@ class _ConvertCurrencyScreenState extends ConsumerState<ConvertCurrencyScreen> {
         ),
         title: Text('Convert Currency', style: AppTextStyles.h3),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
-        child: Column(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(20, 20, 20, 32),
+          child: Column(
           children: [
             // From Currency Card
             Container(
@@ -118,8 +120,8 @@ class _ConvertCurrencyScreenState extends ConsumerState<ConvertCurrencyScreen> {
                         ),
                         child: Row(
                           children: [
-                            const Text('🇬🇧', style: TextStyle(fontSize: 20)),
-                            const SizedBox(width: 6),
+                            const FlagAvatar(countryCode: 'GB', size: 20),
+                            const SizedBox(width: 8),
                             Text('GBP', style: AppTextStyles.h3),
                           ],
                         ),
@@ -210,8 +212,8 @@ class _ConvertCurrencyScreenState extends ConsumerState<ConvertCurrencyScreen> {
                         ),
                         child: Row(
                           children: [
-                            const Text('🇳🇬', style: TextStyle(fontSize: 20)),
-                            const SizedBox(width: 6),
+                            const FlagAvatar(countryCode: 'NG', size: 20),
+                            const SizedBox(width: 8),
                             Text('NGN', style: AppTextStyles.h3),
                           ],
                         ),
@@ -251,6 +253,7 @@ class _ConvertCurrencyScreenState extends ConsumerState<ConvertCurrencyScreen> {
             ),
           ],
         ),
+      ),
       ),
     );
   }

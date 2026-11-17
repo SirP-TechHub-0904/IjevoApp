@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import '../../models/transaction_model.dart';
 import '../../providers/transfer_provider.dart';
+import '../../services/receipt_image_service.dart';
 import '../../theme/app_colors.dart';
 import '../../theme/app_text_styles.dart';
 import '../../widgets/ijevo_button.dart';
@@ -80,7 +81,7 @@ class ReceiptModal extends ConsumerWidget {
             const Divider(height: 1, color: AppColors.borderLight),
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(20),
+                padding: EdgeInsets.fromLTRB(20, 20, 20, 32 + MediaQuery.of(context).viewPadding.bottom),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -154,16 +155,10 @@ class ReceiptModal extends ConsumerWidget {
                     ),
                     const SizedBox(height: 12),
                     IjevoButton(
-                      text: 'Share / Download PDF Receipt',
+                      text: 'Share Receipt',
+                      icon: const Icon(Icons.share, size: 18),
                       isOutlined: true,
-                      onPressed: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('PDF Receipt downloaded to device. 📄'),
-                            backgroundColor: AppColors.navy,
-                          ),
-                        );
-                      },
+                      onPressed: () => ReceiptImageService.shareReceipt(context, transaction),
                     ),
                   ],
                 ),

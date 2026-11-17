@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../models/wallet_model.dart';
+import '../../../providers/notification_provider.dart';
 import '../../../providers/wallet_provider.dart';
 import '../../../theme/app_colors.dart';
 import '../../../theme/app_text_styles.dart';
@@ -111,9 +112,15 @@ class _AddWalletScreenState extends ConsumerState<AddWalletScreen> {
                   ),
                   onTap: () {
                     ref.read(walletProvider.notifier).addNewWallet(wallet);
+                    ref.read(notificationProvider.notifier).addNotification(
+                      title: 'New Wallet Created! 🌍',
+                      message: 'Your ${wallet.currencyName} (${wallet.currencyCode}) multi-currency wallet is now active.',
+                      type: 'transfer',
+                      route: '/home',
+                    );
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text('${wallet.currencyName} (${wallet.currencyCode}) wallet added! 🎉'),
+                        content: Text('${wallet.currencyName} (${wallet.currencyCode}) wallet added!'),
                         backgroundColor: AppColors.primary,
                       ),
                     );

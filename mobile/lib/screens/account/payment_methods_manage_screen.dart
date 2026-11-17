@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../providers/card_provider.dart';
+import '../../providers/linked_bank_provider.dart';
 import '../../theme/app_colors.dart';
 import '../../theme/app_text_styles.dart';
 import '../../widgets/back_circle_button.dart';
@@ -12,6 +13,7 @@ class PaymentMethodsManageScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final cardState = ref.watch(cardProvider);
+    final bankState = ref.watch(linkedBankProvider);
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -25,14 +27,16 @@ class PaymentMethodsManageScreen extends ConsumerWidget {
       body: ListView(
         padding: const EdgeInsets.all(20),
         children: [
-          Text('LINKED UK BANK ACCOUNTS', style: AppTextStyles.label),
+          Text('LINKED UK BANK ACCOUNTS (${bankState.banks.length})', style: AppTextStyles.label),
           const SizedBox(height: 8),
-          _buildCard(
-            icon: Icons.account_balance,
-            title: 'Lloyds Bank PLC',
-            subtitle: 'Sort Code: 30-94-81 • Account: •••• 5591',
-            badge: 'Connected',
-          ),
+          ...bankState.banks.map((bank) {
+            return _buildCard(
+              icon: Icons.account_balance,
+              title: bank.bankName,
+              subtitle: 'Sort Code: ${bank.sortCode} • Account: ${bank.accountNumber}',
+              badge: bank.isConnected ? 'Connected' : 'Pending',
+            );
+          }),
 
           const SizedBox(height: 24),
           Text('SAVED DEBIT CARDS (${cardState.cards.length})', style: AppTextStyles.label),
@@ -51,11 +55,12 @@ class PaymentMethodsManageScreen extends ConsumerWidget {
           OutlinedButton.icon(
             onPressed: () => context.push('/send/link-card'),
             icon: const Icon(Icons.add, color: AppColors.primary),
-            label: const Text('Link a New Debit Card', style: TextStyle(color: AppColors.textPrimary)),
+            label: const Text('Add Payment Method', style: TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.w600)),
             style: OutlinedButton.styleFrom(
               minimumSize: const Size.fromHeight(52),
               side: const BorderSide(color: AppColors.border),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              backgroundColor: Colors.white,
             ),
           ),
         ],

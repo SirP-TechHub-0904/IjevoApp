@@ -26,9 +26,10 @@ class _CardsHubScreenState extends State<CardsHubScreen> {
         ),
         title: Text('Ijevo Cards', style: AppTextStyles.h3),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
-        child: Column(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(20, 20, 20, 32),
+          child: Column(
           children: [
             // Realistic Ijevo Visa Card Mockup
             Container(
@@ -219,6 +220,7 @@ class _CardsHubScreenState extends State<CardsHubScreen> {
             ),
           ],
         ),
+      ),
       ),
     );
   }

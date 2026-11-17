@@ -60,7 +60,7 @@ class WalletNotifier extends StateNotifier<WalletState> {
                 currencySymbol: 'GH₵',
                 currencyName: 'Ghanaian Cedi',
                 countryCode: 'GH',
-                balance: 1250.00,
+                balance: 0.00,
                 isDefault: false,
               ),
             ],

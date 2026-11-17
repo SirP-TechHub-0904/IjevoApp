@@ -1,15 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../models/bill_model.dart';
+import '../services/storage_service.dart';
 import '../screens/account/account_screen.dart';
+import '../screens/auth/splash_screen.dart';
 import '../screens/account/help_center_screen.dart';
 import '../screens/account/legal_screen.dart';
+import '../screens/account/legal_webview_screen.dart';
 import '../screens/account/payment_methods_manage_screen.dart';
 import '../screens/account/personal_details_screen.dart';
 import '../screens/account/recipients_manage_screen.dart';
 import '../screens/account/settings_screen.dart';
 import '../screens/activity/activity_screen.dart';
+import '../screens/activity/download_statement_screen.dart';
+import '../screens/auth/change_password_screen.dart';
+import '../screens/auth/forgot_password_screen.dart';
 import '../screens/auth/login_screen.dart';
+import '../screens/auth/onboarding_screen.dart';
+import '../screens/auth/reset_password_screen.dart';
+import '../screens/auth/signup_screen.dart';
+import '../screens/auth/verify_email_screen.dart';
 import '../screens/cards/cards_hub_screen.dart';
 import '../screens/home/bills/bill_purchase_screen.dart';
 import '../screens/home/bills/bills_hub_screen.dart';
@@ -25,22 +35,100 @@ import '../screens/home/send_money/transfer_success_screen.dart';
 import '../screens/home/wallets/add_money_screen.dart';
 import '../screens/home/wallets/add_wallet_screen.dart';
 import '../screens/home/wallets/convert_currency_screen.dart';
+import '../screens/notifications/notifications_screen.dart';
 import '../screens/referrals/referrals_screen.dart';
 import '../screens/shell/main_shell_screen.dart';
 
-final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
+final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
+final GlobalKey<NavigatorState> _rootNavigatorKey = rootNavigatorKey;
 final GlobalKey<NavigatorState> _shellNavigatorHome = GlobalKey<NavigatorState>();
 final GlobalKey<NavigatorState> _shellNavigatorActivity = GlobalKey<NavigatorState>();
 final GlobalKey<NavigatorState> _shellNavigatorReferrals = GlobalKey<NavigatorState>();
 final GlobalKey<NavigatorState> _shellNavigatorAccount = GlobalKey<NavigatorState>();
 
 final appRouter = GoRouter(
-  navigatorKey: _rootNavigatorKey,
-  initialLocation: '/home',
+  navigatorKey: rootNavigatorKey,
+  initialLocation: '/splash',
+  redirect: (context, state) {
+    final path = state.uri.path;
+
+    // Allow splash screen to display on launch
+    if (path == '/splash') return null;
+
+    final hasSeen = StorageService.hasSeenOnboarding;
+    final isLoggedIn = StorageService.isLoggedIn;
+
+    final isAuthRoute = path == '/onboarding' ||
+        path == '/login' ||
+        path == '/signup' ||
+        path == '/verify-email' ||
+        path == '/forgot-password' ||
+        path == '/reset-password';
+
+    // 1. First-time launcher: force onboarding
+    if (!hasSeen) {
+      if (!isAuthRoute) return '/onboarding';
+      return null;
+    }
+
+    // 2. Not logged in: prevent entering main app
+    if (!isLoggedIn) {
+      if (!isAuthRoute) return '/login';
+      return null;
+    }
+
+    // 3. Already logged in: navigating back to login or onboarding pushes to home
+    if (isLoggedIn && (path == '/login' || path == '/onboarding')) {
+      return '/home';
+    }
+
+    return null;
+  },
   routes: [
+    GoRoute(
+      path: '/splash',
+      builder: (context, state) => const SplashScreen(),
+    ),
+    GoRoute(
+      path: '/onboarding',
+      builder: (context, state) => const OnboardingScreen(),
+    ),
+    GoRoute(
+      path: '/signup',
+      builder: (context, state) => const SignupScreen(),
+    ),
+    GoRoute(
+      path: '/verify-email',
+      builder: (context, state) {
+        final email = state.extra as String? ?? 'ijeoma.uche@example.com';
+        return VerifyEmailScreen(email: email);
+      },
+    ),
     GoRoute(
       path: '/login',
       builder: (context, state) => const LoginScreen(),
+    ),
+    GoRoute(
+      path: '/forgot-password',
+      builder: (context, state) => const ForgotPasswordScreen(),
+    ),
+    GoRoute(
+      path: '/reset-password',
+      builder: (context, state) {
+        final extra = state.extra as Map<String, dynamic>? ?? {};
+        final target = extra['target'] as String? ?? 'your email/phone';
+        return ResetPasswordScreen(target: target);
+      },
+    ),
+    GoRoute(
+      path: '/change-password',
+      parentNavigatorKey: _rootNavigatorKey,
+      builder: (context, state) => const ChangePasswordScreen(),
+    ),
+    GoRoute(
+      path: '/account/change-password',
+      parentNavigatorKey: _rootNavigatorKey,
+      builder: (context, state) => const ChangePasswordScreen(),
     ),
 
     // Stateful Nested Shell for 4 Bottom Tabs
@@ -136,6 +224,11 @@ final appRouter = GoRouter(
       parentNavigatorKey: _rootNavigatorKey,
       builder: (context, state) => const TransferSuccessScreen(),
     ),
+    GoRoute(
+      path: '/activity/statement',
+      parentNavigatorKey: _rootNavigatorKey,
+      builder: (context, state) => const DownloadStatementScreen(),
+    ),
 
     // Wallets Sub-routes
     GoRoute(
@@ -146,7 +239,10 @@ final appRouter = GoRouter(
     GoRoute(
       path: '/wallets/add-money',
       parentNavigatorKey: _rootNavigatorKey,
-      builder: (context, state) => const AddMoneyScreen(),
+      builder: (context, state) {
+        final walletId = state.extra is String ? state.extra as String : 'w_gbp';
+        return AddMoneyScreen(walletId: walletId);
+      },
     ),
     GoRoute(
       path: '/wallets/add-wallet',
@@ -206,6 +302,21 @@ final appRouter = GoRouter(
       path: '/account/legal',
       parentNavigatorKey: _rootNavigatorKey,
       builder: (context, state) => const LegalScreen(),
+    ),
+    GoRoute(
+      path: '/notifications',
+      parentNavigatorKey: _rootNavigatorKey,
+      builder: (context, state) => const NotificationsScreen(),
+    ),
+    GoRoute(
+      path: '/account/legal/view',
+      parentNavigatorKey: _rootNavigatorKey,
+      builder: (context, state) {
+        final extra = state.extra as Map<String, String>? ?? {};
+        final title = extra['title'] ?? 'Legal Document';
+        final slug = extra['slug'] ?? 'terms';
+        return LegalWebViewScreen(title: title, slug: slug);
+      },
     ),
   ],
 );

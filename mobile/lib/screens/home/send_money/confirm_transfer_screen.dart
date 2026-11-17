@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import '../../../providers/card_provider.dart';
+import '../../../providers/linked_bank_provider.dart';
 import '../../../providers/transfer_provider.dart';
+import '../../../providers/wallet_provider.dart';
 import '../../../theme/app_colors.dart';
 import '../../../theme/app_text_styles.dart';
 import '../../../widgets/back_circle_button.dart';
+import '../../../widgets/flag_avatar.dart';
 import '../../../widgets/ijevo_button.dart';
 
 class ConfirmTransferScreen extends ConsumerWidget {
@@ -53,7 +57,7 @@ class ConfirmTransferScreen extends ConsumerWidget {
                 Navigator.pop(ctx);
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
-                    content: Text('Promo code applied successfully! 🎉'),
+                    content: Text('Promo code applied successfully!'),
                     backgroundColor: AppColors.primary,
                   ),
                 );
@@ -69,6 +73,9 @@ class ConfirmTransferScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final transfer = ref.watch(transferProvider);
+    final walletState = ref.watch(walletProvider);
+    final cardState = ref.watch(cardProvider);
+    final bankState = ref.watch(linkedBankProvider);
     final currencyFormat = NumberFormat('#,##0.00');
     final recipient = transfer.selectedRecipient;
 
@@ -85,9 +92,10 @@ class ConfirmTransferScreen extends ConsumerWidget {
         ),
         title: Text('Confirm Transfer', style: AppTextStyles.h3),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
-        child: Column(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(20, 20, 20, 60),
+          child: Column(
           children: [
             // Main Summary Card
             Container(
@@ -151,7 +159,7 @@ class ConfirmTransferScreen extends ConsumerWidget {
                   const SizedBox(height: 14),
                   _buildDetailRow(
                     label: 'Estimated delivery',
-                    value: 'Within 5 minutes ⚡',
+                    value: 'Within 5 minutes',
                     isBold: true,
                   ),
 
@@ -256,45 +264,164 @@ class ConfirmTransferScreen extends ConsumerWidget {
 
             const SizedBox(height: 16),
 
-            // Payment Method Selector
-            InkWell(
-              onTap: () => context.push('/send/payment-method'),
-              borderRadius: BorderRadius.circular(16),
-              child: Container(
-                padding: const EdgeInsets.all(18),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: AppColors.border),
-                ),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 40,
-                      height: 40,
-                      decoration: const BoxDecoration(
-                        color: AppColors.surfaceSecondary,
-                        shape: BoxShape.circle,
+            // Payment Method Section - Direct Vertical List
+            Container(
+              padding: const EdgeInsets.all(18),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(color: AppColors.border),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.02),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('DEBIT FROM', style: AppTextStyles.label.copyWith(fontSize: 11)),
+                      Text(
+                        'Select payment source',
+                        style: AppTextStyles.bodySmall.copyWith(
+                          color: AppColors.textSecondary,
+                          fontSize: 11,
+                        ),
                       ),
-                      child: const Icon(Icons.account_balance, color: AppColors.textPrimary, size: 20),
-                    ),
-                    const SizedBox(width: 14),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+
+                  // 1. Wallets listed vertically
+                  ...walletState.wallets.map((w) {
+                    final isZero = w.balance <= 0.0;
+                    final isSelected = transfer.paymentMethod == '${w.currencyCode} Wallet' ||
+                        (transfer.paymentMethodType == 'wallet' && transfer.paymentMethod.contains(w.currencyCode));
+                    final formattedBal = '${w.currencySymbol}${currencyFormat.format(w.balance)}';
+
+                    return _buildPaymentOptionItem(
+                      leading: FlagAvatar(countryCode: w.countryCode, size: 28),
+                      title: '${w.currencyCode} Wallet',
+                      subtitle: isZero ? 'Balance: $formattedBal (Zero balance)' : 'Balance: $formattedBal',
+                      isSelected: isSelected,
+                      isZero: isZero,
+                      onTap: isZero
+                          ? () {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('${w.currencyName} is empty ($formattedBal). Top up to use.'),
+                                  backgroundColor: AppColors.navy,
+                                  action: SnackBarAction(
+                                    label: 'Top Up',
+                                    textColor: AppColors.primary,
+                                    onPressed: () => context.push('/home/wallets/add-money', extra: w.id),
+                                  ),
+                                ),
+                              );
+                            }
+                          : () {
+                              ref.read(transferProvider.notifier).selectPaymentMethod(
+                                    '${w.currencyCode} Wallet',
+                                    subtitle: 'Available balance: $formattedBal • Instant debit',
+                                    badge: 'Active Wallet',
+                                    type: 'wallet',
+                                  );
+                            },
+                    );
+                  }),
+
+                  // 2. Saved Cards listed vertically
+                  ...cardState.cards.map((c) {
+                    final cardTitle = '${c.brand} Debit Card (${c.last4})';
+                    final isSelected = transfer.paymentMethod.contains(c.last4) ||
+                        (transfer.paymentMethodType == 'card' && transfer.paymentMethod.contains(c.brand));
+
+                    return _buildPaymentOptionItem(
+                      leading: Container(
+                        width: 28,
+                        height: 28,
+                        decoration: const BoxDecoration(
+                          color: AppColors.primaryLight,
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(Icons.credit_card_rounded, color: AppColors.primary, size: 16),
+                      ),
+                      title: '${c.brand} Debit Card',
+                      subtitle: 'Card ending with *${c.last4}',
+                      isSelected: isSelected,
+                      onTap: () {
+                        ref.read(transferProvider.notifier).selectPaymentMethod(
+                              cardTitle,
+                              subtitle: '•••• •••• •••• ${c.last4} • Exp ${c.expiryDate}',
+                              badge: c.isDefault ? 'Default' : 'Verified',
+                              type: 'card',
+                            );
+                      },
+                    );
+                  }),
+
+                  // 3. Linked Banks listed vertically
+                  ...bankState.banks.map((b) {
+                    final bankTitle = '${b.bankName} (${b.accountNumber})';
+                    final isSelected = transfer.paymentMethod.contains(b.bankName) ||
+                        (transfer.paymentMethodType == 'bank' && transfer.paymentMethod.contains(b.accountNumber));
+                    final last4 = b.accountNumber.length > 4
+                        ? b.accountNumber.substring(b.accountNumber.length - 4)
+                        : b.accountNumber;
+
+                    return _buildPaymentOptionItem(
+                      leading: Container(
+                        width: 28,
+                        height: 28,
+                        decoration: const BoxDecoration(
+                          color: AppColors.primaryLight,
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(Icons.account_balance_rounded, color: AppColors.primary, size: 16),
+                      ),
+                      title: b.bankName,
+                      subtitle: 'Bank ending with *$last4',
+                      isSelected: isSelected,
+                      onTap: () {
+                        ref.read(transferProvider.notifier).selectPaymentMethod(
+                              bankTitle,
+                              subtitle: 'Sort Code: ${b.sortCode} • Account: ${b.accountNumber}',
+                              badge: 'Connected',
+                              type: 'bank',
+                            );
+                      },
+                    );
+                  }),
+
+                  const SizedBox(height: 4),
+
+                  // Link a new debit card or bank
+                  InkWell(
+                    onTap: () => context.push('/send/link-card'),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text('Payment Method', style: AppTextStyles.bodySmall),
-                          const SizedBox(height: 2),
+                          const Icon(Icons.add_circle_outline, size: 18, color: AppColors.primary),
+                          const SizedBox(width: 6),
                           Text(
-                            transfer.paymentMethod,
-                            style: AppTextStyles.bodyLarge.copyWith(fontWeight: FontWeight.w600),
+                            '+ Link a new debit card or bank',
+                            style: AppTextStyles.bodySmall.copyWith(
+                              color: AppColors.primary,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ],
                       ),
                     ),
-                    const Icon(Icons.chevron_right, color: AppColors.textMuted),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
 
@@ -304,25 +431,77 @@ class ConfirmTransferScreen extends ConsumerWidget {
             IjevoButton(
               text: 'Pay $sendFormatted',
               onPressed: () {
-                if (transfer.paymentMethod.contains('Instant')) {
+                if (transfer.paymentMethodType == 'instant' ||
+                    (transfer.paymentMethod.contains('Instant') && !transfer.paymentMethod.contains('Lloyds'))) {
                   context.push('/send/bank-picker');
                 } else {
                   context.push('/send/success');
                 }
               },
             ),
+          ],
+        ),
+      ),
+    ),
+  );
+  }
 
-            const SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(Icons.shield_outlined, size: 16, color: AppColors.textMuted),
-                const SizedBox(width: 6),
-                Text(
-                  'FCA Regulated & Protected',
-                  style: AppTextStyles.bodySmall.copyWith(color: AppColors.textMuted),
-                ),
-              ],
+  Widget _buildPaymentOptionItem({
+    required Widget leading,
+    required String title,
+    required String subtitle,
+    required bool isSelected,
+    required VoidCallback onTap,
+    bool isZero = false,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+        decoration: BoxDecoration(
+          color: isSelected
+              ? AppColors.primaryLight
+              : (isZero ? AppColors.surfaceSecondary.withValues(alpha: 0.5) : AppColors.surfaceSecondary),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: isSelected
+                ? AppColors.primary
+                : (isZero ? AppColors.borderLight : AppColors.border),
+            width: isSelected ? 1.5 : 1,
+          ),
+        ),
+        child: Row(
+          children: [
+            leading,
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: AppTextStyles.bodyMedium.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: isZero ? AppColors.textMuted : AppColors.textPrimary,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    subtitle,
+                    style: AppTextStyles.bodySmall.copyWith(
+                      color: isZero ? AppColors.textMuted : AppColors.textSecondary,
+                      fontSize: 12,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Icon(
+              isSelected ? Icons.check_circle : Icons.radio_button_unchecked,
+              color: isSelected ? AppColors.primary : AppColors.border,
+              size: 22,
             ),
           ],
         ),

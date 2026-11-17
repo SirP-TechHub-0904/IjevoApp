@@ -7,7 +7,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Ijevo Mobile</string>
+	<string>Ijevo</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -66,5 +66,9 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Ijevo uses Face ID to securely unlock your wallet and authorize transfers.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Ijevo needs access to save transaction receipt images to your photos.</string>
 </dict>
 </plist>

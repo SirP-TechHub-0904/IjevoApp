@@ -48,8 +48,9 @@ class _ChooseRecipientScreenState extends ConsumerState<ChooseRecipientScreen> {
         ),
         title: Text('Select Recipient', style: AppTextStyles.h3),
       ),
-      body: Column(
-        children: [
+      body: SafeArea(
+        child: Column(
+          children: [
           // Search Bar
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
@@ -196,6 +197,7 @@ class _ChooseRecipientScreenState extends ConsumerState<ChooseRecipientScreen> {
                   ),
           ),
         ],
+      ),
       ),
     );
   }

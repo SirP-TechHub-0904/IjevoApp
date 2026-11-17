@@ -76,7 +76,7 @@ class CustomBottomSheet {
                 Flexible(
                   child: SingleChildScrollView(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                      padding: EdgeInsets.fromLTRB(20, 16, 20, 24 + MediaQuery.of(context).viewPadding.bottom),
                       child: child,
                     ),
                   ),

@@ -19,18 +19,18 @@ class _BankPickerScreenState extends ConsumerState<BankPickerScreen> {
   final TextEditingController _searchController = TextEditingController();
   String _query = '';
 
-  final List<Map<String, String>> _ukBanks = [
-    {'name': 'Lloyds Bank', 'logo': '🏦'},
-    {'name': 'Barclays', 'logo': '🦅'},
-    {'name': 'NatWest', 'logo': '🔺'},
-    {'name': 'Monzo', 'logo': '🟠'},
-    {'name': 'Revolut', 'logo': '⚡'},
-    {'name': 'HSBC UK', 'logo': '🔴'},
-    {'name': 'Santander UK', 'logo': '🔥'},
-    {'name': 'Starling Bank', 'logo': '🔵'},
-    {'name': 'Halifax', 'logo': '✖️'},
-    {'name': 'Bank of Scotland', 'logo': '🏴󠁧󠁢󠁳󠁣󠁴󠁿'},
-    {'name': 'TSB', 'logo': '🔷'},
+  final List<Map<String, dynamic>> _ukBanks = [
+    {'name': 'Lloyds Bank', 'icon': Icons.account_balance_rounded, 'color': const Color(0xFF006A4E)},
+    {'name': 'Barclays', 'icon': Icons.account_balance_rounded, 'color': const Color(0xFF00AEEF)},
+    {'name': 'NatWest', 'icon': Icons.account_balance_rounded, 'color': const Color(0xFF5A1A5B)},
+    {'name': 'Monzo', 'icon': Icons.account_balance_rounded, 'color': const Color(0xFFFF4961)},
+    {'name': 'Revolut', 'icon': Icons.bolt_rounded, 'color': const Color(0xFF0075FF)},
+    {'name': 'HSBC UK', 'icon': Icons.account_balance_rounded, 'color': const Color(0xFFDB0011)},
+    {'name': 'Santander UK', 'icon': Icons.account_balance_rounded, 'color': const Color(0xFFEC0000)},
+    {'name': 'Starling Bank', 'icon': Icons.account_balance_rounded, 'color': const Color(0xFF1FC39E)},
+    {'name': 'Halifax', 'icon': Icons.account_balance_rounded, 'color': const Color(0xFF002D62)},
+    {'name': 'Bank of Scotland', 'icon': Icons.account_balance_rounded, 'color': const Color(0xFF003865)},
+    {'name': 'TSB', 'icon': Icons.account_balance_rounded, 'color': const Color(0xFF001970)},
   ];
 
   @override
@@ -48,17 +48,19 @@ class _BankPickerScreenState extends ConsumerState<BankPickerScreen> {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (ctx) => Container(
-        padding: const EdgeInsets.all(24),
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(24),
-            topRight: Radius.circular(24),
+      builder: (ctx) {
+        final bottomPadding = MediaQuery.of(ctx).viewPadding.bottom;
+        return Container(
+          padding: EdgeInsets.fromLTRB(24, 24, 24, 28 + bottomPadding),
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(24),
+              topRight: Radius.circular(24),
+            ),
           ),
-        ),
-        child: SafeArea(
-          child: Column(
+          child: SafeArea(
+            child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -108,9 +110,10 @@ class _BankPickerScreenState extends ConsumerState<BankPickerScreen> {
             ],
           ),
         ),
-      ),
-    );
-  }
+      );
+    },
+  );
+}
 
   @override
   Widget build(BuildContext context) {
@@ -157,13 +160,14 @@ class _BankPickerScreenState extends ConsumerState<BankPickerScreen> {
                     width: 44,
                     height: 44,
                     decoration: BoxDecoration(
-                      color: AppColors.surfaceSecondary,
+                      color: (bank['color'] as Color).withValues(alpha: 0.12),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     alignment: Alignment.center,
-                    child: Text(
-                      bank['logo']!,
-                      style: const TextStyle(fontSize: 22),
+                    child: Icon(
+                      bank['icon'] as IconData,
+                      color: bank['color'] as Color,
+                      size: 24,
                     ),
                   ),
                   title: Text(

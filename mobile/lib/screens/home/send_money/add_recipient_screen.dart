@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../models/recipient_model.dart';
 import '../../../providers/activity_provider.dart';
+import '../../../providers/notification_provider.dart';
 import '../../../providers/transfer_provider.dart';
 import '../../../theme/app_colors.dart';
 import '../../../theme/app_text_styles.dart';
@@ -66,6 +67,12 @@ class _AddRecipientScreenState extends ConsumerState<AddRecipientScreen> {
 
     ref.read(activityProvider.notifier).addRecipient(newRecipient);
     ref.read(transferProvider.notifier).selectRecipient(newRecipient);
+    ref.read(notificationProvider.notifier).addNotification(
+      title: 'New Recipient Added 👤',
+      message: '${newRecipient.fullName} (${newRecipient.institutionName}) has been added to your recipients.',
+      type: 'transfer',
+      route: '/home',
+    );
 
     setState(() => _isLoading = false);
     if (mounted) {
@@ -86,9 +93,10 @@ class _AddRecipientScreenState extends ConsumerState<AddRecipientScreen> {
         ),
         title: Text('Add Recipient in ${country.name}', style: AppTextStyles.h3),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
-        child: Form(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(20, 20, 20, 32),
+          child: Form(
           key: _formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -221,6 +229,7 @@ class _AddRecipientScreenState extends ConsumerState<AddRecipientScreen> {
             ],
           ),
         ),
+      ),
       ),
     );
   }
