@@ -42,14 +42,14 @@ builder.Services.AddHangfire(configuration => configuration
 
 builder.Services.AddHangfireServer();
 
-// 5. CORS for Flutter, Angular Admin & Web Portal
+// 5. CORS for Flutter, Angular Admin & Website
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("IjevoCorsPolicy", policy =>
     {
         policy.WithOrigins(
                 "http://localhost:4200", // Angular Admin
-                "http://localhost:4300", // Angular Web Portal
+                "http://localhost:4300", // Angular Website
                 "http://localhost:3000"
             )
             .AllowAnyHeader()

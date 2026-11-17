@@ -58,7 +58,7 @@ class AppColors {
 }
 ```
 
-### B. Angular / CSS Design Tokens (`web/portal/src/styles.scss` & `web/admin/`)
+### B. Angular / CSS Design Tokens (`web/website/src/styles.scss` & `web/admin/`)
 ```scss
 :root {
   /* Core Brand */
