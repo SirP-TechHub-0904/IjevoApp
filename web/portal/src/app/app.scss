@@ -2,22 +2,275 @@
    APP COMPONENT STYLES (Plax FinTech Theme customized for Ijevo)
    ========================================================================== */
 
-/* Navbar */
-.navbar {
+/* ==========================================================================
+   HEADER / TOP PANEL (Plax Fintech System)
+   ========================================================================== */
+.mil-top-panel {
   position: sticky;
   top: 0;
+  left: 0;
+  width: 100%;
   z-index: 1000;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(12px);
+  background-color: #FFFFFF;
   border-bottom: 1px solid var(--ijevo-border-light);
-  height: 80px;
+  box-shadow: 0 4px 12px rgba(11, 25, 44, 0.04);
+  transition: all 0.3s cubic-bezier(0, 0, 0.3642, 1);
+
+  .mil-top-panel-inner {
+    height: 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.mil-logo {
   display: flex;
   align-items: center;
+  text-decoration: none;
 
-  .nav-container {
+  .brand-logo-img {
+    height: 40px;
+    width: auto;
+    max-width: 170px;
+    object-fit: contain;
+    display: block;
+    transition: transform 0.2s ease;
+
+    &:hover {
+      transform: scale(1.02);
+    }
+  }
+}
+
+/* Desktop Menu */
+.mil-top-menu {
+  @media (max-width: 992px) {
+    display: none;
+  }
+
+  ul {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+      margin-right: 12px;
+
+      &:last-child {
+        margin-right: 0;
+      }
+
+      a {
+        display: flex;
+        align-items: center;
+        height: 48px;
+        padding: 0 16px;
+        font-family: var(--font-heading);
+        font-size: 15px;
+        font-weight: 600;
+        color: #64748B;
+        text-decoration: none;
+        border-radius: 10px;
+        position: relative;
+        transition: color 0.2s cubic-bezier(0, 0, 0.3642, 1);
+
+        &:hover {
+          color: var(--ijevo-primary);
+        }
+      }
+
+      &.mil-active > a {
+        color: var(--ijevo-navy);
+        font-weight: 700;
+
+        &:before {
+          content: "";
+          position: absolute;
+          bottom: 4px;
+          left: 16px;
+          right: 16px;
+          height: 2px;
+          background: var(--ijevo-primary);
+          border-radius: 2px;
+        }
+      }
+    }
+  }
+}
+
+/* Header Buttons Group */
+.mil-menu-buttons {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  .mil-desktop-only {
+    @media (max-width: 992px) {
+      display: none !important;
+    }
+  }
+
+  /* Plax Animated Menu Button */
+  .mil-menu-btn {
+    margin-left: 8px;
+    background-color: #F0FDF7;
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    cursor: pointer;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid rgba(0, 208, 132, 0.2);
+    position: relative;
+    transition: all 0.3s cubic-bezier(0, 0, 0.3642, 1);
+
+    &:hover {
+      background-color: #DCFCE7;
+    }
+
+    @media (max-width: 992px) {
+      display: flex;
+    }
+
+    span,
+    span:after,
+    span:before {
+      content: "";
+      display: block;
+      width: 20px;
+      height: 2px;
+      background: var(--ijevo-navy);
+      border-radius: 2px;
+      transition: all 0.3s cubic-bezier(0, 0, 0.3642, 1);
+    }
+
+    span {
+      position: relative;
+    }
+
+    span:before {
+      position: absolute;
+      top: -7px;
+      left: 0;
+    }
+
+    span:after {
+      position: absolute;
+      top: 7px;
+      left: 0;
+    }
+
+    &.mil-active {
+      background-color: #E2E8F0;
+      border-color: #CBD5E1;
+
+      span {
+        transform: rotate(45deg);
+      }
+
+      span:before {
+        transform: translate(0, 7px) rotate(-90deg);
+      }
+
+      span:after {
+        transform: translate(0, -7px) rotate(-90deg);
+      }
+    }
+  }
+}
+
+/* Mobile Dropdown Menu (Plax Replica) */
+.mil-mobile-dropdown {
+  position: absolute;
+  pointer-events: none;
+  top: 80px;
+  left: 0;
+  right: 0;
+  width: 100%;
+  background-color: #FFFFFF;
+  border-bottom: 2px solid var(--ijevo-border-light);
+  box-shadow: 0 15px 30px rgba(11, 25, 44, 0.1);
+  padding: 12px 20px 24px;
+  opacity: 0;
+  transform: translateY(-8px);
+  transition: all 0.3s cubic-bezier(0, 0, 0.3642, 1);
+  z-index: 999;
+
+  @media (min-width: 993px) {
+    display: none !important;
+  }
+
+  &.mil-active {
+    pointer-events: all;
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .mil-mobile-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+
+    li {
+      width: 100%;
+
+      a {
+        height: 52px;
+        padding: 0 12px;
+        font-family: var(--font-heading);
+        font-size: 1.05rem;
+        font-weight: 600;
+        color: var(--ijevo-navy);
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        border-bottom: 1px solid #F1F5F9;
+        position: relative;
+        transition: color 0.2s ease, padding-left 0.2s ease;
+
+        &:hover {
+          color: var(--ijevo-primary);
+          padding-left: 18px;
+        }
+      }
+
+      &.mil-active > a {
+        color: var(--ijevo-primary);
+
+        &:before {
+          content: "";
+          position: absolute;
+          bottom: -1px;
+          left: 12px;
+          right: 12px;
+          height: 2px;
+          background: var(--ijevo-primary);
+        }
+      }
+    }
+  }
+
+  .mil-mobile-actions {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .btn {
+      width: 100%;
+      justify-content: center;
+      text-align: center;
+      font-size: 0.95rem;
+      font-weight: 600;
+      padding: 14px 20px;
+      border-radius: 10px;
+    }
   }
 }
 
@@ -43,86 +296,6 @@
   &.footer-logo .brand-logo-img {
     height: 44px;
     max-width: 180px;
-  }
-
-  .logo-icon {
-    height: 40px;
-    width: auto;
-    object-fit: contain;
-  }
-
-  .logo-text {
-    font-family: var(--font-heading);
-    font-size: 1.75rem;
-    font-weight: 800;
-    color: var(--ijevo-navy);
-    letter-spacing: -0.03em;
-
-    &.light {
-      color: #FFFFFF;
-    }
-  }
-}
-
-.nav-links {
-  display: flex;
-  align-items: center;
-  gap: 32px;
-
-  @media (max-width: 992px) {
-    display: none;
-  }
-
-  .nav-item {
-    font-family: var(--font-heading);
-    font-weight: 500;
-    font-size: 0.95rem;
-    color: var(--ijevo-text-body);
-
-    &:hover {
-      color: var(--ijevo-primary);
-    }
-  }
-}
-
-.nav-actions {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-
-  .mobile-toggle {
-    display: none;
-    background: none;
-    border: none;
-    font-size: 1.4rem;
-    color: var(--ijevo-navy);
-    cursor: pointer;
-
-    @media (max-width: 992px) {
-      display: block;
-    }
-  }
-}
-
-.mobile-menu {
-  display: none;
-  flex-direction: column;
-  padding: 24px;
-  background: white;
-  border-bottom: 1px solid var(--ijevo-border-light);
-
-  &.open {
-    display: flex;
-  }
-
-  a {
-    padding: 12px 0;
-    font-weight: 600;
-    border-bottom: 1px solid #F1F5F9;
-  }
-
-  .mobile-menu-btns {
-    margin-top: 16px;
   }
 }
 

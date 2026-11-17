@@ -3,42 +3,59 @@
      Modeled on Plax FinTech Design System with Ijevo Brand Identity
      ========================================================================== -->
 
-<!-- Top Navigation Panel -->
-<header class="navbar">
-  <div class="container nav-container">
+<!-- Top Navigation Panel (Plax Design Replication) -->
+<header class="mil-top-panel">
+  <div class="container mil-top-panel-inner">
     <!-- Brand Logo -->
-    <a href="#" class="brand-logo">
+    <a href="#" class="mil-logo">
       <img src="assets/ijevo-logo-dark.png" alt="ijevo" class="brand-logo-img" />
     </a>
 
     <!-- Desktop Navigation Menu -->
-    <nav class="nav-links">
-      <a href="#how-it-works" class="nav-item">How It Works</a>
-      <a href="#features" class="nav-item">Features</a>
-      <a href="#corridors" class="nav-item">Corridors</a>
-      <a href="#security" class="nav-item">Security</a>
-      <a href="#faq" class="nav-item">FAQ</a>
+    <nav class="mil-top-menu">
+      <ul>
+        <li class="mil-active"><a href="#">Home</a></li>
+        <li><a href="#how-it-works">How It Works</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#corridors">Corridors</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
     </nav>
 
-    <!-- Nav Action Buttons -->
-    <div class="nav-actions">
-      <a href="http://localhost:4200" target="_blank" class="btn btn-ghost btn-sm">Admin Portal</a>
-      <a href="#calculator" class="btn btn-primary btn-sm">Send Money</a>
-      <button class="mobile-toggle" (click)="toggleMobileMenu()" aria-label="Toggle Navigation">
-        <i class="fa-solid" [ngClass]="isMobileMenuOpen() ? 'fa-xmark' : 'fa-bars'"></i>
-      </button>
+    <!-- Header Actions (Desktop CTAs + Hamburger Toggle) -->
+    <div class="mil-menu-buttons">
+      <a href="http://localhost:4200" target="_blank" class="btn btn-ghost btn-sm mil-desktop-only">Admin Portal</a>
+      <a href="#calculator" class="btn btn-primary btn-sm mil-desktop-only">Send Money</a>
+      <div class="mil-menu-btn" [class.mil-active]="isMobileMenuOpen()" (click)="toggleMobileMenu()" aria-label="Toggle navigation">
+        <span></span>
+      </div>
     </div>
   </div>
 
-  <!-- Mobile Dropdown Menu -->
-  <div class="mobile-menu" [class.open]="isMobileMenuOpen()">
-    <a href="#how-it-works" (click)="toggleMobileMenu()">How It Works</a>
-    <a href="#features" (click)="toggleMobileMenu()">Features</a>
-    <a href="#corridors" (click)="toggleMobileMenu()">Corridors</a>
-    <a href="#security" (click)="toggleMobileMenu()">Security</a>
-    <a href="#faq" (click)="toggleMobileMenu()">FAQ</a>
-    <div class="mobile-menu-btns">
-      <a href="#calculator" class="btn btn-primary" (click)="toggleMobileMenu()">Send Money Now</a>
+  <!-- Mobile Dropdown Menu (Plax Replica with CTAs inside) -->
+  <div class="mil-mobile-dropdown" [class.mil-active]="isMobileMenuOpen()">
+    <ul class="mil-mobile-list">
+      <li class="mil-active">
+        <a href="#" (click)="toggleMobileMenu()">Home</a>
+      </li>
+      <li>
+        <a href="#how-it-works" (click)="toggleMobileMenu()">How It Works</a>
+      </li>
+      <li>
+        <a href="#features" (click)="toggleMobileMenu()">Features</a>
+      </li>
+      <li>
+        <a href="#corridors" (click)="toggleMobileMenu()">Corridors</a>
+      </li>
+      <li>
+        <a href="#faq" (click)="toggleMobileMenu()">FAQ</a>
+      </li>
+    </ul>
+
+    <!-- CTA buttons inside mobile dropdown menu as requested -->
+    <div class="mil-mobile-actions">
+      <a href="#calculator" class="btn btn-primary btn-block" (click)="toggleMobileMenu()">Send Money</a>
+      <a href="http://localhost:4200" target="_blank" class="btn btn-ghost btn-block" (click)="toggleMobileMenu()">Admin Portal</a>
     </div>
   </div>
 </header>
@@ -50,14 +67,14 @@
       <!-- Left Column: Headline & Value Prop -->
       <div class="hero-content">
         <div class="badge badge-emerald">
-          <i class="fa-solid fa-bolt"></i> Instant UK & EU to Africa & Beyond
+          <i class="fa-solid fa-bolt"></i> Fast, Simple Transfers to Africa & Beyond
         </div>
         <h1 class="hero-title">
           The Fastest Way to Send Money Back Home.
         </h1>
         <p class="hero-description">
-          Empowering the global diaspora with instant bank deposits and mobile money payouts. 
-          Zero hidden fees, guaranteed competitive exchange rates, and bank-grade AES-256 security.
+          Send money to your family and loved ones back home in seconds. 
+          Enjoy great exchange rates, zero hidden fees, and complete peace of mind with bank-grade safety.
         </p>
 
         <div class="hero-highlights">
@@ -251,9 +268,9 @@
           <div class="feature-icon-wrapper">
             <img src="assets/template/img/home-2/icons/3.svg" alt="Bank Grade Security" class="feature-icon" />
           </div>
-          <h3>Military-Grade AES-256</h3>
+          <h3>Bank-Grade Protection</h3>
           <p>
-            Customer bank details and personal identity data are automatically encrypted with column-level AES-256-GCM.
+            Your money and personal details are always protected with the highest level of bank security and strict privacy controls.
           </p>
         </div>
 
@@ -261,9 +278,9 @@
           <div class="feature-icon-wrapper">
             <img src="assets/template/img/home-1/icons/1.svg" alt="Instant Bank Linking" class="feature-icon" />
           </div>
-          <h3>One-Tap Open Banking</h3>
+          <h3>Simple, Instant Payments</h3>
           <p>
-            Pay directly from Monzo, Barclays, Lloyds, or Revolut with biometric Face ID approval. Zero card fee deductions.
+            Pay easily and securely using your debit card or pay directly from your UK bank app with zero extra fees.
           </p>
         </div>
 
@@ -271,9 +288,9 @@
           <div class="feature-icon-wrapper">
             <img src="assets/template/img/home-1/icons/2.svg" alt="Live Tracking" class="feature-icon" />
           </div>
-          <h3>Real-Time SignalR Tracking</h3>
+          <h3>Live Transfer Updates</h3>
           <p>
-            Watch your money travel live. Receive instant push notifications the exact second the funds hit your recipient's account.
+            Follow your money on its journey. You and your recipient receive instant notifications the moment funds land safely.
           </p>
         </div>
 
@@ -440,7 +457,6 @@
       </div>
       <div class="copyright-row">
         <p>© 2026 Ijevo Ltd. All rights reserved.</p>
-        <p class="built-with">Engineered with .NET 9 & Angular SSR</p>
       </div>
     </div>
   </div>

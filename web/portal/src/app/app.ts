@@ -75,7 +75,7 @@ export class App {
     },
     {
       question: 'Is Ijevo regulated and secure?',
-      answer: 'Yes. All data and account numbers are encrypted using military-grade AES-256 column encryption. Payments are processed in full compliance with UK Financial Conduct Authority (FCA) and HMRC Money Service Business regulations.'
+      answer: 'Yes, absolutely. We use bank-grade protection and encryption to keep your money and personal details 100% safe. All transfers comply with strict UK financial regulations (FCA & HMRC).'
     }
   ];
 
