@@ -48,79 +48,80 @@
         </div>
       </div>
 
-      <!-- Right Column: Interactive Remittance Calculator -->
+      <!-- Right Column: Minimalist TapTap-Style Remittance Calculator -->
       <div class="hero-calc-wrapper">
-        <div class="calculator-card">
-          <div class="calc-header">
-            <h3>Send Money Now</h3>
-            <span class="live-dot"><span class="pulsing"></span> Live Rates</span>
+        <div class="calculator-card-minimal">
+          <!-- Top Country Split Bar -->
+          <div class="calc-top-bar">
+            <div class="calc-top-col send-col">
+              <span class="country-icon"><i class="fa-solid fa-location-dot"></i></span>
+              <span class="country-name">United Kingdom (GBP)</span>
+            </div>
+            <div class="calc-top-divider"></div>
+            <div class="calc-top-col receive-col">
+              <span class="country-icon"><i class="fa-solid fa-globe"></i></span>
+              <select [ngModel]="receiveCurrency()" (ngModelChange)="setReceiveCurrency($event)" class="country-select">
+                @for (curr of payoutCurrencies; track curr.code) {
+                <option [value]="curr.code">
+                  {{ curr.name }} ({{ curr.code }})
+                </option>
+                }
+              </select>
+            </div>
           </div>
 
-          <!-- You Send Box -->
-          <div class="calc-box">
-            <div class="calc-box-label">
-              <span>You send</span>
-              <span class="currency-label">British Pound</span>
-            </div>
-            <div class="calc-box-input">
-              <input type="number" [ngModel]="sendAmount()" (ngModelChange)="updateSendAmount($event)" min="1"
-                step="10" />
-              <div class="currency-pill">
-                <span class="currency-symbol">£</span>
-                <span class="code">GBP</span>
+          <!-- Calculator Main Body -->
+          <div class="calc-body">
+            <!-- You Send Field -->
+            <div class="calc-input-group">
+              <label class="calc-field-label">You send (GBP)</label>
+              <div class="calc-field-box">
+                <input
+                  type="number"
+                  [ngModel]="sendAmount()"
+                  (ngModelChange)="updateSendAmount($event)"
+                  min="1"
+                  step="10"
+                  class="calc-amount-input"
+                />
               </div>
             </div>
-          </div>
 
-          <!-- Rate & Fee Breakdown -->
-          <div class="calc-divider">
-            <div class="calc-info-row">
-              <div class="info-dot"></div>
-              <span>Fee: <strong>£0.00</strong> (100% Free)</span>
-            </div>
-            <div class="calc-info-row">
-              <div class="info-dot highlight"></div>
-              <span>Guaranteed Rate: <strong>1 GBP = {{ currentRate().toLocaleString() }} {{ selectedCurrency().code
-                  }}</strong></span>
-            </div>
-          </div>
-
-          <!-- Recipient Gets Box -->
-          <div class="calc-box">
-            <div class="calc-box-label">
-              <span>Recipient receives</span>
-              <span class="currency-label">{{ selectedCurrency().name }}</span>
-            </div>
-            <div class="calc-box-input">
-              <input type="text" [value]="calculatedPayout()" readonly class="readonly-input" />
-
-              <!-- Destination Currency Dropdown -->
-              <div class="currency-select-wrapper">
-                <select [ngModel]="receiveCurrency()" (ngModelChange)="setReceiveCurrency($event)">
-                  @for (curr of payoutCurrencies; track curr.code) {
-                  <option [value]="curr.code">
-                    {{ curr.code }} ({{ curr.symbol }})
-                  </option>
-                  }
-                </select>
+            <!-- They Receive Field -->
+            <div class="calc-input-group">
+              <label class="calc-field-label">They receive ({{ selectedCurrency().code }})</label>
+              <div class="calc-field-box">
+                <input
+                  type="text"
+                  [value]="calculatedPayout()"
+                  readonly
+                  class="calc-amount-input readonly"
+                />
               </div>
             </div>
+
+            <!-- Meta Rates & Fees -->
+            <div class="calc-meta-block">
+              <div class="meta-row">
+                <span class="meta-label">Today's rate:</span>
+                <span class="meta-value">GBP 1 = {{ currentRate().toLocaleString() }} {{ selectedCurrency().code }}</span>
+              </div>
+              <div class="meta-row">
+                <span class="meta-label">Transfer fee:</span>
+                <span class="meta-value">from £0.00*</span>
+              </div>
+            </div>
+
+            <!-- Action Button -->
+            <a routerLink="/send-and-receive-money" class="calc-btn-rate">
+              CONTINUE WITH THIS RATE
+            </a>
+
+            <!-- Subtext disclaimer -->
+            <p class="calc-sub-note">
+              * Delivery in under 60 seconds. Zero hidden deduction fees.
+            </p>
           </div>
-
-          <!-- Delivery Estimate -->
-          <div class="delivery-badge">
-            <i class="fa-solid fa-bolt"></i>
-            <span>Estimated delivery: <strong>Within 60 seconds</strong></span>
-          </div>
-
-          <!-- Calculator CTA Button -->
-          <a routerLink="/send-and-receive-money" class="btn btn-primary btn-block calc-btn">
-            Continue with this Rate <i class="fa-solid fa-arrow-right"></i>
-          </a>
-
-          <p class="calc-disclaimer">
-            Transfer fees and exchange rates are guaranteed at time of checkout.
-          </p>
         </div>
       </div>
     </div>
