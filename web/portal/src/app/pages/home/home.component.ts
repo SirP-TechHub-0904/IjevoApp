@@ -67,7 +67,7 @@ export class HomeComponent {
     },
     {
       question: 'Is Ijevo regulated and secure?',
-      answer: 'Yes, absolutely. We use bank-grade protection and encryption to keep your money and personal details 100% safe. All transfers comply with strict UK financial regulations (FCA & HMRC).'
+      answer: 'Yes, absolutely. We use bank-grade protection and encryption to keep your money and personal details 100% safe. All transfers comply with strict security and safeguarding standards.'
     }
   ];
 

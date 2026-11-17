@@ -1,0 +1,101 @@
+<section class="page-hero">
+  <div class="container">
+    <div class="badge badge-emerald">Cross-Border Transfers</div>
+    <h1 class="page-title">Send and Receive Money in Seconds</h1>
+    <p class="page-lead">
+      Move money effortlessly between the UK, Europe, Africa, and beyond. Low fees, fair exchange rates, and bank-grade protection for both senders and recipients.
+    </p>
+
+    <!-- Quick Calculator Box -->
+    <div style="max-width: 540px; margin: 40px auto 0; background: white; border-radius: 20px; padding: 32px; box-shadow: var(--ijevo-shadow-md); border: 1px solid var(--ijevo-border-light); text-align: left;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <span style="font-weight: 700; color: var(--ijevo-navy); font-size: 1.15rem;">Live Exchange Rate</span>
+        <span class="badge badge-emerald"><i class="fa-solid fa-bolt"></i> 1 GBP = {{ currentRate().toLocaleString() }} {{ selectedCurrency().code }}</span>
+      </div>
+
+      <div style="margin-bottom: 18px;">
+        <label style="font-size: 0.9rem; font-weight: 600; color: #64748B; display: block; margin-bottom: 6px;">You send (GBP)</label>
+        <div style="display: flex; align-items: center; border: 1.5px solid var(--ijevo-border-light); border-radius: 12px; padding: 10px 16px;">
+          <input type="number" [ngModel]="sendAmount()" (ngModelChange)="updateSendAmount($event)" style="border: none; outline: none; width: 100%; font-size: 1.5rem; font-weight: 700; color: var(--ijevo-navy);" />
+          <span style="font-weight: 700; color: var(--ijevo-primary); font-size: 1.1rem; padding-left: 12px;">GBP (£)</span>
+        </div>
+      </div>
+
+      <div style="margin-bottom: 20px;">
+        <label style="font-size: 0.9rem; font-weight: 600; color: #64748B; display: block; margin-bottom: 6px;">Recipient receives ({{ selectedCurrency().name }})</label>
+        <div style="display: flex; align-items: center; border: 1.5px solid var(--ijevo-border-light); border-radius: 12px; padding: 10px 16px; background: #F8FAFC;">
+          <input type="text" [value]="calculatedPayout()" readonly style="border: none; outline: none; width: 100%; font-size: 1.5rem; font-weight: 700; color: var(--ijevo-primary-hover); background: transparent;" />
+          <select [ngModel]="receiveCurrency()" (ngModelChange)="setReceiveCurrency($event)" style="border: 1px solid var(--ijevo-border-light); background: white; border-radius: 8px; padding: 6px 10px; font-weight: 700; color: var(--ijevo-navy); outline: none;">
+            @for (curr of payoutCurrencies; track curr.code) {
+              <option [value]="curr.code">{{ curr.code }} ({{ curr.symbol }})</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; font-size: 0.9rem; color: #64748B; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid #F1F5F9;">
+        <span>Transfer Fee: <strong style="color: var(--ijevo-primary);">£0.00 (Zero Fee)</strong></span>
+        <span>Delivery: <strong style="color: var(--ijevo-navy);">Under 60 seconds</strong></span>
+      </div>
+
+      <a routerLink="/" fragment="download" class="btn btn-primary btn-block" style="padding: 16px; font-size: 1.1rem; justify-content: center;">
+        <i class="fa-solid fa-arrow-down-to-bracket"></i> Download App to Send
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <div class="container">
+    <div class="grid-2" style="gap: 50px; margin-bottom: 70px;">
+      <!-- Sending Money -->
+      <div class="info-card">
+        <div class="card-icon"><i class="fa-solid fa-paper-plane"></i></div>
+        <h2>How to Send Money</h2>
+        <p style="margin-bottom: 20px;">Sending money with Ijevo is designed to be as fast as sending a text message:</p>
+        <ol style="padding-left: 20px; color: var(--ijevo-text-body); line-height: 1.8;">
+          <li><strong>Download & Register:</strong> Download our app for iOS or Android and complete 60-second sign-up.</li>
+          <li><strong>Select Amount:</strong> Pick your destination country and enter the amount you wish to transfer.</li>
+          <li><strong>Enter Recipient:</strong> Choose their local bank or mobile wallet (M-Pesa, MTN MoMo, etc.) and enter their account number.</li>
+          <li><strong>Pay Securely:</strong> Authorize payment using your debit card or UK bank app (Monzo, Barclays, Lloyds, Revolut).</li>
+        </ol>
+      </div>
+
+      <!-- Receiving Money -->
+      <div class="info-card">
+        <div class="card-icon"><i class="fa-solid fa-hand-holding-dollar"></i></div>
+        <h2>How to Receive Money</h2>
+        <p style="margin-bottom: 20px;">We make receiving money 100% effortless for your family and loved ones:</p>
+        <ul style="padding-left: 20px; color: var(--ijevo-text-body); line-height: 1.8;">
+          <li><strong>No App Required:</strong> Recipients do not need to download the Ijevo app or register an account.</li>
+          <li><strong>Direct Bank Credit:</strong> Funds land straight in their regular bank account within 60 seconds.</li>
+          <li><strong>Mobile Money Support:</strong> Direct credit to M-Pesa, MTN MoMo, Telecel Cash, and digital wallets.</li>
+          <li><strong>Zero Deductions:</strong> Recipients get 100% of the funds with zero cash-out penalties or hidden charges.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Supported Countries Summary -->
+    <div class="section-header text-center" style="margin-bottom: 40px;">
+      <div class="badge badge-emerald">Destination Corridors</div>
+      <h2>Popular Supported Countries</h2>
+    </div>
+
+    <div class="grid-3">
+      <div class="info-card">
+        <h3>Nigeria (NGN)</h3>
+        <p>Instant credit to all commercial banks (Access, GTBank, Zenith, UBA, First Bank) and digital banks (Kuda, OPay, PalmPay). Arrives in under 60 seconds.</p>
+      </div>
+
+      <div class="info-card">
+        <h3>Kenya (KES)</h3>
+        <p>Direct real-time payout to M-Pesa mobile wallets, Equity Bank, KCB, and Co-operative Bank. Instant delivery 24/7.</p>
+      </div>
+
+      <div class="info-card">
+        <h3>Ghana (GHS)</h3>
+        <p>Instant mobile money payout to MTN MoMo, Telecel Cash, AirtelTigo, and all Ghanaian commercial bank accounts.</p>
+      </div>
+    </div>
+  </div>
+</section>

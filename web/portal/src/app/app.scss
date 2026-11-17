@@ -376,6 +376,73 @@
     }
   }
 
+  .footer-connect-col {
+    .footer-newsletter-desc {
+      color: #94A3B8;
+      font-size: 0.85rem;
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+
+    .footer-newsletter-form {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+
+      .newsletter-input {
+        background: #132238;
+        border: 1px solid #1E3A5F;
+        border-radius: 8px;
+        padding: 10px 14px;
+        color: white;
+        font-size: 0.85rem;
+        outline: none;
+        width: 100%;
+        min-width: 0;
+
+        &::placeholder {
+          color: #64748B;
+        }
+
+        &:focus {
+          border-color: var(--ijevo-primary);
+        }
+      }
+
+      .newsletter-btn {
+        padding: 10px 14px;
+        font-size: 0.85rem;
+        font-weight: 700;
+        white-space: nowrap;
+        border-radius: 8px;
+      }
+    }
+
+    .footer-download-badges {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+      .store-badge-sm {
+        padding: 8px 14px;
+        border-radius: 10px;
+        gap: 10px;
+
+        i {
+          font-size: 1.35rem;
+        }
+
+        .store-sub {
+          font-size: 0.65rem;
+        }
+
+        .store-name {
+          font-size: 0.85rem;
+        }
+      }
+    }
+  }
+
   .footer-bottom {
     border-top: 1px solid #152238;
     padding-top: 32px;

@@ -11,76 +11,51 @@
       <img src="assets/ijevo-logo-dark.png" alt="ijevo" class="brand-logo-img" />
     </a>
 
-    <!-- Desktop Navigation Menu -->
+    <!-- Desktop Navigation Menu (About Us, Send and Receive Money, Contact Us) -->
     <nav class="mil-top-menu">
       <ul>
-        <li routerLinkActive="mil-active" [routerLinkActiveOptions]="{exact: true}">
-          <a routerLink="/">Home</a>
-        </li>
-        <li routerLinkActive="mil-active">
-          <a routerLink="/how-it-works">How It Works</a>
-        </li>
-        <li routerLinkActive="mil-active">
-          <a routerLink="/send-money/nigeria">Send to Nigeria</a>
-        </li>
-        <li routerLinkActive="mil-active">
-          <a routerLink="/corridors">Corridors</a>
-        </li>
-        <li routerLinkActive="mil-active">
-          <a routerLink="/security">Security</a>
-        </li>
         <li routerLinkActive="mil-active">
           <a routerLink="/about">About Us</a>
         </li>
         <li routerLinkActive="mil-active">
-          <a routerLink="/contact">Contact</a>
+          <a routerLink="/send-and-receive-money">Send and Receive Money</a>
+        </li>
+        <li routerLinkActive="mil-active">
+          <a routerLink="/contact">Contact Us</a>
         </li>
       </ul>
     </nav>
 
-    <!-- Header Actions (Desktop CTAs + Animated Hamburger Toggle) -->
+    <!-- Header CTA (Download Our App) + Animated Hamburger Toggle -->
     <div class="mil-menu-buttons">
-      <a href="http://localhost:4200" target="_blank" class="btn btn-ghost btn-sm mil-desktop-only">Admin Portal</a>
-      <a routerLink="/send-money/nigeria" class="btn btn-primary btn-sm mil-desktop-only">Send Money</a>
+      <a routerLink="/" fragment="download" class="btn btn-primary btn-sm mil-desktop-only">
+        <i class="fa-solid fa-arrow-down-to-bracket"></i> Download Our App
+      </a>
       <div class="mil-menu-btn" [class.mil-active]="isMobileMenuOpen()" (click)="toggleMobileMenu()" aria-label="Toggle navigation">
         <span></span>
       </div>
     </div>
   </div>
 
-  <!-- Mobile Dropdown Menu (Plax Replica with CTAs inside) -->
+  <!-- Mobile Dropdown Menu -->
   <div class="mil-mobile-dropdown" [class.mil-active]="isMobileMenuOpen()">
     <ul class="mil-mobile-list">
-      <li routerLinkActive="mil-active" [routerLinkActiveOptions]="{exact: true}">
-        <a routerLink="/" (click)="closeMobileMenu()">Home</a>
-      </li>
-      <li routerLinkActive="mil-active">
-        <a routerLink="/how-it-works" (click)="closeMobileMenu()">How It Works</a>
-      </li>
-      <li routerLinkActive="mil-active">
-        <a routerLink="/send-money/nigeria" (click)="closeMobileMenu()">Send to Nigeria</a>
-      </li>
-      <li routerLinkActive="mil-active">
-        <a routerLink="/corridors" (click)="closeMobileMenu()">Corridors</a>
-      </li>
-      <li routerLinkActive="mil-active">
-        <a routerLink="/security" (click)="closeMobileMenu()">Security</a>
-      </li>
       <li routerLinkActive="mil-active">
         <a routerLink="/about" (click)="closeMobileMenu()">About Us</a>
       </li>
       <li routerLinkActive="mil-active">
-        <a routerLink="/careers" (click)="closeMobileMenu()">Careers</a>
+        <a routerLink="/send-and-receive-money" (click)="closeMobileMenu()">Send and Receive Money</a>
       </li>
       <li routerLinkActive="mil-active">
-        <a routerLink="/contact" (click)="closeMobileMenu()">Contact</a>
+        <a routerLink="/contact" (click)="closeMobileMenu()">Contact Us</a>
       </li>
     </ul>
 
-    <!-- CTA buttons inside mobile dropdown menu -->
+    <!-- CTA button inside mobile dropdown -->
     <div class="mil-mobile-actions">
-      <a routerLink="/send-money/nigeria" class="btn btn-primary btn-block" (click)="closeMobileMenu()">Send Money</a>
-      <a href="http://localhost:4200" target="_blank" class="btn btn-ghost btn-block" (click)="closeMobileMenu()">Admin Portal</a>
+      <a routerLink="/" fragment="download" class="btn btn-primary btn-block" (click)="closeMobileMenu()">
+        <i class="fa-solid fa-arrow-down-to-bracket"></i> Download Our App
+      </a>
     </div>
   </div>
 </header>
@@ -88,10 +63,11 @@
 <!-- Routed Page Content -->
 <router-outlet></router-outlet>
 
-<!-- Official Footer -->
+<!-- Official Footer (4-Column Layout) -->
 <footer class="footer">
   <div class="container footer-container">
     <div class="footer-top">
+      <!-- 1st Column: Brand -->
       <div class="footer-brand">
         <a routerLink="/" class="brand-logo footer-logo">
           <img src="assets/ijevo-logo-light.png" alt="ijevo" class="brand-logo-img footer-logo-img" />
@@ -107,36 +83,60 @@
         </div>
       </div>
 
-      <div class="footer-links-group">
-        <h4>Product</h4>
-        <a routerLink="/how-it-works">How It Works</a>
-        <a routerLink="/send-money/nigeria">Send to Nigeria</a>
-        <a routerLink="/corridors">Supported Corridors</a>
-        <a routerLink="/security">Security & Trust</a>
-      </div>
-
+      <!-- 2nd Column: Company (Career, About Us, Send and Receive Money, Contact Us) -->
       <div class="footer-links-group">
         <h4>Company</h4>
-        <a routerLink="/about">About Ijevo</a>
         <a routerLink="/careers">Careers</a>
+        <a routerLink="/about">About Us</a>
+        <a routerLink="/send-and-receive-money">Send and Receive Money</a>
         <a routerLink="/contact">Contact Us</a>
-        <a href="http://localhost:4200" target="_blank">Admin Portal</a>
       </div>
 
+      <!-- 3rd Column: Legal (Terms and Condition, Privacy Policy, Cookies) -->
       <div class="footer-links-group">
-        <h4>Legal & Compliance</h4>
+        <h4>Legal & Policies</h4>
+        <a routerLink="/terms">Terms and Conditions</a>
         <a routerLink="/privacy">Privacy Policy</a>
-        <a routerLink="/terms">Terms of Service</a>
-        <a routerLink="/security">AML & Safeguarding</a>
+        <a routerLink="/cookies">Cookies</a>
+      </div>
+
+      <!-- 4th Column: Newsletter Subscribe + App Store & Play Store Download Links -->
+      <div class="footer-links-group footer-connect-col">
+        <h4>Stay Connected</h4>
+        <p class="footer-newsletter-desc">
+          Subscribe for live exchange rate alerts and special zero-fee transfer offers.
+        </p>
+
+        <div class="footer-newsletter-form">
+          <input type="email" placeholder="Enter your email" class="newsletter-input" aria-label="Email address" />
+          <button type="button" class="btn btn-primary btn-sm newsletter-btn">Subscribe</button>
+        </div>
+
+        <div class="footer-download-badges">
+          <a href="#" class="store-badge light store-badge-sm">
+            <i class="fa-brands fa-apple"></i>
+            <div>
+              <span class="store-sub">Download on</span>
+              <span class="store-name">App Store</span>
+            </div>
+          </a>
+          <a href="#" class="store-badge light store-badge-sm">
+            <i class="fa-brands fa-google-play"></i>
+            <div>
+              <span class="store-sub">Get it on</span>
+              <span class="store-name">Google Play</span>
+            </div>
+          </a>
+        </div>
       </div>
     </div>
 
+    <!-- Footer Bottom -->
     <div class="footer-bottom">
       <div class="regulatory-disclosure">
         <p>
           <strong>Regulatory Notice:</strong> Ijevo is a trading name of Ijevo Ltd, a registered company in England & Wales. 
-          Payment transmission and electronic funds services are provided in compliance with the Payment Services Regulations 
-          and supervised by HM Revenue & Customs (HMRC) for Anti-Money Laundering (AML) compliance.
+          Payment transmission and electronic funds services are provided in full compliance with applicable UK payment services regulations.
         </p>
       </div>
       <div class="copyright-row">

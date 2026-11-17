@@ -37,7 +37,7 @@ export class CareersComponent {
       department: 'Risk & Legal',
       location: 'London, UK',
       type: 'Full-time',
-      description: 'Ensure strict compliance with UK HMRC MSB and international sanction regimes, manage transaction monitoring, and conduct suspicious activity reporting.'
+      description: 'Ensure strict compliance with UK anti-money laundering regulations and international sanction regimes, manage transaction monitoring, and conduct suspicious activity reporting.'
     },
     {
       title: 'Product Designer (FinTech UI/UX)',
