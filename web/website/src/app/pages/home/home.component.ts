@@ -145,6 +145,39 @@ export class HomeComponent {
     }
   ];
 
+  // Custom Dropdown Open States
+  protected readonly isSendDropdownOpen = signal<boolean>(false);
+  protected readonly isReceiveDropdownOpen = signal<boolean>(false);
+
+  protected toggleSendDropdown(event?: Event): void {
+    if (event) event.stopPropagation();
+    this.isReceiveDropdownOpen.set(false);
+    this.isSendDropdownOpen.update(v => !v);
+  }
+
+  protected toggleReceiveDropdown(event?: Event): void {
+    if (event) event.stopPropagation();
+    this.isSendDropdownOpen.set(false);
+    this.isReceiveDropdownOpen.update(v => !v);
+  }
+
+  protected selectSendCurrency(code: string, event?: Event): void {
+    if (event) event.stopPropagation();
+    this.sendCurrency.set(code);
+    this.isSendDropdownOpen.set(false);
+  }
+
+  protected selectReceiveCurrency(code: string, event?: Event): void {
+    if (event) event.stopPropagation();
+    this.receiveCurrency.set(code);
+    this.isReceiveDropdownOpen.set(false);
+  }
+
+  protected closeDropdowns(): void {
+    this.isSendDropdownOpen.set(false);
+    this.isReceiveDropdownOpen.set(false);
+  }
+
   protected setSendCurrency(code: string): void {
     this.sendCurrency.set(code);
   }

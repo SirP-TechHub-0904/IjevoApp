@@ -51,38 +51,58 @@
       <!-- Right Column: Minimalist TapTap-Style Remittance Calculator -->
       <div class="hero-calc-wrapper">
         <div class="calculator-card-minimal">
-          <!-- Top Country Dropdowns Bar -->
+          <!-- Top Country Dropdowns Bar (Custom Sharp Dropdowns) -->
           <div class="calc-top-bar">
             <!-- Send Currency Dropdown (USD, EUR, GBP) -->
-            <div class="calc-dropdown-box">
+            <div class="calc-dropdown-box" (click)="toggleSendDropdown($event)" [class.active]="isSendDropdownOpen()">
               <span class="dropdown-flag-icon"><i class="fa-solid fa-location-dot"></i></span>
               <div class="dropdown-control">
-                <select [ngModel]="sendCurrency()" (ngModelChange)="setSendCurrency($event)" class="calc-top-select" aria-label="Send Currency">
-                  @for (curr of sendCurrencies; track curr.code) {
-                  <option [value]="curr.code">
-                    {{ curr.name }}
-                  </option>
-                  }
-                </select>
-                <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
+                <span class="selected-label">{{ selectedSendCurrency().name }}</span>
+                <i class="fa-solid fa-chevron-down dropdown-arrow" [class.rotated]="isSendDropdownOpen()"></i>
               </div>
+
+              <!-- Custom Sharp Send Menu -->
+              @if (isSendDropdownOpen()) {
+              <div class="custom-dropdown-menu" (click)="$event.stopPropagation()">
+                @for (curr of sendCurrencies; track curr.code) {
+                <div class="dropdown-item" [class.selected]="sendCurrency() === curr.code" (click)="selectSendCurrency(curr.code, $event)">
+                  <div class="item-left">
+                    <span class="item-symbol">{{ curr.symbol }}</span>
+                    <span class="item-name">{{ curr.name }}</span>
+                  </div>
+                  @if (sendCurrency() === curr.code) {
+                  <i class="fa-solid fa-check check-icon"></i>
+                  }
+                </div>
+                }
+              </div>
+              }
             </div>
 
-            <div class="calc-top-divider"></div>
-
             <!-- Receive Currency Dropdown -->
-            <div class="calc-dropdown-box">
+            <div class="calc-dropdown-box" (click)="toggleReceiveDropdown($event)" [class.active]="isReceiveDropdownOpen()">
               <span class="dropdown-flag-icon"><i class="fa-solid fa-globe"></i></span>
               <div class="dropdown-control">
-                <select [ngModel]="receiveCurrency()" (ngModelChange)="setReceiveCurrency($event)" class="calc-top-select" aria-label="Receive Currency">
-                  @for (curr of payoutCurrencies; track curr.code) {
-                  <option [value]="curr.code">
-                    {{ curr.name }}
-                  </option>
-                  }
-                </select>
-                <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
+                <span class="selected-label">{{ selectedCurrency().name }}</span>
+                <i class="fa-solid fa-chevron-down dropdown-arrow" [class.rotated]="isReceiveDropdownOpen()"></i>
               </div>
+
+              <!-- Custom Sharp Receive Menu -->
+              @if (isReceiveDropdownOpen()) {
+              <div class="custom-dropdown-menu" (click)="$event.stopPropagation()">
+                @for (curr of payoutCurrencies; track curr.code) {
+                <div class="dropdown-item" [class.selected]="receiveCurrency() === curr.code" (click)="selectReceiveCurrency(curr.code, $event)">
+                  <div class="item-left">
+                    <span class="item-symbol">{{ curr.symbol }}</span>
+                    <span class="item-name">{{ curr.name }}</span>
+                  </div>
+                  @if (receiveCurrency() === curr.code) {
+                  <i class="fa-solid fa-check check-icon"></i>
+                  }
+                </div>
+                }
+              </div>
+              }
             </div>
           </div>
 

@@ -6,41 +6,115 @@
       Move money effortlessly between the UK, Europe, Africa, and beyond. Low fees, fair exchange rates, and bank-grade protection for both senders and recipients.
     </p>
 
-    <!-- Quick Calculator Box -->
-    <div style="max-width: 540px; margin: 40px auto 0; background: white; border-radius: 20px; padding: 32px; box-shadow: var(--ijevo-shadow-md); border: 1px solid var(--ijevo-border-light); text-align: left;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-        <span style="font-weight: 700; color: var(--ijevo-navy); font-size: 1.15rem;">Live Exchange Rate</span>
-        <span class="badge badge-emerald"><i class="fa-solid fa-bolt"></i> 1 GBP = {{ currentRate().toLocaleString() }} {{ selectedCurrency().code }}</span>
-      </div>
+    <!-- Minimalist TapTap-Style Calculator (Tallies with Homepage) -->
+    <div class="calculator-card-minimal" style="margin-top: 40px; text-align: left;">
+      <!-- Top Country Dropdowns Bar (Custom Sharp Dropdowns) -->
+      <div class="calc-top-bar">
+        <!-- Send Currency Dropdown (USD, EUR, GBP) -->
+        <div class="calc-dropdown-box" (click)="toggleSendDropdown($event)" [class.active]="isSendDropdownOpen()">
+          <span class="dropdown-flag-icon"><i class="fa-solid fa-location-dot"></i></span>
+          <div class="dropdown-control">
+            <span class="selected-label">{{ selectedSendCurrency().name }}</span>
+            <i class="fa-solid fa-chevron-down dropdown-arrow" [class.rotated]="isSendDropdownOpen()"></i>
+          </div>
 
-      <div style="margin-bottom: 18px;">
-        <label style="font-size: 0.9rem; font-weight: 600; color: #64748B; display: block; margin-bottom: 6px;">You send (GBP)</label>
-        <div style="display: flex; align-items: center; border: 1.5px solid var(--ijevo-border-light); border-radius: 12px; padding: 10px 16px;">
-          <input type="number" [ngModel]="sendAmount()" (ngModelChange)="updateSendAmount($event)" style="border: none; outline: none; width: 100%; font-size: 1.5rem; font-weight: 700; color: var(--ijevo-navy);" />
-          <span style="font-weight: 700; color: var(--ijevo-primary); font-size: 1.1rem; padding-left: 12px;">GBP (£)</span>
-        </div>
-      </div>
-
-      <div style="margin-bottom: 20px;">
-        <label style="font-size: 0.9rem; font-weight: 600; color: #64748B; display: block; margin-bottom: 6px;">Recipient receives ({{ selectedCurrency().name }})</label>
-        <div style="display: flex; align-items: center; border: 1.5px solid var(--ijevo-border-light); border-radius: 12px; padding: 10px 16px; background: #F8FAFC;">
-          <input type="text" [value]="calculatedPayout()" readonly style="border: none; outline: none; width: 100%; font-size: 1.5rem; font-weight: 700; color: var(--ijevo-primary-hover); background: transparent;" />
-          <select [ngModel]="receiveCurrency()" (ngModelChange)="setReceiveCurrency($event)" style="border: 1px solid var(--ijevo-border-light); background: white; border-radius: 8px; padding: 6px 10px; font-weight: 700; color: var(--ijevo-navy); outline: none;">
-            @for (curr of payoutCurrencies; track curr.code) {
-              <option [value]="curr.code">{{ curr.code }} ({{ curr.symbol }})</option>
+          <!-- Custom Sharp Send Menu -->
+          @if (isSendDropdownOpen()) {
+          <div class="custom-dropdown-menu" (click)="$event.stopPropagation()">
+            @for (curr of sendCurrencies; track curr.code) {
+            <div class="dropdown-item" [class.selected]="sendCurrency() === curr.code" (click)="selectSendCurrency(curr.code, $event)">
+              <div class="item-left">
+                <span class="item-symbol">{{ curr.symbol }}</span>
+                <span class="item-name">{{ curr.name }}</span>
+              </div>
+              @if (sendCurrency() === curr.code) {
+              <i class="fa-solid fa-check check-icon"></i>
+              }
+            </div>
             }
-          </select>
+          </div>
+          }
+        </div>
+
+        <!-- Receive Currency Dropdown -->
+        <div class="calc-dropdown-box" (click)="toggleReceiveDropdown($event)" [class.active]="isReceiveDropdownOpen()">
+          <span class="dropdown-flag-icon"><i class="fa-solid fa-globe"></i></span>
+          <div class="dropdown-control">
+            <span class="selected-label">{{ selectedCurrency().name }}</span>
+            <i class="fa-solid fa-chevron-down dropdown-arrow" [class.rotated]="isReceiveDropdownOpen()"></i>
+          </div>
+
+          <!-- Custom Sharp Receive Menu -->
+          @if (isReceiveDropdownOpen()) {
+          <div class="custom-dropdown-menu" (click)="$event.stopPropagation()">
+            @for (curr of payoutCurrencies; track curr.code) {
+            <div class="dropdown-item" [class.selected]="receiveCurrency() === curr.code" (click)="selectReceiveCurrency(curr.code, $event)">
+              <div class="item-left">
+                <span class="item-symbol">{{ curr.symbol }}</span>
+                <span class="item-name">{{ curr.name }}</span>
+              </div>
+              @if (receiveCurrency() === curr.code) {
+              <i class="fa-solid fa-check check-icon"></i>
+              }
+            </div>
+            }
+          </div>
+          }
         </div>
       </div>
 
-      <div style="display: flex; justify-content: space-between; font-size: 0.9rem; color: #64748B; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid #F1F5F9;">
-        <span>Transfer Fee: <strong style="color: var(--ijevo-primary);">£0.00 (Zero Fee)</strong></span>
-        <span>Delivery: <strong style="color: var(--ijevo-navy);">Under 60 seconds</strong></span>
-      </div>
+      <!-- Calculator Main Body -->
+      <div class="calc-body">
+        <!-- You Send Field -->
+        <div class="calc-input-group">
+          <label class="calc-field-label">You send ({{ selectedSendCurrency().code }})</label>
+          <div class="calc-field-box">
+            <input
+              type="number"
+              [ngModel]="sendAmount()"
+              (ngModelChange)="updateSendAmount($event)"
+              min="1"
+              step="10"
+              class="calc-amount-input"
+            />
+          </div>
+        </div>
 
-      <a routerLink="/" fragment="download" class="btn btn-primary btn-block" style="padding: 16px; font-size: 1.1rem; justify-content: center;">
-        <i class="fa-solid fa-arrow-down-to-bracket"></i> Download App to Send
-      </a>
+        <!-- They Receive Field -->
+        <div class="calc-input-group">
+          <label class="calc-field-label">They receive ({{ selectedCurrency().code }})</label>
+          <div class="calc-field-box">
+            <input
+              type="text"
+              [value]="calculatedPayout()"
+              readonly
+              class="calc-amount-input readonly"
+            />
+          </div>
+        </div>
+
+        <!-- Meta Rates & Fees -->
+        <div class="calc-meta-block">
+          <div class="meta-row">
+            <span class="meta-label">Today's rate:</span>
+            <span class="meta-value">{{ selectedSendCurrency().code }} 1 = {{ currentRate().toLocaleString() }} {{ selectedCurrency().code }}</span>
+          </div>
+          <div class="meta-row">
+            <span class="meta-label">Transfer fee:</span>
+            <span class="meta-value">from {{ selectedSendCurrency().symbol }}0.00*</span>
+          </div>
+        </div>
+
+        <!-- Action Button -->
+        <a routerLink="/" fragment="download" class="calc-btn-rate">
+          DOWNLOAD APP TO SEND
+        </a>
+
+        <!-- Subtext disclaimer -->
+        <p class="calc-sub-note">
+          * Delivery in under 60 seconds. Zero hidden deduction fees.
+        </p>
+      </div>
     </div>
   </div>
 </section>
