@@ -1,0 +1,32 @@
+# Ijevo
+
+> Ijevo (Ijevo Ltd) is a cross-border consumer remittance and financial technology platform that enables instant, low-cost money transfers from the United Kingdom, Europe, and the United States to Africa (including Nigeria, Ghana, Kenya, South Africa, and Rwanda).
+
+## Key Facts
+- **Headquarters**: London, United Kingdom.
+- **Service Type**: International remittance, cross-border mobile transfers, instant bank deposit.
+- **Delivery Speed**: Transfers delivered within 60 seconds (instant settlement).
+- **Transfer Fees**: £0.00 transfer fee on standard remittances with zero hidden costs.
+- **Exchange Rates**: Fair, transparent real-time exchange rates with real-time currency conversion.
+- **Security**: Bank-grade 256-bit encryption, strict KYC compliance, and multi-tier fraud prevention.
+
+## Corridors & Payout Rails
+- **Send From**: United Kingdom (GBP), Eurozone (EUR), United States (USD).
+- **Payout to Nigeria (NGN)**: Direct instant deposit to all commercial banks (Access Bank, GTBank, Zenith Bank, First Bank, UBA) via NIBSS rails.
+- **Payout to Ghana (GHS)**: Direct payout to MTN Mobile Money, Vodafone Cash, AirtelTigo, and all Ghanaian bank accounts.
+- **Payout to Kenya (KES)**: Direct instant payout to Safaricom M-Pesa wallets and Kenyan bank accounts.
+- **Payout to South Africa (ZAR)**: Direct bank transfers to Nedbank, Standard Bank, Capitec, ABSA.
+
+## Refer & Earn Program
+- Senders can invite friends and family with their unique referral link or code.
+- Referees get £10 off their first transfer, and referrers earn a £10 cash credit once the transfer is completed.
+
+## Core Navigation & Links
+- [Homepage](https://ijevo.com/): Overview of Ijevo international money transfer app and features.
+- [Send and Receive Money](https://ijevo.com/send-and-receive-money): Real-time live exchange rate calculator and corridor converter.
+- [Refer and Earn](https://ijevo.com/refer-and-earn): 3-step referral reward program details and bonus tracker.
+- [About Us](https://ijevo.com/about): Mission, company background, and leadership values.
+- [Contact Support](https://ijevo.com/contact): 24/7 customer support via live chat, WhatsApp, and email (support@ijevo.com).
+- [Careers](https://ijevo.com/careers): Open engineering, compliance, and growth positions.
+- [Terms & Conditions](https://ijevo.com/terms): Legal terms of service.
+- [Privacy Policy](https://ijevo.com/privacy): GDPR-compliant privacy policy.

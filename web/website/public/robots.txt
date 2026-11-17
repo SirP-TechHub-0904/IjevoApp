@@ -1,4 +1,32 @@
 User-agent: *
 Allow: /
 
+# Explicit AI Search & Engine Crawlers
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+# LLM Context File
+# See: https://ijevo.com/llms.txt
+# Sitemap
 Sitemap: https://ijevo.com/sitemap.xml
