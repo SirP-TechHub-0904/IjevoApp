@@ -445,33 +445,17 @@
 
   .footer-bottom {
     border-top: 1px solid #152238;
-    padding-top: 32px;
-
-    .regulatory-disclosure {
-      margin-bottom: 24px;
-
-      p {
-        font-size: 0.8rem;
-        color: #64748B;
-        line-height: 1.6;
-      }
-    }
+    padding-top: 28px;
 
     .copyright-row {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 16px;
+      justify-content: center;
+      text-align: center;
 
       p {
         font-size: 0.85rem;
         color: #64748B;
         margin: 0;
-      }
-
-      .built-with {
-        color: #475569;
       }
     }
   }
