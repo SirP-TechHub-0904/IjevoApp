@@ -11,7 +11,7 @@
       <img src="assets/ijevo-logo-light.png" alt="ijevo" class="brand-logo-img" />
     </a>
 
-    <!-- Desktop Navigation Menu (About Us, Send and Receive Money, Contact Us) -->
+    <!-- Desktop Navigation Menu (About Us, Send and Receive Money, Refer & Earn, Contact Us) -->
     <nav class="mil-top-menu">
       <ul>
         <li routerLinkActive="mil-active">
@@ -19,6 +19,9 @@
         </li>
         <li routerLinkActive="mil-active">
           <a routerLink="/send-and-receive-money">Send and Receive Money</a>
+        </li>
+        <li routerLinkActive="mil-active">
+          <a routerLink="/refer-and-earn">Refer & Earn</a>
         </li>
         <li routerLinkActive="mil-active">
           <a routerLink="/contact">Contact Us</a>
@@ -46,6 +49,9 @@
       </li>
       <li routerLinkActive="mil-active">
         <a routerLink="/send-and-receive-money" (click)="closeMobileMenu()">Send and Receive Money</a>
+      </li>
+      <li routerLinkActive="mil-active">
+        <a routerLink="/refer-and-earn" (click)="closeMobileMenu()">Refer & Earn</a>
       </li>
       <li routerLinkActive="mil-active">
         <a routerLink="/contact" (click)="closeMobileMenu()">Contact Us</a>
@@ -85,12 +91,13 @@
         </div>
       </div>
 
-      <!-- 2nd Column: Company (Career, About Us, Send and Receive Money, Contact Us) -->
+      <!-- 2nd Column: Company (Career, About Us, Send and Receive Money, Refer & Earn, Contact Us) -->
       <div class="footer-links-group">
         <h4>Company</h4>
         <a routerLink="/careers">Careers</a>
         <a routerLink="/about">About Us</a>
         <a routerLink="/send-and-receive-money">Send and Receive Money</a>
+        <a routerLink="/refer-and-earn">Refer & Earn</a>
         <a routerLink="/contact">Contact Us</a>
       </div>
 

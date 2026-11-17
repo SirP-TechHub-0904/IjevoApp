@@ -1,0 +1,124 @@
+<!-- Hero Section -->
+<section class="refer-hero">
+  <div class="container refer-hero-container">
+    <div class="refer-hero-content">
+      <div class="badge badge-emerald">
+        <i class="fa-solid fa-gift"></i> Give £10, Get £10
+      </div>
+      <h1 class="refer-hero-title">
+        Refer Friends.<br />Earn Unlimited Cash.
+      </h1>
+      <p class="refer-hero-lead">
+        Sharing is rewarding. Invite friends and family to send money home with Ijevo. Every time a friend completes their first transfer, you both receive <strong>£10 in cash</strong>.
+      </p>
+
+      <!-- App Download Action Bar -->
+      <div class="refer-cta-box">
+        <p class="cta-box-title">Get your unique referral link inside the app:</p>
+        <div class="store-buttons-row">
+          <a href="#" class="store-badge light">
+            <i class="fa-brands fa-apple"></i>
+            <div>
+              <span class="store-sub">Download on</span>
+              <span class="store-name">App Store</span>
+            </div>
+          </a>
+          <a href="#" class="store-badge light">
+            <i class="fa-brands fa-google-play"></i>
+            <div>
+              <span class="store-sub">Get it on</span>
+              <span class="store-name">Google Play</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="refer-hero-visual">
+      <div class="mockup-wrapper">
+        <img src="assets/template/img/home-2/1.png" alt="Ijevo Refer and Earn App Screen" class="refer-mockup-img" />
+        <div class="floating-bonus-card">
+          <div class="bonus-icon"><i class="fa-solid fa-circle-check"></i></div>
+          <div>
+            <span class="bonus-label">Referral Bonus Credited</span>
+            <span class="bonus-amount">+ £10.00</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- How It Works (3 Simple Steps) -->
+<section class="section-spacing refer-steps-section">
+  <div class="container">
+    <div class="section-header text-center">
+      <div class="badge badge-navy">Simple & Smooth</div>
+      <h2>How to Start Earning in 3 Steps</h2>
+      <p class="section-sub">
+        No complicated rules. Just a straightforward reward program designed to thank you for spreading the word.
+      </p>
+    </div>
+
+    <div class="refer-steps-grid">
+      @for (step of steps; track step.num) {
+      <div class="step-card">
+        <div class="step-num">{{ step.num }}</div>
+        <h3>{{ step.title }}</h3>
+        <p>{{ step.desc }}</p>
+      </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Benefits Grid -->
+<section class="section-spacing refer-benefits-section">
+  <div class="container">
+    <div class="section-header text-center">
+      <div class="badge badge-emerald">Why You'll Love It</div>
+      <h2>Real Rewards That Keep Growing</h2>
+    </div>
+
+    <div class="benefits-grid">
+      @for (b of benefits; track b.title) {
+      <div class="benefit-card">
+        <div class="benefit-icon">
+          <i [class]="b.icon"></i>
+        </div>
+        <h3>{{ b.title }}</h3>
+        <p>{{ b.desc }}</p>
+      </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Final App Download Banner -->
+<section class="refer-download-banner">
+  <div class="container">
+    <div class="download-banner-card">
+      <div class="banner-text">
+        <div class="badge badge-emerald">Start Earning Today</div>
+        <h2>Download the Ijevo App & Claim Your First Reward</h2>
+        <p>Available for free on iPhone and Android. Set up in under 60 seconds.</p>
+      </div>
+      <div class="banner-buttons">
+        <a href="#" class="store-badge light">
+          <i class="fa-brands fa-apple"></i>
+          <div>
+            <span class="store-sub">Download on</span>
+            <span class="store-name">App Store</span>
+          </div>
+        </a>
+        <a href="#" class="store-badge light">
+          <i class="fa-brands fa-google-play"></i>
+          <div>
+            <span class="store-sub">Get it on</span>
+            <span class="store-name">Google Play</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
